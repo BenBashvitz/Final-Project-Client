@@ -1,35 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {LoginScreen} from "./components/LoginScreen.tsx";
+import type {UserSignInPayload, UserSignUpPayload} from "./types";
+import axios from "axios";
+import type {LoginSuccessResponse, LoginResponseType} from "./types/auth.ts";
+import {useEffect, useRef} from "react";
+import {Route, Routes, useNavigate} from 'react-router';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const navigate = useNavigate();
+    const isRefreshing = useRef(false);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        if (!isRefreshing.current) {
+            isRefreshing.current = true;
+            axios.post<LoginSuccessResponse>(`/api/auth/refresh-token`, {}, {withCredentials: true})
+                .catch(() => {
+                    navigate('/login');
+                })
+                .finally(() => isRefreshing.current = false);
+        }
+    }, [])
+
+    const onSignIn = async (payload: UserSignInPayload): Promise<LoginResponseType> => {
+        try {
+            await axios.post<LoginSuccessResponse>(`/api/auth/login`, payload, {withCredentials: true});
+
+            navigate('/');
+            return "SUCCESS";
+        } catch {
+            return "USERNAME_OR_PASSWORD_INCORRECT";
+        }
+    }
+
+    const onSignUp = async (payload: UserSignUpPayload): Promise<LoginResponseType> => {
+        try {
+            await axios.post<LoginSuccessResponse>(`/api/auth/register`, payload, {withCredentials: true});
+
+            navigate('/');
+            return "SUCCESS";
+        } catch {
+            return "EMAIL_TAKEN";
+        }
+    }
+
+    const onLogout = async (): Promise<void> => {
+        try {
+            await axios.post('/api/auth/logout', {}, {withCredentials: true});
+        } finally {
+            navigate('/login');
+        }
+    }
+
+    return (
+        <>
+            <Routes>
+                <Route path="/" element={
+                    <>
+                        <h1>
+                            Home Screen Placeholder
+                        </h1>
+                        <button onClick={onLogout}>Logout</button>
+                    </>
+                }/>
+                <Route path="/login"
+                       element={<LoginScreen onSignIn={onSignIn} onSignUp={onSignUp}></LoginScreen>}/>
+            </Routes>
+        </>
+    )
 }
 
 export default App
