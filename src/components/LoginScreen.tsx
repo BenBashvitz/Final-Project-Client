@@ -1,3 +1,4 @@
+import * as React from "react";
 import {useState} from 'react';
 import type {UserSignInPayload, UserSignUpPayload} from '../types';
 import './LoginScreen.css';
@@ -15,7 +16,7 @@ export function LoginScreen({onSignIn, onSignUp}: LoginScreenProps) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setError('');
 
@@ -38,9 +39,6 @@ export function LoginScreen({onSignIn, onSignUp}: LoginScreenProps) {
                 break;
             case "EMAIL_TAKEN":
                 setError('Email is already taken');
-                break;
-            case "SERVER_ERROR":
-                setError('An error occurred, please try again later');
                 break;
         }
     };
@@ -112,8 +110,7 @@ export function LoginScreen({onSignIn, onSignUp}: LoginScreenProps) {
                     <button
                         type="button"
                         className="btn-outline"
-                        onClick={() => {/* handle OAuth */
-                        }}
+                        onClick={() => {}}
                     >
                         <svg style={{width: '20px', height: '20px', marginRight: '8px'}} viewBox="0 0 24 24">
                             <path fill="#4285F4"
@@ -125,7 +122,7 @@ export function LoginScreen({onSignIn, onSignUp}: LoginScreenProps) {
                             <path fill="#EA4335"
                                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                         </svg>
-                        Google
+                        Sign in with Google
                     </button>
 
                     <button

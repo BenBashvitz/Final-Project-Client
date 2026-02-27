@@ -11,6 +11,7 @@ function App() {
     const isRefreshing = useRef(false);
 
     useEffect(() => {
+        //prevent accidentally refreshing twice with the same token and logging out
         if (!isRefreshing.current) {
             isRefreshing.current = true;
             axios.post<LoginSuccessResponse>(`/api/auth/refresh-token`, {}, {withCredentials: true})

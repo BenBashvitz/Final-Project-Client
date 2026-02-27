@@ -3,4 +3,4 @@ export type LoginSuccessResponse = {
     refreshToken: string
 }
 
-export type LoginResponseType = 'SERVER_ERROR' | 'USERNAME_OR_PASSWORD_INCORRECT' | 'EMAIL_TAKEN' | 'SUCCESS'
+export type LoginResponseType =  'USERNAME_OR_PASSWORD_INCORRECT' | 'EMAIL_TAKEN' | 'SUCCESS'
