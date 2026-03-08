@@ -31,17 +31,13 @@
   background: linear-gradient(to right, #9333ea, #ec4899);
   color: #ffffff;
   border: none;
+
+  &:hover {
+    background: linear-gradient(to right, #7e22ce, #db2777);
+  }
 }
 
-.createButton:hover {
-  background: linear-gradient(to right, #7e22ce, #db2777);
-}
-
-.createButton:focus {
-  outline: none;
-}
-
-.plusIcon {
+.createButton .plusIcon {
   width: 1rem;
   height: 1rem;
   margin-right: 0.5rem;

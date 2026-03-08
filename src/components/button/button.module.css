@@ -14,72 +14,75 @@
   cursor: pointer;
   flex-shrink: 0;
   text-decoration: none;
-}
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 
-.button:disabled {
-  pointer-events: none;
-  opacity: 0.5;
-}
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  }
 
-.button:focus-visible {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  &:focus {
+    outline: none;
+  }
 }
 
 /* Variants */
 .variantDefault {
   background-color: #2563eb;
   color: #ffffff;
-}
 
-.variantDefault:hover {
-  background-color: #1d4ed8;
+  &:hover {
+    background-color: #1d4ed8;
+  }
 }
 
 .variantDestructive {
   background-color: #dc2626;
   color: #ffffff;
-}
 
-.variantDestructive:hover {
-  background-color: #b91c1c;
+  &:hover {
+    background-color: #b91c1c;
+  }
 }
 
 .variantOutline {
   border: 1px solid #d1d5db;
   background-color: #ffffff;
   color: #111827;
-}
 
-.variantOutline:hover {
-  background-color: #f3f4f6;
+  &:hover {
+    background-color: #f3f4f6;
+  }
 }
 
 .variantSecondary {
   background-color: #e5e7eb;
   color: #111827;
-}
 
-.variantSecondary:hover {
-  background-color: #d1d5db;
+  &:hover {
+    background-color: #d1d5db;
+  }
 }
 
 .variantGhost {
   background-color: transparent;
   color: inherit;
-}
 
-.variantGhost:hover {
-  background-color: #f3f4f6;
+  &:hover {
+    background-color: #f3f4f6;
+  }
 }
 
 .variantLink {
   background-color: transparent;
   color: #2563eb;
   text-underline-offset: 4px;
-}
 
-.variantLink:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 /* Sizes */
