@@ -17,6 +17,21 @@ export const PostCard = ({ post }: PostCardProps) => {
   const isLiked = false; // Replace with actual logic to check if the current user has liked the post
   const userImgUrl = "https://www.freepik.com/free-photos-vectors/user";
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -28,7 +43,10 @@ export const PostCard = ({ post }: PostCardProps) => {
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className={styles.senderName}>{post.sender}</p>
+            <div className={styles.senderName}>{post.sender}</div>
+            <div className={styles.dateText}>
+              {formatDate(post.creationDate)}
+            </div>
           </div>
         </div>
       </div>

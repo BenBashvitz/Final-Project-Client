@@ -1,12 +1,17 @@
-import type { Post } from "../types/post";
+import type { Cursor } from "../types/cursor";
+import type { PostPage } from "../types/post";
 import { apiClient } from "./api-client";
 
-export const getPosts = (page: number) => {
+export const getPosts = (cursor: Cursor | null) => {
   const abortController = new AbortController();
 
-  const response = apiClient.get<Post[]>("/post?page=" + page, {
-    signal: abortController.signal,
-  });
+  const response = apiClient.get<PostPage>(
+    "/post?cursor=" +
+      (cursor ? encodeURIComponent(JSON.stringify(cursor)) : ""),
+    {
+      signal: abortController.signal,
+    },
+  );
 
   return { response, abort: () => abortController.abort() };
 };

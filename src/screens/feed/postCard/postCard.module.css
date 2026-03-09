@@ -46,6 +46,12 @@
   font-size: 0.875rem;
 }
 
+.dateText {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: start;
+}
+
 .imageWrapper {
   position: relative;
   width: 100%;

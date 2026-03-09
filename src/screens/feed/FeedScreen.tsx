@@ -1,10 +1,12 @@
-import { useEffect, useState, type ComponentProps } from "react";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { getPosts } from "../../services/posts-api";
+import type { Cursor } from "../../types/cursor";
 import type { Post } from "../../types/post";
+import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/noPosts";
 import { PostCard } from "./postCard/PostCard";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { InitialPostPage } from "../../consts";
+import axios from "axios";
 
 interface FeedScreenProps {
   currentUserId: number;
@@ -13,29 +15,40 @@ interface FeedScreenProps {
 const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
   const [allPosts, setAllPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(InitialPostPage);
+  const [error, setError] = useState<string | null>(null);
+  const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
 
   useEffect(() => {
-    const { response, abort } = getPosts(InitialPostPage);
-    response.then((res) => {
-      setAllPosts(res.data);
-      setIsLoading(false);
-    });
+    const { response, abort } = getPosts(null);
+    response
+      .then(({ data: { posts, nextCursor } }) => {
+        setAllPosts(posts);
+        setCurrentCursor(nextCursor);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          console.log("Request canceled:", error.message);
+        } else {
+          console.error("Failed to fetch posts:", error);
+          setError("Failed to fetch movies");
+          setIsLoading(false);
+        }
+      });
 
     return () => abort();
   }, [currentUserId]);
 
   const handlePostCreation = () => {};
 
-  const fetchMorePosts = () => {
-    setPage((prevPage) => {
-      const nextPage = prevPage + 1;
-      const { response } = getPosts(nextPage);
-      response.then((res) => {
-        setAllPosts((prevPosts) => [...prevPosts, ...res.data]);
-      });
-      return nextPage;
-    });
+  const fetchMorePosts = async () => {
+    const { response } = getPosts(currentCursor);
+    const {
+      data: { posts, nextCursor },
+    } = await response;
+
+    setAllPosts((prevPosts) => [...prevPosts, ...posts]);
+    setCurrentCursor(nextCursor);
   };
 
   return (
@@ -46,15 +59,20 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
         <NoPosts onCreatePost={handlePostCreation} />
       ) : (
         <InfiniteScroll
-          hasMore={false}
+          hasMore={!!currentCursor?.creationDate}
           loader={<div>loading...</div>}
-          endMessage="You have reached the end of the feed"
+          endMessage={
+            <div className={styles.endMessage}>
+              You have reached the end of the feed
+            </div>
+          }
           dataLength={allPosts.length}
           next={fetchMorePosts}
         >
           {allPosts.map((post) => (
             <PostCard key={post._id} post={post} />
           ))}
+          {error && <div className={styles.error}>Error: {error}</div>}
         </InfiniteScroll>
       )}
     </>
