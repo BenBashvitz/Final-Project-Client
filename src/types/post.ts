@@ -1,13 +1,15 @@
 import type { Cursor } from "./cursor";
+import type { PostUser } from "./user";
 
 export type Post = {
   _id: string;
-  imgUrl: string;
+  imgUrl?: string;
   description: string;
-  sender: string;
+  sender: PostUser;
   likeCount: number;
   commentCount: number;
   creationDate: string;
+  isLikedByCurrentUser: boolean;
 };
 
 export type PostPage = {

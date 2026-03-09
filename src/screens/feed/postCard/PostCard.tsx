@@ -14,9 +14,6 @@ interface PostCardProps {
 }
 
 export const PostCard = ({ post }: PostCardProps) => {
-  const isLiked = false; // Replace with actual logic to check if the current user has liked the post
-  const userImgUrl = "https://www.freepik.com/free-photos-vectors/user";
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -37,13 +34,13 @@ export const PostCard = ({ post }: PostCardProps) => {
       <div className={styles.header}>
         <div className={styles.userInfo}>
           <Avatar className={styles.avatar}>
-            <AvatarImage src={userImgUrl} alt="avatarImg" />
+            <AvatarImage src={post.sender.imgUrl} alt="avatarImg" />
             <AvatarFallback className={styles.avatarFallback}>
-              {post.sender}
+              {post.sender.username}
             </AvatarFallback>
           </Avatar>
           <div>
-            <div className={styles.senderName}>{post.sender}</div>
+            <div className={styles.senderName}>{post.sender.username}</div>
             <div className={styles.dateText}>
               {formatDate(post.creationDate)}
             </div>
@@ -68,7 +65,9 @@ export const PostCard = ({ post }: PostCardProps) => {
             <Heart
               className={[
                 styles.heartIcon,
-                isLiked ? styles.heartLiked : styles.heartUnliked,
+                post.isLikedByCurrentUser
+                  ? styles.heartLiked
+                  : styles.heartUnliked,
               ].join(" ")}
             />
           </Button>
@@ -83,7 +82,9 @@ export const PostCard = ({ post }: PostCardProps) => {
         {post.description.length && (
           <div>
             <p className={styles.description}>
-              <span className={styles.descriptionSender}>{post.sender}</span>
+              <span className={styles.descriptionSender}>
+                {post.sender.username}
+              </span>
               {post.description}
             </p>
           </div>
