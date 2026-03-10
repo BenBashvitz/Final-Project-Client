@@ -6,8 +6,7 @@ export const getPosts = (cursor: Cursor | null) => {
   const abortController = new AbortController();
 
   const response = apiClient.get<PostPage>(
-    "/post?cursor=" +
-      (cursor ? encodeURIComponent(JSON.stringify(cursor)) : ""),
+    `/post?${cursor ? `cursor=${JSON.stringify(cursor)}` : ""}`,
     {
       signal: abortController.signal,
     },

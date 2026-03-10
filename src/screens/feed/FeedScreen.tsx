@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getPosts } from "../../services/posts-api";
 import type { Cursor } from "../../types/cursor";
@@ -51,32 +51,40 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
     setCurrentCursor(nextCursor);
   };
 
-  return (
-    <>
-      {isLoading ? (
-        <div>Loading feed page...</div>
-      ) : allPosts.length === 0 ? (
-        <NoPosts onCreatePost={handlePostCreation} />
-      ) : (
-        <InfiniteScroll
-          hasMore={!!currentCursor?.creationDate}
-          loader={<div>loading...</div>}
-          endMessage={
-            <div className={styles.endMessage}>
-              You have reached the end of the feed
-            </div>
-          }
-          dataLength={allPosts.length}
-          next={fetchMorePosts}
-        >
-          {allPosts.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))}
-          {error && <div className={styles.error}>Error: {error}</div>}
-        </InfiniteScroll>
-      )}
-    </>
-  );
+  const getContent = (): JSX.Element => {
+    if (isLoading) {
+      return <div>Loading feed page...</div>;
+    }
+
+    if (error) {
+      return <div className={styles.error}>Error: {error}</div>;
+    }
+
+    if (allPosts.length === 0) {
+      return <NoPosts onCreatePost={handlePostCreation} />;
+    }
+
+    return (
+      <InfiniteScroll
+        hasMore={!!currentCursor?.creationDate}
+        loader={<div>loading...</div>}
+        endMessage={
+          <div className={styles.endMessage}>
+            You have reached the end of the feed
+          </div>
+        }
+        dataLength={allPosts.length}
+        next={fetchMorePosts}
+      >
+        {allPosts.map((post) => (
+          <PostCard key={post._id} post={post} />
+        ))}
+        {error && <div className={styles.error}>Error: {error}</div>}
+      </InfiniteScroll>
+    );
+  };
+
+  return getContent();
 };
 
 export default FeedScreen;
