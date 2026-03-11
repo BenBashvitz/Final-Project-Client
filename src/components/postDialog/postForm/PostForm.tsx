@@ -57,7 +57,7 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
           </Button>
         </div>
       </form>
-      {/* <DevTool control={control} /> */}
+      <DevTool control={control} />
     </FormProvider>
   );
 };

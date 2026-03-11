@@ -17,7 +17,9 @@ export const ImageWithFallback = (
 
   return didError ? (
     <div
-      className={[styles.errorWrapper, className].filter(Boolean).join(" ")}
+      className={[styles.imageWrapper, styles.errorWrapper, className]
+        .filter(Boolean)
+        .join(" ")}
       style={style}
     >
       <div className={styles.errorInner}>
@@ -33,7 +35,7 @@ export const ImageWithFallback = (
     <img
       src={src}
       alt={alt}
-      className={className}
+      className={[styles.imageWrapper, className].filter(Boolean).join(" ")}
       style={style}
       {...rest}
       onError={handleError}

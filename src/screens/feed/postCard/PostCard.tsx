@@ -48,13 +48,13 @@ export const PostCard = ({ post }: PostCardProps) => {
         </div>
       </div>
 
-      <div className={styles.imageWrapper}>
+      {post.imgUrl && (
         <ImageWithFallback
           src={post.imgUrl}
           alt="Post image"
           className={styles.image}
         />
-      </div>
+      )}
 
       <div className={styles.actions}>
         <div className={styles.actionRow}>
