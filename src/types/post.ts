@@ -26,3 +26,7 @@ export type PostFormValues = {
   description: string;
   img: File | null;
 };
+
+export type UploadedPostResponse = {
+  imgUrl: string;
+};
