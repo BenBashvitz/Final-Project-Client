@@ -5,7 +5,7 @@ export type Post = {
   _id: string;
   imgUrl?: string;
   description: string;
-  sender: PostUser;
+  user: PostUser;
   likeCount: number;
   commentCount: number;
   creationDate: string;
