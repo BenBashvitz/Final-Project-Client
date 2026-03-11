@@ -22,8 +22,8 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
     const { response, abort } = getPosts(null);
     response
       .then(({ data: { posts, nextCursor } }) => {
-        // setPosts(posts);
-        // setCursor(nextCursor);
+        setPosts(posts);
+        setCursor(nextCursor);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -59,7 +59,9 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
     }
 
     if (posts.length === 0) {
-      return <NoPosts onCreatePost={() => setShowPostCreationDialog(true)} />;
+      return (
+        <NoPosts onCreatePost={(post) => setPosts((prev) => [post, ...prev])} />
+      );
     }
 
     return (

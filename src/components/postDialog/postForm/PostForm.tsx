@@ -6,6 +6,7 @@ import { getDefaultValues } from "../../../utils/createPostDialog/getDefaultValu
 import { Button } from "../../button/Button";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper";
 import styles from "./postForm.module.css";
+import { uploadPost } from "../../../services/posts-api";
 
 type PostFormProps = {
   post?: Post;
@@ -19,10 +20,15 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
   });
   const { register, handleSubmit, control } = data;
 
-  const onSubmit = (data: PostFormValues) => {
-    // TODO: wire up addPost / updatePost with API calls
-    onCreatePost();
-    onClose();
+  const onSubmit = async (postToCreate: PostFormValues) => {
+    try {
+      const post = await uploadPost(postToCreate);
+
+      onCreatePost(post);
+      onClose();
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    }
   };
 
   return (

@@ -1,5 +1,6 @@
 import type { Cursor } from "../types/cursor";
 import type {
+  Post,
   PostFormValues,
   PostPage,
   UploadedPostResponse,
@@ -19,31 +20,32 @@ export const getPosts = (cursor: Cursor | null) => {
   return { response, abort: () => abortController.abort() };
 };
 
-export const uploadPost = async ({ img, description }: PostFormValues) => {
+export const uploadPost = async ({
+  img,
+  description,
+}: PostFormValues): Promise<Post> => {
+  let imgUrl: string | null = null;
+
   if (img) {
     const formData = new FormData(); // can be simple json as well, but still need to keep the "Content-Type": "multipart/form-data" because of the file upload
     formData.append("file", img);
 
-    try {
-      const uploadPostImgResponse = await apiClient.post<UploadedPostResponse>(
-        "/upload",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        },
-      );
+    const uploadPostImgResponse = await apiClient.post<UploadedPostResponse>(
+      "/upload",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
 
-      const imgUrl = uploadPostImgResponse.data.imgUrl;
-
-      const uploadPostResponse = await apiClient.post("/post", {
-        description,
-        imgUrl,
-        creationDate: new Date(),
-      });
-
-      return uploadPostResponse;
-    } catch (error) {
-      console.error("Image upload failed:", error);
-    }
+    imgUrl = uploadPostImgResponse.data.imgUrl;
   }
+
+  const uploadPostResponse = await apiClient.post<Post>("/post", {
+    description,
+    imgUrl,
+    creationDate: new Date(),
+  });
+
+  return uploadPostResponse.data;
 };
