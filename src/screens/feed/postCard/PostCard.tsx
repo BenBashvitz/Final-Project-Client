@@ -34,13 +34,13 @@ export const PostCard = ({ post }: PostCardProps) => {
       <div className={styles.header}>
         <div className={styles.userInfo}>
           <Avatar className={styles.avatar}>
-            <AvatarImage src={post.sender.imgUrl} alt="avatarImg" />
+            <AvatarImage src={post.user.imgUrl} alt="avatarImg" />
             <AvatarFallback className={styles.avatarFallback}>
-              {post.sender.username}
+              {post.user.username}
             </AvatarFallback>
           </Avatar>
           <div>
-            <div className={styles.senderName}>{post.sender.username}</div>
+            <div className={styles.senderName}>{post.user.username}</div>
             <div className={styles.dateText}>
               {formatDate(post.creationDate)}
             </div>
@@ -83,7 +83,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           <div>
             <p className={styles.description}>
               <span className={styles.descriptionSender}>
-                {post.sender.username}
+                {post.user.username}
               </span>
               {post.description}
             </p>

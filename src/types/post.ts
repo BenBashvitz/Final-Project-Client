@@ -5,14 +5,24 @@ export type Post = {
   _id: string;
   imgUrl?: string;
   description: string;
-  sender: PostUser;
+  user: PostUser;
   likeCount: number;
   commentCount: number;
   creationDate: string;
   isLikedByCurrentUser: boolean;
 };
 
+export type PostInput = Pick<Post, "description" | "imgUrl"> & {
+  creationDate: string;
+  userId: string;
+};
+
 export type PostPage = {
   posts: Post[];
   nextCursor: Cursor;
+};
+
+export type PostFormValues = {
+  description: string;
+  img: FileList | null;
 };
