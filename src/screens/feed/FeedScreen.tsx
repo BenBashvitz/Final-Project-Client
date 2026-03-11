@@ -13,17 +13,17 @@ interface FeedScreenProps {
 }
 
 const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
-  const [allPosts, setAllPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
+  const [cursor, setCursor] = useState<Cursor | null>(null);
 
   useEffect(() => {
     const { response, abort } = getPosts(null);
     response
       .then(({ data: { posts, nextCursor } }) => {
-        setAllPosts(posts);
-        setCurrentCursor(nextCursor);
+        // setPosts(posts);
+        // setCursor(nextCursor);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -39,16 +39,14 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
     return () => abort();
   }, [currentUserId]);
 
-  const handlePostCreation = () => {};
-
   const fetchMorePosts = async () => {
-    const { response } = getPosts(currentCursor);
+    const { response } = getPosts(cursor);
     const {
       data: { posts, nextCursor },
     } = await response;
 
-    setAllPosts((prevPosts) => [...prevPosts, ...posts]);
-    setCurrentCursor(nextCursor);
+    setPosts((prevPosts) => [...prevPosts, ...posts]);
+    setCursor(nextCursor);
   };
 
   const getContent = (): JSX.Element => {
@@ -60,23 +58,23 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
       return <div className={styles.error}>Error: {error}</div>;
     }
 
-    if (allPosts.length === 0) {
-      return <NoPosts onCreatePost={handlePostCreation} />;
+    if (posts.length === 0) {
+      return <NoPosts onCreatePost={() => setShowPostCreationDialog(true)} />;
     }
 
     return (
       <InfiniteScroll
-        hasMore={!!currentCursor?.creationDate}
+        hasMore={!!cursor?.creationDate}
         loader={<div>loading...</div>}
         endMessage={
           <div className={styles.endMessage}>
             You have reached the end of the feed
           </div>
         }
-        dataLength={allPosts.length}
+        dataLength={posts.length}
         next={fetchMorePosts}
       >
-        {allPosts.map((post) => (
+        {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
         {error && <div className={styles.error}>Error: {error}</div>}

@@ -8,3 +8,9 @@
 body {
   background-color: #f5eef4;
 }
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

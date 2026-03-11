@@ -1,0 +1,138 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay[data-state="open"] {
+  animation: fadeIn 200ms ease;
+}
+
+.overlay[data-state="closed"] {
+  animation: fadeOut 200ms ease;
+}
+
+.content {
+  background-color: var(--background, #fff);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 50;
+  display: grid;
+  width: 100%;
+  max-width: calc(100% - 2rem);
+  transform: translateX(-50%) translateY(-50%);
+  gap: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border, #e5e7eb);
+  padding: 1.5rem;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  transition-duration: 200ms;
+}
+
+@media (min-width: 640px) {
+  .content {
+    max-width: 32rem;
+  }
+}
+
+.content[data-state="open"] {
+  animation: contentIn 200ms ease;
+}
+
+.content[data-state="closed"] {
+  animation: contentOut 200ms ease;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border-radius: 0.125rem;
+  opacity: 0.7;
+  transition: opacity 150ms;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+.closeButton:focus {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--ring, #6366f1),
+    0 0 0 4px var(--ring-offset, #fff);
+}
+
+.closeButton:disabled {
+  pointer-events: none;
+}
+
+.closeButton svg {
+  pointer-events: none;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes contentIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+}
+
+@keyframes contentOut {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50%) scale(0.95);
+  }
+}

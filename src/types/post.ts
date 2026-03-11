@@ -24,5 +24,5 @@ export type PostPage = {
 
 export type PostFormValues = {
   description: string;
-  img: FileList | null;
+  img: File | null;
 };
