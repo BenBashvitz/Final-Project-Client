@@ -7,6 +7,8 @@ import { Button } from "../../button/Button";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper";
 import styles from "./postForm.module.css";
 import { uploadPost } from "../../../services/posts-api";
+import FormFieldErrorWrapper from "../../formFieldErrorWrapper/formFieldErrorWrapper";
+import { REQUIRED_FIELD_ERROR_MESSAGE } from "../../../consts";
 
 type PostFormProps = {
   post?: Post;
@@ -18,7 +20,12 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
   const data = useForm<PostFormValues>({
     defaultValues: getDefaultValues(post),
   });
-  const { register, handleSubmit, control } = data;
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = data;
 
   const onSubmit = async (postToCreate: PostFormValues) => {
     try {
@@ -38,12 +45,19 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
           <LabelPrimitive.Root htmlFor="description">
             Caption
           </LabelPrimitive.Root>
-          <textarea
-            id="description"
-            placeholder="What's on your mind?"
-            {...register("description", { required: true })}
-            className={styles.textarea}
-          />
+          <FormFieldErrorWrapper error={errors.description?.message}>
+            <textarea
+              id="description"
+              placeholder="What's on your mind?"
+              {...register("description", {
+                required: {
+                  value: true,
+                  message: REQUIRED_FIELD_ERROR_MESSAGE,
+                },
+              })}
+              className={`${styles.textarea} ${errors.description && styles.error}`}
+            />
+          </FormFieldErrorWrapper>
         </div>
 
         <FileSelectorWrapper />
