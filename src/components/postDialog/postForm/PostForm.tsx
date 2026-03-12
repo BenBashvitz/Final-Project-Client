@@ -1,22 +1,23 @@
 import { DevTool } from "@hookform/devtools";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { FormProvider, useForm } from "react-hook-form";
+import { REQUIRED_FIELD_ERROR_MESSAGE } from "../../../consts";
+import { editPost, uploadPost } from "../../../services/posts-api";
 import type { Post, PostFormValues } from "../../../types/post";
 import { getDefaultValues } from "../../../utils/createPostDialog/getDefaultValues";
 import { Button } from "../../button/Button";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper";
+import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper";
 import styles from "./postForm.module.css";
-import { uploadPost } from "../../../services/posts-api";
-import FormFieldErrorWrapper from "../../formFieldErrorWrapper/formFieldErrorWrapper";
-import { REQUIRED_FIELD_ERROR_MESSAGE } from "../../../consts";
 
 type PostFormProps = {
   post?: Post;
   onClose: () => void;
-  onCreatePost: (post: Post) => void;
+  onCreate?: (post: Post) => void;
+  onEdit?: (post: Post) => void;
 };
 
-const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
+const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
   const data = useForm<PostFormValues>({
     defaultValues: getDefaultValues(post),
   });
@@ -27,11 +28,15 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
     formState: { errors },
   } = data;
 
-  const onSubmit = async (postToCreate: PostFormValues) => {
+  const onSubmit = async (post: PostFormValues) => {
     try {
-      const post = await uploadPost(postToCreate);
-
-      onCreatePost(post);
+      if (onEdit) {
+        const editedPost = await editPost(post);
+        onEdit(editedPost);
+      } else {
+        const newPost = await uploadPost(post);
+        onCreate?.(newPost);
+      }
       onClose();
     } catch (error) {
       console.error("Image upload failed:", error);

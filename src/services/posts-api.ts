@@ -27,7 +27,7 @@ export const uploadPost = async ({
   let imgUrl: string | null = null;
 
   if (img) {
-    const formData = new FormData(); // can be simple json as well, but still need to keep the "Content-Type": "multipart/form-data" because of the file upload
+    const formData = new FormData();
     formData.append("file", img);
 
     const uploadPostImgResponse = await apiClient.post<UploadedPostResponse>(
@@ -48,4 +48,30 @@ export const uploadPost = async ({
   });
 
   return uploadPostResponse.data;
+};
+
+export const editPost = async ({
+  description,
+  img,
+}: PostFormValues): Promise<Post> => {
+  let imgUrl: string | null = null;
+
+  if (img) {
+    const formData = new FormData();
+    formData.append("file", img);
+
+    const { data } = await apiClient.put<UploadedPostResponse>(
+      "/upload",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
+
+    imgUrl = data.imgUrl;
+  }
+
+  const { data } = await apiClient.put("/post", { imgUrl, description });
+
+  return data;
 };

@@ -1,7 +1,7 @@
 import { Plus, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../../components/button/Button";
-import { PostDialog } from "../../../components/postDialog/postDialog";
+import { PostDialog } from "../../../components/postDialog/PostDialog";
 import type { Post } from "../../../types/post";
 import styles from "./noPosts.module.css";
 
@@ -29,7 +29,7 @@ const NoPosts = ({ onCreatePost }: NoPostsProps) => {
       <PostDialog
         open={showPostCreationDialog}
         onClose={() => setShowPostCreationDialog(false)}
-        onCreatePost={onCreatePost}
+        onCreate={onCreatePost}
       />
     </>
   );

@@ -7,29 +7,32 @@ import PostForm from "./postForm/PostForm";
 interface PostDialogProps {
   open: boolean;
   onClose: () => void;
-  editPost?: Post;
-  onCreatePost: (post: Post) => void;
+  post?: Post;
+  onCreate?: (post: Post) => void;
+  onEdit?: (post: Post) => void;
 }
 
 export const PostDialog = ({
   open,
   onClose,
-  editPost,
-  onCreatePost,
+  post,
+  onCreate,
+  onEdit,
 }: PostDialogProps) => {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onClose}>
       <DialogContent>
         <div className={styles.titleWrapper}>
           <DialogPrimitive.Title className={styles.title}>
-            {editPost ? "Edit Post" : "Create New Post"}
+            {post ? "Edit Post" : "Create New Post"}
           </DialogPrimitive.Title>
         </div>
 
         <PostForm
           onClose={onClose}
-          onCreatePost={onCreatePost}
-          post={editPost}
+          onCreate={onCreate}
+          onEdit={onEdit}
+          post={post}
         />
       </DialogContent>
     </DialogPrimitive.Root>
