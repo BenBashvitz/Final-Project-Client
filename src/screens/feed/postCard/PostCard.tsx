@@ -8,12 +8,18 @@ import { Button } from "../../../components/button/Button";
 import { ImageWithFallback } from "../../../components/imageWithFallback/imageWithFallback";
 import type { Post } from "../../../types/post";
 import styles from "./postCard.module.css";
+import PostOptions from "./postOptions/PostOptions";
 
 interface PostCardProps {
   post: Post;
+  onEdit: (post: Post) => void;
 }
 
-export const PostCard = ({ post }: PostCardProps) => {
+export const PostCard = ({ post, onEdit }: PostCardProps) => {
+  const currentUserId = "69ac63d7aa7e528360e63264";
+
+  const isOwnPost = post.user._id === currentUserId;
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -46,6 +52,7 @@ export const PostCard = ({ post }: PostCardProps) => {
             </div>
           </div>
         </div>
+        {isOwnPost && <PostOptions onEdit={onEdit} />}
       </div>
 
       {post.imgUrl && (
