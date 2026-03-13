@@ -9,12 +9,14 @@ type FileSelectorProps = {
   onFileSelect: (file: File) => void;
   onResetFile: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   selectedFileUrl?: string;
+  wrapperClassName?: string;
 };
 
 const FileSelector = ({
   onFileSelect,
   onResetFile,
   selectedFileUrl,
+  wrapperClassName,
 }: FileSelectorProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +29,8 @@ const FileSelector = ({
       }
 
       onFileSelect(file);
+
+      e.target.value = "";
     }
   };
 
@@ -41,7 +45,9 @@ const FileSelector = ({
             type="button"
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
-            className={styles.uploadButton}
+            className={[styles.uploadButton, wrapperClassName]
+              .filter(Boolean)
+              .join(" ")}
           >
             <Upload className={styles.uploadIcon} />
             {selectedFileUrl ? "Change Image" : "Upload Image from Computer"}

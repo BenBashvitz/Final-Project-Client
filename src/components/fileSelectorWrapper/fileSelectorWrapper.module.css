@@ -1,0 +1,8 @@
+.error {
+  border-color: red;
+}
+
+.error:hover {
+  background-color: white;
+  border-color: red;
+}

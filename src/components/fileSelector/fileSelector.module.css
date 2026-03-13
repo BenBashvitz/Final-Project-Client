@@ -14,11 +14,11 @@
 }
 
 .removeButton {
-  position: absolute !important;
-  top: 0.5rem !important;
-  right: 0.5rem !important;
-  height: 2rem !important;
-  width: 2rem !important;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  height: 2rem;
+  width: 2rem;
 }
 
 .previewContainer {
@@ -28,6 +28,7 @@
   background-color: #f3f4f6;
   border-radius: 0.5rem;
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .previewImage {
@@ -50,10 +51,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+}
 
-  &:hover {
-    background-color: #faf5ff;
-  }
+.uploadButton:hover {
+  background-color: #faf5ff;
 }
 
 .label {

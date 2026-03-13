@@ -21,8 +21,8 @@ const FeedScreen = () => {
     const { response, abort } = getPosts(null);
     response
       .then(({ data: { posts, cursor } }) => {
-        setPosts(posts);
-        setCurrentCursor(cursor);
+        // setPosts(posts);
+        // setCurrentCursor(cursor);
         setIsLoading(false);
       })
       .catch((error) => {
