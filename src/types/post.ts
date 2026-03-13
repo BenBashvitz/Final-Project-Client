@@ -1,4 +1,3 @@
-import type { Cursor } from "./cursor";
 import type { PostUser } from "./user";
 
 export type Post = {
@@ -10,6 +9,11 @@ export type Post = {
   commentCount: number;
   creationDate: string;
   isLikedByCurrentUser: boolean;
+};
+
+export type Cursor = {
+  _id: Post["_id"];
+  creationDate: Post["creationDate"];
 };
 
 export type PostPage = {

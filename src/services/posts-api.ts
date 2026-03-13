@@ -1,4 +1,4 @@
-import type { Cursor } from "../types/cursor";
+import type { Cursor } from "../types/post";
 import type { PostPage } from "../types/post";
 import { apiClient } from "./api-client";
 

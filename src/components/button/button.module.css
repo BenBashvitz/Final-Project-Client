@@ -1,4 +1,3 @@
-/* Base */
 .button {
   display: inline-flex;
   align-items: center;
@@ -29,7 +28,6 @@
   outline: none;
 }
 
-/* Variants */
 .variantDefault {
   background-color: #2563eb;
   color: #ffffff;
@@ -86,7 +84,6 @@
   text-decoration: underline;
 }
 
-/* Sizes */
 .sizeDefault {
   height: 2.25rem;
   padding: 0.5rem 1rem;

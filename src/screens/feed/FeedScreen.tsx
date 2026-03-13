@@ -1,18 +1,14 @@
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getPosts } from "../../services/posts-api";
-import type { Cursor } from "../../types/cursor";
+import type { Cursor } from "../../types/post";
 import type { Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/noPosts";
 import { PostCard } from "./postCard/PostCard";
 import axios from "axios";
 
-interface FeedScreenProps {
-  currentUserId: number;
-}
-
-const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
+const FeedScreen = () => {
   const [allPosts, setAllPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [initialFetchError, setInitialFetchError] = useState<string | null>(
@@ -40,7 +36,7 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
       });
 
     return () => abort();
-  }, [currentUserId]);
+  }, []);
 
   const handlePostCreation = () => {};
 

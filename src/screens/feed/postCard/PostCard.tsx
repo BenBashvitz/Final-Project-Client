@@ -34,7 +34,7 @@ export const PostCard = ({ post }: PostCardProps) => {
       <div className={styles.header}>
         <div className={styles.userInfo}>
           <Avatar className={styles.avatar}>
-            <AvatarImage src={post.user.imgUrl} alt="avatarImg" />
+            <AvatarImage src={post.user.imgUrl} />
             <AvatarFallback className={styles.avatarFallback}>
               {post.user.username}
             </AvatarFallback>
