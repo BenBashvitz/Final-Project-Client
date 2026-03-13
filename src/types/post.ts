@@ -1,9 +1,8 @@
-import type { Cursor } from "./cursor";
 import type { PostUser } from "./user";
 
 export type Post = {
   _id: string;
-  imgUrl?: string;
+  imgUrl: string;
   description: string;
   user: PostUser;
   likeCount: number;
@@ -12,14 +11,14 @@ export type Post = {
   isLikedByCurrentUser: boolean;
 };
 
-export type PostInput = Pick<Post, "description" | "imgUrl"> & {
-  creationDate: string;
-  userId: string;
+export type Cursor = {
+  _id: Post["_id"];
+  creationDate: Post["creationDate"];
 };
 
 export type PostPage = {
   posts: Post[];
-  nextCursor: Cursor;
+  cursor: Cursor | null;
 };
 
 export type PostFormValues = {

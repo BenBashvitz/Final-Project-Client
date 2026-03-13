@@ -1,29 +1,28 @@
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getPosts } from "../../services/posts-api";
-import type { Cursor } from "../../types/cursor";
+import type { Cursor } from "../../types/post";
 import type { Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/noPosts";
 import { PostCard } from "./postCard/PostCard";
 import axios from "axios";
 
-interface FeedScreenProps {
-  currentUserId: number;
-}
-
-const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
+const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [cursor, setCursor] = useState<Cursor | null>(null);
+  const [initialFetchError, setInitialFetchError] = useState<string | null>(
+    null,
+  );
+  const [fetchMoreError, setFetchMoreError] = useState<string | null>(null);
+  const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
 
   useEffect(() => {
     const { response, abort } = getPosts(null);
     response
-      .then(({ data: { posts, nextCursor } }) => {
+      .then(({ data: { posts, cursor } }) => {
         setPosts(posts);
-        setCursor(nextCursor);
+        setCurrentCursor(cursor);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -31,22 +30,27 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
           console.log("Request canceled:", error.message);
         } else {
           console.error("Failed to fetch posts:", error);
-          setError("Failed to fetch movies");
+          setInitialFetchError("Failed to fetch posts");
           setIsLoading(false);
         }
       });
 
     return () => abort();
-  }, [currentUserId]);
+  }, []);
 
   const fetchMorePosts = async () => {
-    const { response } = getPosts(cursor);
-    const {
-      data: { posts, nextCursor },
-    } = await response;
+    try {
+      const { response } = getPosts(currentCursor);
+      const {
+        data: { posts, cursor },
+      } = await response;
 
-    setPosts((prevPosts) => [...prevPosts, ...posts]);
-    setCursor(nextCursor);
+      setPosts((prevPosts) => [...prevPosts, ...posts]);
+      setCurrentCursor(cursor);
+    } catch (error) {
+      console.error("Failed to fetch more posts:", error);
+      setFetchMoreError("Failed to fetch more posts");
+    }
   };
 
   const getContent = (): JSX.Element => {
@@ -54,8 +58,8 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
       return <div>Loading feed page...</div>;
     }
 
-    if (error) {
-      return <div className={styles.error}>Error: {error}</div>;
+    if (initialFetchError) {
+      return <div className={styles.error}>Error: {initialFetchError}</div>;
     }
 
     if (posts.length === 0) {
@@ -66,7 +70,7 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
 
     return (
       <InfiniteScroll
-        hasMore={!!cursor?.creationDate}
+        hasMore={!!currentCursor}
         loader={<div>loading...</div>}
         endMessage={
           <div className={styles.endMessage}>
@@ -79,7 +83,9 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
-        {error && <div className={styles.error}>Error: {error}</div>}
+        {fetchMoreError && (
+          <div className={styles.error}>Error: {fetchMoreError}</div>
+        )}
       </InfiniteScroll>
     );
   };
