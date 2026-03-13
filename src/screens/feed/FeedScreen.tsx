@@ -21,9 +21,9 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
   useEffect(() => {
     const { response, abort } = getPosts(null);
     response
-      .then(({ data: { posts, nextCursor } }) => {
+      .then(({ data: { posts, cursor } }) => {
         setAllPosts(posts);
-        setCurrentCursor(nextCursor);
+        setCurrentCursor(cursor);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -31,7 +31,7 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
           console.log("Request canceled:", error.message);
         } else {
           console.error("Failed to fetch posts:", error);
-          setError("Failed to fetch movies");
+          setError("Failed to fetch posts");
           setIsLoading(false);
         }
       });
@@ -44,11 +44,11 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
   const fetchMorePosts = async () => {
     const { response } = getPosts(currentCursor);
     const {
-      data: { posts, nextCursor },
+      data: { posts, cursor },
     } = await response;
 
     setAllPosts((prevPosts) => [...prevPosts, ...posts]);
-    setCurrentCursor(nextCursor);
+    setCurrentCursor(cursor);
   };
 
   const getContent = (): JSX.Element => {
@@ -66,7 +66,7 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
 
     return (
       <InfiniteScroll
-        hasMore={!!currentCursor?.creationDate}
+        hasMore={!!currentCursor}
         loader={<div>loading...</div>}
         endMessage={
           <div className={styles.endMessage}>

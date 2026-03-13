@@ -3,7 +3,7 @@ import type { PostUser } from "./user";
 
 export type Post = {
   _id: string;
-  imgUrl?: string;
+  imgUrl: string;
   description: string;
   user: PostUser;
   likeCount: number;
@@ -14,5 +14,5 @@ export type Post = {
 
 export type PostPage = {
   posts: Post[];
-  nextCursor: Cursor;
+  cursor: Cursor | null;
 };
