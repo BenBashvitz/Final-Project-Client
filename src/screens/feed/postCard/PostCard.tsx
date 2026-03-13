@@ -79,7 +79,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           </Button>
         </div>
 
-        {post.description.length && (
+        {post.description && (
           <div>
             <p className={styles.description}>
               <span className={styles.descriptionSender}>
