@@ -15,7 +15,10 @@ interface FeedScreenProps {
 const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
   const [allPosts, setAllPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [initialFetchError, setInitialFetchError] = useState<string | null>(
+    null,
+  );
+  const [fetchMoreError, setFetchMoreError] = useState<string | null>(null);
   const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
 
   useEffect(() => {
@@ -31,7 +34,7 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
           console.log("Request canceled:", error.message);
         } else {
           console.error("Failed to fetch posts:", error);
-          setError("Failed to fetch posts");
+          setInitialFetchError("Failed to fetch posts");
           setIsLoading(false);
         }
       });
@@ -42,13 +45,18 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
   const handlePostCreation = () => {};
 
   const fetchMorePosts = async () => {
-    const { response } = getPosts(currentCursor);
-    const {
-      data: { posts, cursor },
-    } = await response;
+    try {
+      const { response } = getPosts(currentCursor);
+      const {
+        data: { posts, cursor },
+      } = await response;
 
-    setAllPosts((prevPosts) => [...prevPosts, ...posts]);
-    setCurrentCursor(cursor);
+      setAllPosts((prevPosts) => [...prevPosts, ...posts]);
+      setCurrentCursor(cursor);
+    } catch (error) {
+      console.error("Failed to fetch more posts:", error);
+      setFetchMoreError("Failed to fetch more posts");
+    }
   };
 
   const getContent = (): JSX.Element => {
@@ -56,8 +64,8 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
       return <div>Loading feed page...</div>;
     }
 
-    if (error) {
-      return <div className={styles.error}>Error: {error}</div>;
+    if (initialFetchError) {
+      return <div className={styles.error}>Error: {initialFetchError}</div>;
     }
 
     if (allPosts.length === 0) {
@@ -79,7 +87,9 @@ const FeedScreen = ({ currentUserId }: FeedScreenProps) => {
         {allPosts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
-        {error && <div className={styles.error}>Error: {error}</div>}
+        {fetchMoreError && (
+          <div className={styles.error}>Error: {fetchMoreError}</div>
+        )}
       </InfiniteScroll>
     );
   };
