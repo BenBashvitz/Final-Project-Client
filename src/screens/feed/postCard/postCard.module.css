@@ -9,12 +9,14 @@
   background-color: #ffffff;
   color: #111827;
   width: 30vw;
-  &:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
-  }
-  &:not(:first-child) {
-    margin-top: 1.5rem;
-  }
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card:not(:first-child) {
+  margin-top: 1.5rem;
 }
 
 .header {
@@ -98,18 +100,20 @@
 
 .heartUnliked {
   color: #374151;
-  &:hover {
-    color: #ef4444;
-  }
+}
+
+.heartUnliked:hover {
+  color: #ef4444;
 }
 
 .commentIcon {
   width: 1.5rem;
   height: 1.5rem;
   color: #374151;
-  &:hover {
-    color: #9333ea;
-  }
+}
+
+.commentIcon:hover {
+  color: #9333ea;
 }
 
 .description {

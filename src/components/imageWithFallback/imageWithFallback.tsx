@@ -25,7 +25,7 @@ export const ImageWithFallback = (
       <div className={styles.errorInner}>
         <img
           src={ERROR_IMG_SRC}
-          alt="Error loading image"
+          alt={alt ? `${alt} (image failed to load)` : "Error loading image"}
           {...rest}
           data-original-url={src}
         />

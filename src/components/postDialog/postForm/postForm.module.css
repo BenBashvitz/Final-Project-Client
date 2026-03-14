@@ -7,9 +7,10 @@
 
 .submitButton {
   background: linear-gradient(to right, #9333ea, #db2777) !important;
-  &:hover {
-    background: linear-gradient(to right, #7e22ce, #be185d) !important;
-  }
+}
+
+.submitButton:hover {
+  background: linear-gradient(to right, #7e22ce, #be185d) !important;
 }
 
 .form {
@@ -32,19 +33,20 @@
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
+}
 
-  &:focus {
-    border-color: #8b5cf6;
-  }
+.textarea:focus {
+  border-color: #8b5cf6;
+}
 
-  &::placeholder {
-    color: #9ca3af;
-  }
+.textarea::placeholder {
+  color: #9ca3af;
 }
 
 .error {
   border-color: red;
-  &:focus {
-    border-color: red;
-  }
+}
+
+.error:focus {
+  border-color: red;
 }

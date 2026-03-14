@@ -6,8 +6,9 @@
   position: absolute;
   color: red;
   font-size: 0.875rem;
-  margin-bottom: 5px;
-  &::before {
-    content: "* ";
-  }
+  margin-top: 5px;
+}
+
+.error::before {
+  content: "* ";
 }

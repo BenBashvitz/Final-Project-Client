@@ -31,10 +31,10 @@
   background: linear-gradient(to right, #9333ea, #ec4899);
   color: #ffffff;
   border: none;
+}
 
-  &:hover {
-    background: linear-gradient(to right, #7e22ce, #db2777);
-  }
+.createButton:hover {
+  background: linear-gradient(to right, #7e22ce, #db2777);
 }
 
 .createButton .plusIcon {

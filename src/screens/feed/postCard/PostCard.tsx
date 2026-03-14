@@ -40,7 +40,7 @@ export const PostCard = ({ post, onEdit }: PostCardProps) => {
       <div className={styles.header}>
         <div className={styles.userInfo}>
           <Avatar className={styles.avatar}>
-            <AvatarImage src={post.user.imgUrl} alt="avatarImg" />
+            <AvatarImage src={post.user.imgUrl} />
             <AvatarFallback className={styles.avatarFallback}>
               {post.user.username}
             </AvatarFallback>
@@ -86,7 +86,7 @@ export const PostCard = ({ post, onEdit }: PostCardProps) => {
           </Button>
         </div>
 
-        {post.description.length && (
+        {post.description && (
           <div>
             <p className={styles.description}>
               <span className={styles.descriptionSender}>
