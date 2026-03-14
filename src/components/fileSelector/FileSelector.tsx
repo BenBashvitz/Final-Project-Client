@@ -8,7 +8,7 @@ import styles from "./fileSelector.module.css";
 type FileSelectorProps = {
   onFileSelect: (file: File) => void;
   onResetFile: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  selectedFileUrl?: string;
+  selectedFileUrl: string;
   wrapperClassName?: string;
 };
 

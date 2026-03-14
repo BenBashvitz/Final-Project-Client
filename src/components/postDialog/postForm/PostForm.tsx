@@ -8,17 +8,25 @@ import { Button } from "../../button/Button";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper";
 import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper";
 import styles from "./postForm.module.css";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PostFormSchema } from "../../../schemas/postFormSchema";
 
 type PostFormProps = {
-  post?: Post;
+  existingPost?: Post;
   onClose: () => void;
   onCreate?: (post: Post) => void;
   onEdit?: (post: Post) => void;
 };
 
-const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
+const PostForm = ({
+  existingPost,
+  onClose,
+  onCreate,
+  onEdit,
+}: PostFormProps) => {
   const data = useForm<PostFormValues>({
-    defaultValues: getDefaultValues(post),
+    resolver: zodResolver(PostFormSchema),
+    defaultValues: getDefaultValues(existingPost),
   });
   const {
     register,
@@ -29,8 +37,9 @@ const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
 
   const onSubmit = async (post: PostFormValues) => {
     try {
-      if (onEdit) {
-        const editedPost = await editPost(post);
+      if (onEdit && existingPost) {
+        const editedPost = await editPost(post, existingPost);
+
         onEdit(editedPost);
       } else {
         const newPost = await uploadPost(post);
@@ -71,7 +80,7 @@ const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
             Cancel
           </Button>
           <Button type="submit" className={styles.submitButton}>
-            {post ? "Update" : "Post"}
+            {existingPost ? "Update" : "Post"}
           </Button>
         </div>
       </form>

@@ -3,14 +3,15 @@ import { MoreVertical, Pencil } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../../../components/button/Button";
 import styles from "./postOptions.module.css";
-import { PostDialog } from "../../../../components/postDialog/postDialog";
+import { PostDialog } from "../../../../components/postDialog/PostDialog";
 import type { Post } from "../../../../types/post";
 
 type PostOptionsProps = {
-  onEdit: (post: Post) => void;
+  onEdit?: (post: Post) => void;
+  post?: Post;
 };
 
-const PostOptions = ({ onEdit }: PostOptionsProps) => {
+const PostOptions = ({ onEdit, post }: PostOptionsProps) => {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
 
   return (
@@ -43,6 +44,7 @@ const PostOptions = ({ onEdit }: PostOptionsProps) => {
           onClose={() => setIsPostDialogOpen(false)}
           open={isPostDialogOpen}
           onEdit={onEdit}
+          post={post}
         />
       }
     </>

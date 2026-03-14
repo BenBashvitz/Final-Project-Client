@@ -48,15 +48,17 @@ export const uploadPost = async ({
   return uploadPostResponse.data;
 };
 
-export const editPost = async ({
-  description,
-  img,
-}: PostFormValues): Promise<Post> => {
-  let imgUrl: string | null = null;
+export const editPost = async (
+  { description, img }: PostFormValues,
+  oldPost: Post,
+): Promise<Post> => {
+  let imgUrl = oldPost.imgUrl;
 
-  if (img) {
-    const formData = new FormData();
-    formData.append("file", img);
+  if (img instanceof File) {
+    const formData = {
+      file: img,
+      oldImgUrl: oldPost.imgUrl,
+    };
 
     const { data } = await apiClient.put<UploadedPostResponse>(
       "/upload",
@@ -69,7 +71,10 @@ export const editPost = async ({
     imgUrl = data.imgUrl;
   }
 
-  const { data } = await apiClient.put("/post", { imgUrl, description });
+  const { data } = await apiClient.put(`/post/${oldPost._id}`, {
+    imgUrl,
+    description,
+  });
 
   return data;
 };

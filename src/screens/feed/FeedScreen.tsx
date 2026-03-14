@@ -21,8 +21,8 @@ const FeedScreen = () => {
     const { response, abort } = getPosts(null);
     response
       .then(({ data: { posts, cursor } }) => {
-        // setPosts(posts);
-        // setCurrentCursor(cursor);
+        setPosts(posts);
+        setCurrentCursor(cursor);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -68,6 +68,14 @@ const FeedScreen = () => {
       );
     }
 
+    const handleEditPost = (editedPost: Post) => {
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === editedPost._id ? { ...post, ...editedPost } : post,
+        ),
+      );
+    };
+
     return (
       <InfiniteScroll
         hasMore={!!currentCursor}
@@ -81,7 +89,7 @@ const FeedScreen = () => {
         next={fetchMorePosts}
       >
         {posts.map((post) => (
-          <PostCard key={post._id} post={post} />
+          <PostCard key={post._id} post={post} onEdit={handleEditPost} />
         ))}
         {fetchMoreError && (
           <div className={styles.error}>Error: {fetchMoreError}</div>

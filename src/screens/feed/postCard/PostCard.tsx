@@ -52,16 +52,14 @@ export const PostCard = ({ post, onEdit }: PostCardProps) => {
             </div>
           </div>
         </div>
-        {isOwnPost && <PostOptions onEdit={onEdit} />}
+        {isOwnPost && <PostOptions onEdit={onEdit} post={post} />}
       </div>
 
-      {post.imgUrl && (
-        <ImageWithFallback
-          src={post.imgUrl}
-          alt="Post image"
-          className={styles.image}
-        />
-      )}
+      <ImageWithFallback
+        src={post.imgUrl}
+        alt="Post image"
+        className={styles.image}
+      />
 
       <div className={styles.actions}>
         <div className={styles.actionRow}>
