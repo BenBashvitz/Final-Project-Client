@@ -14,9 +14,10 @@ interface PostCardProps {
   post: Post;
   onEdit: (post: Post) => void;
   onDelete: () => void;
+  onLike: () => void;
 }
 
-export const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
+export const PostCard = ({ post, onEdit, onDelete, onLike }: PostCardProps) => {
   const currentUserId = "69ac63d7aa7e528360e63264";
 
   const isOwnPost = post.user._id === currentUserId;
@@ -66,37 +67,40 @@ export const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
 
       <div className={styles.actions}>
         <div className={styles.actionRow}>
-          {post.likeCount > 0 && (
-            <span className={styles.countText}>{post.likeCount}</span>
-          )}
-          <Button variant="ghost" size="sm" className={styles.iconButton}>
-            <Heart
-              className={[
-                styles.heartIcon,
-                post.isLikedByCurrentUser
-                  ? styles.heartLiked
-                  : styles.heartUnliked,
-              ].join(" ")}
-            />
-          </Button>
-          {post.commentCount > 0 && (
-            <span className={styles.countText}>{post.commentCount}</span>
-          )}
-          <Button variant="ghost" size="sm" className={styles.iconButton}>
-            <MessageCircle className={styles.commentIcon} />
-          </Button>
+          <div className={styles.action}>
+            {post.likeCount > 0 && (
+              <span className={styles.countText}>{post.likeCount}</span>
+            )}
+            <Button variant="ghost" size="sm" className={styles.iconButton}>
+              <Heart
+                onClick={onLike}
+                className={[
+                  styles.heartIcon,
+                  post.isLikedByCurrentUser
+                    ? styles.heartLiked
+                    : styles.heartUnliked,
+                ].join(" ")}
+              />
+            </Button>
+          </div>
+          <div className={styles.action}>
+            {post.commentCount > 0 && (
+              <span className={styles.countText}>{post.commentCount}</span>
+            )}
+            <Button variant="ghost" size="sm" className={styles.iconButton}>
+              <MessageCircle className={styles.commentIcon} />
+            </Button>
+          </div>
         </div>
 
-        {post.description && (
-          <div>
-            <p className={styles.description}>
-              <span className={styles.descriptionSender}>
-                {post.user.username}
-              </span>
-              {post.description}
-            </p>
-          </div>
-        )}
+        <div>
+          <p className={styles.description}>
+            <span className={styles.descriptionSender}>
+              {post.user.username}
+            </span>
+            {post.description}
+          </p>
+        </div>
       </div>
     </div>
   );

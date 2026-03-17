@@ -1,12 +1,13 @@
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { deletePost, getPosts } from "../../services/posts-api";
+import { deletePost, getPosts, likePost } from "../../services/posts-api";
 import type { Cursor } from "../../types/post";
 import type { Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts";
 import { PostCard } from "./postCard/PostCard";
 import axios from "axios";
+import { mergeItems } from "../../utils/createPostDialog/merge";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -85,6 +86,16 @@ const FeedScreen = () => {
       }
     };
 
+    const handleLikePost = async (postId: Post["_id"]) => {
+      try {
+        const updatedPost = await likePost(postId);
+
+        setPosts((prevPosts) => mergeItems(prevPosts, updatedPost));
+      } catch (error) {
+        console.error("Failed to like post:", error);
+      }
+    };
+
     return (
       <InfiniteScroll
         hasMore={!!currentCursor}
@@ -103,6 +114,7 @@ const FeedScreen = () => {
             post={post}
             onEdit={handleEditPost}
             onDelete={() => handleDeletePost(post._id)}
+            onLike={() => handleLikePost(post._id)}
           />
         ))}
         {fetchMoreError && (
