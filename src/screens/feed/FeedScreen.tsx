@@ -1,10 +1,10 @@
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getPosts } from "../../services/posts-api";
+import { deletePost, getPosts } from "../../services/posts-api";
 import type { Cursor } from "../../types/post";
 import type { Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
-import NoPosts from "./noPosts/noPosts";
+import NoPosts from "./noPosts/NoPosts";
 import { PostCard } from "./postCard/PostCard";
 import axios from "axios";
 
@@ -76,6 +76,15 @@ const FeedScreen = () => {
       );
     };
 
+    const handleDeletePost = async (postId: Post["_id"]) => {
+      try {
+        const { _id } = await deletePost(postId);
+        setPosts((prevPosts) => prevPosts.filter((post) => post._id !== _id));
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+      }
+    };
+
     return (
       <InfiniteScroll
         hasMore={!!currentCursor}
@@ -89,7 +98,12 @@ const FeedScreen = () => {
         next={fetchMorePosts}
       >
         {posts.map((post) => (
-          <PostCard key={post._id} post={post} onEdit={handleEditPost} />
+          <PostCard
+            key={post._id}
+            post={post}
+            onEdit={handleEditPost}
+            onDelete={() => handleDeletePost(post._id)}
+          />
         ))}
         {fetchMoreError && (
           <div className={styles.error}>Error: {fetchMoreError}</div>

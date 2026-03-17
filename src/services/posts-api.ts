@@ -78,3 +78,11 @@ export const editPost = async (
 
   return data;
 };
+
+export const deletePost = async (
+  postId: string,
+): Promise<Pick<Post, "_id">> => {
+  const { data } = await apiClient.delete<Pick<Post, "_id">>(`/post/${postId}`);
+
+  return data;
+};

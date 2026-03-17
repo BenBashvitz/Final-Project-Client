@@ -1,5 +1,5 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { MoreVertical, Pencil } from "lucide-react";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../../../components/button/Button";
 import styles from "./postOptions.module.css";
@@ -7,11 +7,12 @@ import { PostDialog } from "../../../../components/postDialog/PostDialog";
 import type { Post } from "../../../../types/post";
 
 type PostOptionsProps = {
-  onEdit?: (post: Post) => void;
+  onEdit: (post: Post) => void;
+  onDelete: () => void;
   post?: Post;
 };
 
-const PostOptions = ({ onEdit, post }: PostOptionsProps) => {
+const PostOptions = ({ onEdit, onDelete, post }: PostOptionsProps) => {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
 
   return (
@@ -36,17 +37,23 @@ const PostOptions = ({ onEdit, post }: PostOptionsProps) => {
               <Pencil className={styles.dropdownIcon} />
               Edit
             </DropdownMenuPrimitive.Item>
+            <DropdownMenuPrimitive.Item
+              onClick={onDelete}
+              className={`${styles.dropdownItem} ${styles.dropdownItemDelete}`}
+            >
+              <Trash2 className={styles.dropdownIcon} />
+              Delete
+            </DropdownMenuPrimitive.Item>
           </DropdownMenuPrimitive.Content>
         </DropdownMenuPrimitive.Portal>
       </DropdownMenuPrimitive.Root>
-      {
-        <PostDialog
-          onClose={() => setIsPostDialogOpen(false)}
-          open={isPostDialogOpen}
-          onEdit={onEdit}
-          post={post}
-        />
-      }
+
+      <PostDialog
+        onClose={() => setIsPostDialogOpen(false)}
+        open={isPostDialogOpen}
+        onEdit={onEdit}
+        post={post}
+      />
     </>
   );
 };

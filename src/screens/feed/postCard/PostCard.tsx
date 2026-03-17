@@ -3,9 +3,9 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../../../components/avatar/avatar";
+} from "../../../components/avatar/Avatar";
 import { Button } from "../../../components/button/Button";
-import { ImageWithFallback } from "../../../components/imageWithFallback/imageWithFallback";
+import { ImageWithFallback } from "../../../components/imageWithFallback/ImageWithFallback";
 import type { Post } from "../../../types/post";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
@@ -13,9 +13,10 @@ import PostOptions from "./postOptions/PostOptions";
 interface PostCardProps {
   post: Post;
   onEdit: (post: Post) => void;
+  onDelete: () => void;
 }
 
-export const PostCard = ({ post, onEdit }: PostCardProps) => {
+export const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
   const currentUserId = "69ac63d7aa7e528360e63264";
 
   const isOwnPost = post.user._id === currentUserId;
@@ -52,7 +53,9 @@ export const PostCard = ({ post, onEdit }: PostCardProps) => {
             </div>
           </div>
         </div>
-        {isOwnPost && <PostOptions onEdit={onEdit} post={post} />}
+        {isOwnPost && (
+          <PostOptions onEdit={onEdit} post={post} onDelete={onDelete} />
+        )}
       </div>
 
       <ImageWithFallback
