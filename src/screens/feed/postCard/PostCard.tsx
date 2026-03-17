@@ -3,9 +3,9 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../../../components/avatar/avatar";
+} from "../../../components/avatar/Avatar";
 import { Button } from "../../../components/button/Button";
-import { ImageWithFallback } from "../../../components/imageWithFallback/imageWithFallback";
+import { ImageWithFallback } from "../../../components/imageWithFallback/ImageWithFallback";
 import type { Post } from "../../../types/post";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";

@@ -4,7 +4,7 @@ import { getPosts } from "../../services/posts-api";
 import type { Cursor } from "../../types/post";
 import type { Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
-import NoPosts from "./noPosts/noPosts";
+import NoPosts from "./noPosts/NoPosts";
 import { PostCard } from "./postCard/PostCard";
 import axios from "axios";
 
