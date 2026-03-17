@@ -1,6 +1,11 @@
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { deletePost, getPosts, likePost } from "../../services/posts-api";
+import {
+  deletePost,
+  getPosts,
+  likePost,
+  unlikePost,
+} from "../../services/posts-api";
 import type { Cursor } from "../../types/post";
 import type { Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
@@ -86,9 +91,11 @@ const FeedScreen = () => {
       }
     };
 
-    const handleLikePost = async (postId: Post["_id"]) => {
+    const handleLikePost = async (post: Post) => {
       try {
-        const updatedPost = await likePost(postId);
+        const updatedPost = post.isLikedByCurrentUser
+          ? await unlikePost(post._id)
+          : await likePost(post._id);
 
         setPosts((prevPosts) => mergeItems(prevPosts, updatedPost));
       } catch (error) {
@@ -114,7 +121,7 @@ const FeedScreen = () => {
             post={post}
             onEdit={handleEditPost}
             onDelete={() => handleDeletePost(post._id)}
-            onLike={() => handleLikePost(post._id)}
+            onLike={() => handleLikePost(post)}
           />
         ))}
         {fetchMoreError && (
