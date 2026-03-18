@@ -11,7 +11,7 @@ import {LoginHeader} from "../components/LoginHeader.tsx";
 import {Button} from "../components/button/Button.tsx";
 import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 
-export function SignUp() {
+const SignUp = () => {
     const {handleSubmit, register, formState: {errors}} = useForm<UserSignUpPayload>({
         resolver: zodResolver(SignUpFormSchema)
     });
@@ -103,3 +103,5 @@ export function SignUp() {
         </div>
     );
 }
+
+export default SignUp;

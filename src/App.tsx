@@ -1,12 +1,13 @@
 import './App.css'
-import {SignIn} from "./screens/SignIn.tsx";
-import {useEffect, useRef} from "react";
+import {lazy, useEffect, useRef} from "react";
 import {Route, Routes, useNavigate} from 'react-router';
-import {SignUp} from "./screens/SignUp.tsx";
 import {logout, refreshToken, refreshTokenOnUnauthorized} from "./services/auth-api.ts";
 import {useLocation} from "react-router-dom";
 
-function App() {
+const SignUp = lazy(() => import("./screens/SignUp"));
+const SignIn = lazy(() => import("./screens/SignIn"));
+
+const App = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const isRefreshing = useRef(false);
