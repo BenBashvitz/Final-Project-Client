@@ -10,7 +10,7 @@ import {SignUpFormSchema} from "../schemas/signUpFormSchema.ts";
 import {LoginHeader} from "../components/LoginHeader.tsx";
 
 export function SignUp() {
-    const {handleSubmit, register, formState: {errors}} = useForm<UserSignUpPayload>({
+    const {handleSubmit, register} = useForm<UserSignUpPayload>({
         resolver: zodResolver(SignUpFormSchema)
     });
     const navigate = useNavigate();
