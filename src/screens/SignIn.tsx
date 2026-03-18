@@ -2,15 +2,17 @@ import {useState} from "react";
 import styles from './Login.module.css';
 import {AxiosError} from "axios";
 import {useNavigate} from "react-router";
-import {type FieldErrors, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import type {UserSignInPayload} from "../types";
 import {signIn} from "../services/auth-api.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {SignInFormSchema} from "../schemas/signInFormSchema.ts";
 import {LoginHeader} from "../components/LoginHeader.tsx";
+import {Button} from "../components/button/Button.tsx";
+import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 
 export function SignIn() {
-    const {handleSubmit, register } = useForm<UserSignInPayload>({
+    const {handleSubmit, register, formState: {errors}} = useForm<UserSignInPayload>({
         resolver: zodResolver(SignInFormSchema)
     });
     const navigate = useNavigate();
@@ -18,14 +20,6 @@ export function SignIn() {
 
     const handleNavigateToSignUp = async () => {
         navigate("/sign-up");
-    }
-
-    const onError = (errors: FieldErrors<UserSignInPayload>) => {
-        if (errors.username?.message) {
-            setError(errors.username.message);
-        } else if (errors.password?.message) {
-            setError(errors.password.message);
-        }
     }
 
     const onSubmit = async (payload: UserSignInPayload) => {
@@ -36,7 +30,7 @@ export function SignIn() {
 
             navigate('/');
         } catch (error) {
-            if(error instanceof AxiosError && typeof error.response?.data === 'string') {
+            if (error instanceof AxiosError && typeof error.response?.data === 'string') {
                 setError(error.response?.data);
             } else {
                 setError('there was a problem trying to register. please try again.');
@@ -49,43 +43,48 @@ export function SignIn() {
             <div className={styles.loginCard}>
                 <LoginHeader description="Welcome Back" title="Sign In"/>
                 <main className={styles.cardContent}>
-                    <form onSubmit={handleSubmit(onSubmit, onError)}>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="username">Username</label>
-                            <input
-                                className={styles.formInput}
-                                id="username"
-                                type="text"
-                                placeholder="Enter username"
-                                {...register('username')}
-                            />
-                        </div>
+                    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+                        <FormFieldErrorWrapper error={errors.username?.message}>
+                            <div className={styles.formGroup}>
+                                <label htmlFor="username">Username</label>
+                                <input
+                                    className={styles.formInput}
+                                    id="username"
+                                    type="text"
+                                    placeholder="Enter username"
+                                    {...register('username')}
+                                />
+                            </div>
+                        </FormFieldErrorWrapper>
 
-                        <div className={styles.formGroup}>
-                            <label htmlFor="password">Password</label>
-                            <input
-                                className={styles.formInput}
-                                id="password"
-                                type="password"
-                                placeholder="Enter password"
-                                {...register('password')}
-                            />
-                        </div>
+                        <FormFieldErrorWrapper error={errors.password?.message}>
+                            <div className={styles.formGroup}>
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    className={styles.formInput}
+                                    id="password"
+                                    type="password"
+                                    placeholder="Enter password"
+                                    {...register('password')}
+                                />
+                            </div>
+                        </FormFieldErrorWrapper>
 
                         {error && <div className={styles.errorMessage}>{error}</div>}
 
-                        <button type="submit" className={styles.btnPrimary}>
+                        <Button type="submit" className={styles.btnPrimary}>
                             Sign In
-                        </button>
+                        </Button>
                     </form>
 
-                    <button
+                    <Button
                         type="button"
+                        variant="outline"
                         className={styles.toggleBtn}
                         onClick={handleNavigateToSignUp}
                     >
                         Don't have an account? Sign up
-                    </button>
+                    </Button>
                 </main>
             </div>
         </div>

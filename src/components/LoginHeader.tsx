@@ -8,7 +8,7 @@ type LoginHeaderProps = {
 export const LoginHeader = ({title, description}: LoginHeaderProps) => {
     return (
         <header className={styles.cardHeader}>
-            <div className={styles.logoCircle}>IG</div>
+            <div className={styles.logoCircle}>Postly</div>
             <h1 className={styles.cardTitle}>
                 {title}
             </h1>

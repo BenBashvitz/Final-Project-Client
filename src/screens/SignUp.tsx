@@ -1,16 +1,18 @@
 import styles from './Login.module.css';
 import {AxiosError} from "axios";
 import {useNavigate} from "react-router";
-import {type FieldErrors, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import type {UserSignUpPayload} from "../types";
 import {useState} from "react";
 import {signUp} from "../services/auth-api.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {SignUpFormSchema} from "../schemas/signUpFormSchema.ts";
 import {LoginHeader} from "../components/LoginHeader.tsx";
+import {Button} from "../components/button/Button.tsx";
+import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 
 export function SignUp() {
-    const {handleSubmit, register} = useForm<UserSignUpPayload>({
+    const {handleSubmit, register, formState: {errors}} = useForm<UserSignUpPayload>({
         resolver: zodResolver(SignUpFormSchema)
     });
     const navigate = useNavigate();
@@ -18,18 +20,6 @@ export function SignUp() {
 
     const handleNavigateToSignIn = async () => {
         navigate("/login");
-    }
-
-    const onError = (errors: FieldErrors<UserSignUpPayload>) => {
-        console.log(errors);
-
-        if (errors.username?.message) {
-            setError(errors.username.message);
-        } else if (errors.password?.message) {
-            setError(errors.password.message);
-        } else if (errors.email?.message) {
-            setError(errors.email.message);
-        }
     }
 
     const onSubmit = async (payload: UserSignUpPayload) => {
@@ -40,7 +30,7 @@ export function SignUp() {
 
             navigate('/');
         } catch (error) {
-            if(error instanceof AxiosError && typeof error.response?.data === 'string') {
+            if (error instanceof AxiosError && typeof error.response?.data === 'string') {
                 setError(error.response?.data);
             } else {
                 setError('there was a problem trying to register. please try again.');
@@ -53,54 +43,61 @@ export function SignUp() {
             <div className={styles.loginCard}>
                 <LoginHeader description="Welcome" title="Sign Up"/>
                 <main className={styles.cardContent}>
-                    <form onSubmit={handleSubmit(onSubmit, onError)}>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="username">Username</label>
-                            <input
-                                className={styles.formInput}
-                                id="username"
-                                type="text"
-                                placeholder="Enter username"
-                                {...register('username')}
-                            />
-                        </div>
+                    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+                        <FormFieldErrorWrapper error={errors.username?.message}>
+                            <div className={styles.formGroup}>
+                                <label htmlFor="username">Username</label>
+                                <input
+                                    className={styles.formInput}
+                                    id="username"
+                                    type="text"
+                                    placeholder="Enter username"
+                                    {...register('username')}
+                                />
+                            </div>
+                        </FormFieldErrorWrapper>
 
-                        <div className={styles.formGroup}>
-                            <label htmlFor="email">Email</label>
-                            <input
-                                className={styles.formInput}
-                                id="email"
-                                type="text"
-                                placeholder="Enter email"
-                                {...register('email')}
-                            />
-                        </div>
+                        <FormFieldErrorWrapper error={errors.email?.message}>
+                            <div className={styles.formGroup}>
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    className={styles.formInput}
+                                    id="email"
+                                    type="text"
+                                    placeholder="Enter email"
+                                    {...register('email')}
+                                />
+                            </div>
+                        </FormFieldErrorWrapper>
 
-                        <div className={styles.formGroup}>
-                            <label htmlFor="password">Password</label>
-                            <input
-                                className={styles.formInput}
-                                id="password"
-                                type="password"
-                                placeholder="Enter password"
-                                {...register('password')}
-                            />
-                        </div>
+                        <FormFieldErrorWrapper error={errors.password?.message}>
+                            <div className={styles.formGroup}>
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    className={styles.formInput}
+                                    id="password"
+                                    type="password"
+                                    placeholder="Enter password"
+                                    {...register('password')}
+                                />
+                            </div>
+                        </FormFieldErrorWrapper>
 
                         {error && <div className={styles.errorMessage}>{error}</div>}
 
-                        <button type="submit" className={styles.btnPrimary}>
+                        <Button type="submit" className={styles.btnPrimary}>
                             Sign Up
-                        </button>
+                        </Button>
                     </form>
 
-                    <button
+                    <Button
                         type="button"
                         className={styles.toggleBtn}
+                        variant="outline"
                         onClick={handleNavigateToSignIn}
                     >
                         Already have an account? Sign in
-                    </button>
+                    </Button>
                 </main>
             </div>
         </div>

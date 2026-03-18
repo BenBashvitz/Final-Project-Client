@@ -21,6 +21,12 @@
     padding: 0 1.5rem 2rem;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 .formGroup {
     margin-bottom: 1rem;
 }
@@ -113,11 +119,6 @@
 }
 
 .toggleBtn {
-    background: none;
-    border: none;
-    color: #9333ea;
-    font-size: 0.875rem;
-    cursor: pointer;
     margin-top: 1rem;
     width: 100%;
 }

@@ -30,6 +30,8 @@ function App() {
     const onLogout = async (): Promise<void> => {
         try {
             await logout();
+        } catch (error) {
+            console.error('Error logging out ', error);
         } finally {
             navigate('/login');
         }
