@@ -45,7 +45,7 @@ const FeedScreen = () => {
         data: { posts, cursor },
       } = await response;
 
-      setPosts((prevPosts) => [...prevPosts, ...posts]);
+      setPosts((prevPosts) => prevPosts.concat(posts));
       setCurrentCursor(cursor);
     } catch (error) {
       console.error("Failed to fetch more posts:", error);
@@ -70,6 +70,7 @@ const FeedScreen = () => {
 
     return (
       <InfiniteScroll
+        className={styles.infiniteScroll}
         hasMore={!!currentCursor}
         loader={<div>loading...</div>}
         endMessage={
