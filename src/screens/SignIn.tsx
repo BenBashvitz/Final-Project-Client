@@ -21,10 +21,10 @@ export function SignIn() {
     }
 
     const onError = (errors: FieldErrors<UserSignInPayload>) => {
-        if (errors.username) {
-            setError('username is required');
-        } else if (errors.password) {
-            setError('password is required');
+        if (errors.username?.message) {
+            setError(errors.username.message);
+        } else if (errors.password?.message) {
+            setError(errors.password.message);
         }
     }
 

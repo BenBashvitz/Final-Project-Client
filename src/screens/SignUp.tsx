@@ -21,12 +21,14 @@ export function SignUp() {
     }
 
     const onError = (errors: FieldErrors<UserSignUpPayload>) => {
-        if (errors.username) {
-            setError('username is required');
-        } else if (errors.password) {
-            setError('password is required');
-        } else if (errors.email) {
-            setError('email is required');
+        console.log(errors);
+
+        if (errors.username?.message) {
+            setError(errors.username.message);
+        } else if (errors.password?.message) {
+            setError(errors.password.message);
+        } else if (errors.email?.message) {
+            setError(errors.email.message);
         }
     }
 
@@ -68,7 +70,7 @@ export function SignUp() {
                             <input
                                 className={styles.formInput}
                                 id="email"
-                                type="email"
+                                type="text"
                                 placeholder="Enter email"
                                 {...register('email')}
                             />
