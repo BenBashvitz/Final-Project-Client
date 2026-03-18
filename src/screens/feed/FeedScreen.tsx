@@ -70,6 +70,7 @@ const FeedScreen = () => {
 
     return (
       <InfiniteScroll
+        className={styles.infiniteScroll}
         hasMore={!!currentCursor}
         loader={<div>loading...</div>}
         endMessage={
