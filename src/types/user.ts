@@ -5,10 +5,7 @@ export type User = {
     password: string;
 }
 
-export type UserSignInPayload = {
-    email: string;
-    password: string;
-}
+export type UserSignInPayload = Omit<UserSignUpPayload, 'email'>
 
 export type UserSignUpPayload = {
     username: string;

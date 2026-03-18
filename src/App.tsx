@@ -1,48 +1,30 @@
 import './App.css'
-import {LoginScreen} from "./components/LoginScreen.tsx";
-import type {UserSignInPayload, UserSignUpPayload} from "./types";
-import axios from "axios";
-import type {LoginSuccessResponse, LoginResponseType} from "./types/auth.ts";
-import {useEffect, useRef} from "react";
+import {SignIn} from "./screens/SignIn.tsx";
+import axios, {CanceledError} from "axios";
+import {useEffect} from "react";
 import {Route, Routes, useNavigate} from 'react-router';
+import {SignUp} from "./screens/SignUp.tsx";
+import {refreshToken} from "./services/auth-api.ts";
 
 function App() {
     const navigate = useNavigate();
-    const isRefreshing = useRef(false);
 
     useEffect(() => {
-        //prevent accidentally refreshing twice with the same token and logging out
-        if (!isRefreshing.current) {
-            isRefreshing.current = true;
-            axios.post<LoginSuccessResponse>(`/api/auth/refresh-token`, {}, {withCredentials: true})
-                .catch(() => {
-                    navigate('/login');
-                })
-                .finally(() => isRefreshing.current = false);
-        }
+        const {response, abort} = refreshToken();
+
+        response.then(() => {
+            console.log('success')
+        }).catch((error) => {
+            if (error instanceof CanceledError) {
+                console.log('Refresh token request was cancelled.');
+                return;
+            }
+
+            navigate('/login');
+        });
+
+        return abort
     }, [])
-
-    const onSignIn = async (payload: UserSignInPayload): Promise<LoginResponseType> => {
-        try {
-            await axios.post<LoginSuccessResponse>(`/api/auth/login`, payload, {withCredentials: true});
-
-            navigate('/');
-            return "SUCCESS";
-        } catch {
-            return "USERNAME_OR_PASSWORD_INCORRECT";
-        }
-    }
-
-    const onSignUp = async (payload: UserSignUpPayload): Promise<LoginResponseType> => {
-        try {
-            await axios.post<LoginSuccessResponse>(`/api/auth/register`, payload, {withCredentials: true});
-
-            navigate('/');
-            return "SUCCESS";
-        } catch {
-            return "EMAIL_TAKEN";
-        }
-    }
 
     const onLogout = async (): Promise<void> => {
         try {
@@ -64,7 +46,9 @@ function App() {
                     </>
                 }/>
                 <Route path="/login"
-                       element={<LoginScreen onSignIn={onSignIn} onSignUp={onSignUp}></LoginScreen>}/>
+                       element={<SignIn/>}/>
+                <Route path="/sign-up"
+                       element={<SignUp/>}/>
             </Routes>
         </>
     )
