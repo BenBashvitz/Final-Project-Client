@@ -1,34 +1,31 @@
 import './App.css'
 import {SignIn} from "./screens/SignIn.tsx";
-import axios, {CanceledError} from "axios";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import {Route, Routes, useNavigate} from 'react-router';
 import {SignUp} from "./screens/SignUp.tsx";
-import {refreshToken} from "./services/auth-api.ts";
+import {logout, refreshToken} from "./services/auth-api.ts";
 
 function App() {
     const navigate = useNavigate();
+    const isRefreshing = useRef(false);
 
     useEffect(() => {
-        const {response, abort} = refreshToken();
+        if (!isRefreshing.current) {
+            isRefreshing.current = true;
 
-        response.then(() => {
-            console.log('success')
-        }).catch((error) => {
-            if (error instanceof CanceledError) {
-                console.log('Refresh token request was cancelled.');
-                return;
-            }
+            const {response} = refreshToken();
 
-            navigate('/login');
-        });
-
-        return abort
+            response.catch(() => {
+                navigate('/login');
+            }).finally(() => {
+                isRefreshing.current = false;
+            });
+        }
     }, [])
 
     const onLogout = async (): Promise<void> => {
         try {
-            await axios.post('/api/auth/logout', {}, {withCredentials: true});
+            await logout();
         } finally {
             navigate('/login');
         }

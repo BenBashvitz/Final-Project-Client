@@ -23,3 +23,9 @@ export const refreshToken = () => {
 
     return {response, abort: () => abortController.abort()};
 }
+
+export const logout = () => {
+    return apiClient.post(`/auth/logout`, {}, {
+        withCredentials: true
+    });
+}
