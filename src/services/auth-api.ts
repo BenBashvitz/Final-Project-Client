@@ -14,18 +14,37 @@ export const signUp = (payload: UserSignUpPayload) => {
 };
 
 export const refreshToken = () => {
-    const abortController = new AbortController();
-
-    const response = apiClient.post(`/auth/refresh-token`, {}, {
-        signal: abortController.signal,
+    return apiClient.post(`/auth/refresh-token`, {}, {
         withCredentials: true
     });
-
-    return {response, abort: () => abortController.abort()};
 }
 
 export const logout = () => {
     return apiClient.post(`/auth/logout`, {}, {
         withCredentials: true
     });
+}
+
+export const refreshTokenOnUnauthorized = (onRefreshError: () => void) => {
+    apiClient.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+            const originalRequest = error.config;
+
+            if (error.response?.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true; // Mark as retried to prevent infinite loops
+
+                try {
+                    await refreshToken();
+
+                    return apiClient(originalRequest);
+                } catch (refreshError) {
+                    onRefreshError();
+                    return Promise.reject(refreshError);
+                }
+            }
+
+            return Promise.reject(error);
+        }
+    );
 }

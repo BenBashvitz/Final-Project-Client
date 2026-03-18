@@ -3,19 +3,21 @@ import {SignIn} from "./screens/SignIn.tsx";
 import {useEffect, useRef} from "react";
 import {Route, Routes, useNavigate} from 'react-router';
 import {SignUp} from "./screens/SignUp.tsx";
-import {logout, refreshToken} from "./services/auth-api.ts";
+import {logout, refreshToken, refreshTokenOnUnauthorized} from "./services/auth-api.ts";
 
 function App() {
     const navigate = useNavigate();
     const isRefreshing = useRef(false);
 
     useEffect(() => {
+        refreshTokenOnUnauthorized(() => navigate('/login'));
+
         if (!isRefreshing.current) {
             isRefreshing.current = true;
 
-            const {response} = refreshToken();
-
-            response.catch(() => {
+            refreshToken().then(() => {
+                navigate('/')
+            }).catch(() => {
                 navigate('/login');
             }).finally(() => {
                 isRefreshing.current = false;
