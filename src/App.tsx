@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {lazy, useEffect, useRef} from "react";
+import {Route, Routes, useNavigate} from 'react-router';
+import {logout, refreshToken, refreshTokenOnUnauthorized} from "./services/auth-api.ts";
+import {useLocation} from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+const SignUp = lazy(() => import("./screens/SignUp"));
+const SignIn = lazy(() => import("./screens/SignIn"));
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const App = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isRefreshing = useRef(false);
+
+    useEffect(() => {
+        refreshTokenOnUnauthorized(() => navigate('/sign-in'));
+
+        if (!isRefreshing.current) {
+            isRefreshing.current = true;
+
+            refreshToken().then(() => {
+                if(location.pathname !== '/') navigate('/');
+            }).catch(() => {
+                navigate('/sign-in');
+            }).finally(() => {
+                isRefreshing.current = false;
+            });
+        }
+    }, [])
+
+    const onLogout = async (): Promise<void> => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error('Error logging out ', error);
+        } finally {
+            navigate('/sign-in');
+        }
+    }
+
+    return (
+        <>
+            <Routes>
+                <Route path="/" element={
+                    <>
+                        <h1>
+                            Home Screen Placeholder
+                        </h1>
+                        <button onClick={onLogout}>Logout</button>
+                    </>
+                }/>
+                <Route path="/sign-in"
+                       element={<SignIn/>}/>
+                <Route path="/sign-up"
+                       element={<SignUp/>}/>
+            </Routes>
+        </>
+    )
 }
 
 export default App
