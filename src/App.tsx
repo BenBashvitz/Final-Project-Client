@@ -13,7 +13,7 @@ const App = () => {
     const isRefreshing = useRef(false);
 
     useEffect(() => {
-        refreshTokenOnUnauthorized(() => navigate('/login'));
+        refreshTokenOnUnauthorized(() => navigate('/sign-in'));
 
         if (!isRefreshing.current) {
             isRefreshing.current = true;
@@ -21,7 +21,7 @@ const App = () => {
             refreshToken().then(() => {
                 if(location.pathname !== '/') navigate('/');
             }).catch(() => {
-                navigate('/login');
+                navigate('/sign-in');
             }).finally(() => {
                 isRefreshing.current = false;
             });
@@ -34,7 +34,7 @@ const App = () => {
         } catch (error) {
             console.error('Error logging out ', error);
         } finally {
-            navigate('/login');
+            navigate('/sign-in');
         }
     }
 
@@ -49,7 +49,7 @@ const App = () => {
                         <button onClick={onLogout}>Logout</button>
                     </>
                 }/>
-                <Route path="/login"
+                <Route path="/sign-in"
                        element={<SignIn/>}/>
                 <Route path="/sign-up"
                        element={<SignUp/>}/>

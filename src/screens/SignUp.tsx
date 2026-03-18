@@ -19,7 +19,7 @@ const SignUp = () => {
     const [error, setError] = useState<string | null>(null)
 
     const handleNavigateToSignIn = async () => {
-        navigate("/login");
+        navigate("/sign-in");
     }
 
     const onSubmit = async (payload: UserSignUpPayload) => {
