@@ -4,9 +4,11 @@ import {useEffect, useRef} from "react";
 import {Route, Routes, useNavigate} from 'react-router';
 import {SignUp} from "./screens/SignUp.tsx";
 import {logout, refreshToken, refreshTokenOnUnauthorized} from "./services/auth-api.ts";
+import {useLocation} from "react-router-dom";
 
 function App() {
     const navigate = useNavigate();
+    const location = useLocation();
     const isRefreshing = useRef(false);
 
     useEffect(() => {
@@ -16,7 +18,7 @@ function App() {
             isRefreshing.current = true;
 
             refreshToken().then(() => {
-                navigate('/')
+                if(location.pathname !== '/') navigate('/');
             }).catch(() => {
                 navigate('/login');
             }).finally(() => {

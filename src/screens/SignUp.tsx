@@ -5,13 +5,18 @@ import {type FieldErrors, useForm} from 'react-hook-form';
 import type {UserSignUpPayload} from "../types";
 import {useState} from "react";
 import {signUp} from "../services/auth-api.ts";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {SignUpFormSchema} from "../schemas/signUpFormSchema.ts";
+import {LoginHeader} from "../components/LoginHeader.tsx";
 
 export function SignUp() {
-    const {handleSubmit, register} = useForm<UserSignUpPayload>();
+    const {handleSubmit, register, formState: {errors}} = useForm<UserSignUpPayload>({
+        resolver: zodResolver(SignUpFormSchema)
+    });
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null)
 
-    const handleClick = async () => {
+    const handleNavigateToSignIn = async () => {
         navigate("/login");
     }
 
@@ -44,16 +49,7 @@ export function SignUp() {
     return (
         <div className={styles.loginContainer}>
             <div className={styles.loginCard}>
-                <header className={styles.cardHeader}>
-                    <div className={styles.logoCircle}>IG</div>
-                    <h1 className={styles.cardTitle}>
-                        Welcome Back
-                    </h1>
-                    <p className={styles.cardDescription}>
-                        Sign in to continue
-                    </p>
-                </header>
-
+                <LoginHeader description="Welcome" title="Sign Up"/>
                 <main className={styles.cardContent}>
                     <form onSubmit={handleSubmit(onSubmit, onError)}>
                         <div className={styles.formGroup}>
@@ -63,7 +59,7 @@ export function SignUp() {
                                 id="username"
                                 type="text"
                                 placeholder="Enter username"
-                                {...register('username', {required: true})}
+                                {...register('username')}
                             />
                         </div>
 
@@ -74,7 +70,7 @@ export function SignUp() {
                                 id="email"
                                 type="email"
                                 placeholder="Enter email"
-                                {...register('email', {required: true})}
+                                {...register('email')}
                             />
                         </div>
 
@@ -85,7 +81,7 @@ export function SignUp() {
                                 id="password"
                                 type="password"
                                 placeholder="Enter password"
-                                {...register('password', {required: true})}
+                                {...register('password')}
                             />
                         </div>
 
@@ -99,7 +95,7 @@ export function SignUp() {
                     <button
                         type="button"
                         className={styles.toggleBtn}
-                        onClick={handleClick}
+                        onClick={handleNavigateToSignIn}
                     >
                         Already have an account? Sign in
                     </button>
