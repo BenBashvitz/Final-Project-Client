@@ -47,7 +47,7 @@ const FeedScreen = () => {
         data: { posts, cursor },
       } = await response;
 
-      setAllPosts((prevPosts) => [...prevPosts, ...posts]);
+      setAllPosts((prevPosts) => prevPosts.concat(posts));
       setCurrentCursor(cursor);
     } catch (error) {
       console.error("Failed to fetch more posts:", error);
