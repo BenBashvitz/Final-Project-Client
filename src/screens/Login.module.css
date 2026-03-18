@@ -24,11 +24,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-}
-
-.formGroup {
-    margin-bottom: 1rem;
+    gap: 2.5rem;
 }
 
 .formGroup label {

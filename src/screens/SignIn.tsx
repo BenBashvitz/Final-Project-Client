@@ -45,7 +45,7 @@ export function SignIn() {
                 <main className={styles.cardContent}>
                     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                         <FormFieldErrorWrapper error={errors.username?.message}>
-                            <div className={styles.formGroup}>
+                            <div className="formGroup">
                                 <label htmlFor="username">Username</label>
                                 <input
                                     className={styles.formInput}
@@ -58,7 +58,7 @@ export function SignIn() {
                         </FormFieldErrorWrapper>
 
                         <FormFieldErrorWrapper error={errors.password?.message}>
-                            <div className={styles.formGroup}>
+                            <div className="formGroup">
                                 <label htmlFor="password">Password</label>
                                 <input
                                     className={styles.formInput}
