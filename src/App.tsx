@@ -1,40 +1,15 @@
-import "./App.css";
-import { lazy, useEffect, useRef } from "react";
+import { lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router";
-import {
-  logout,
-  refreshToken,
-  refreshTokenOnUnauthorized,
-} from "./services/auth-api.ts";
-import { useLocation } from "react-router-dom";
+import "./App.css";
 import FeedScreen from "./screens/feed/FeedScreen.tsx";
+import { logout } from "./services/auth-api.ts";
+import { UserProvider } from "./contexts/UserContext.tsx";
 
 const SignUp = lazy(() => import("./screens/SignUp"));
 const SignIn = lazy(() => import("./screens/SignIn"));
 
 const App = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isRefreshing = useRef(false);
-
-  useEffect(() => {
-    refreshTokenOnUnauthorized(() => navigate("/sign-in"));
-
-    if (!isRefreshing.current) {
-      isRefreshing.current = true;
-
-      refreshToken()
-        .then(() => {
-          if (location.pathname !== "/") navigate("/");
-        })
-        .catch(() => {
-          navigate("/sign-in");
-        })
-        .finally(() => {
-          isRefreshing.current = false;
-        });
-    }
-  }, []);
 
   const onLogout = async (): Promise<void> => {
     try {
@@ -48,11 +23,13 @@ const App = () => {
 
   return (
     <>
-      <Routes>
-        <Route index element={<FeedScreen />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route index element={<FeedScreen />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+        </Routes>
+      </UserProvider>
     </>
   );
 };
