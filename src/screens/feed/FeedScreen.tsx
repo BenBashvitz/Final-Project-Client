@@ -55,16 +55,28 @@ const FeedScreen = () => {
 
   const getContent = (): JSX.Element => {
     if (isLoading) {
-      return <div>Loading feed page...</div>;
+      return (
+        <div className={styles.container}>
+          <div>Loading feed page...</div>
+        </div>
+      );
     }
 
     if (initialFetchError) {
-      return <div className={styles.error}>Error: {initialFetchError}</div>;
+      return (
+        <div className={styles.container}>
+          <div className={styles.error}>Error: {initialFetchError}</div>
+        </div>
+      );
     }
 
     if (posts.length === 0) {
       return (
-        <NoPosts onCreatePost={(post) => setPosts((prev) => [post, ...prev])} />
+        <div className={styles.container}>
+          <NoPosts
+            onCreatePost={(post) => setPosts((prev) => [post, ...prev])}
+          />
+        </div>
       );
     }
 
