@@ -6,6 +6,8 @@ import {
 } from "../../../components/avatar/Avatar";
 import { Button } from "../../../components/button/Button";
 import { ImageWithFallback } from "../../../components/imageWithFallback/ImageWithFallback";
+import { CurrentUserContext } from "../../../contexts/contexts";
+import useGetContext from "../../../hooks/useGetContext";
 import type { Post } from "../../../types/post";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
@@ -17,9 +19,9 @@ interface PostCardProps {
 }
 
 export const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
-  const currentUserId = "69ac63d7aa7e528360e63264";
+  const { currentUser } = useGetContext(CurrentUserContext);
 
-  const isOwnPost = post.user._id === currentUserId;
+  const isOwnPost = post.user._id === currentUser?._id;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
