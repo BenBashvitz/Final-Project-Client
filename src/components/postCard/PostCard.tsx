@@ -1,17 +1,9 @@
 import { Heart, MessageCircle } from "lucide-react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../../../components/avatar/Avatar";
-import { Button } from "../../../components/button/Button";
-import { ImageWithFallback } from "../../../components/imageWithFallback/imageWithFallback";
-import {
-  ONE_DAY_IN_MS,
-  ONE_HOUR_IN_MS,
-  ONE_MINUTE_IN_MS,
-} from "../../../consts";
-import type { Post } from "../../../types/post";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar/Avatar";
+import { Button } from "../button/Button";
+import { ImageWithFallback } from "../imageWithFallback/imageWithFallback";
+import { ONE_DAY_IN_MS, ONE_HOUR_IN_MS, ONE_MINUTE_IN_MS } from "../../consts";
+import type { Post } from "../../types/post";
 import styles from "./postCard.module.css";
 
 interface PostCardProps {
