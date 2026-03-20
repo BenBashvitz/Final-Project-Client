@@ -49,17 +49,13 @@ export const editPost = async (
   let imgUrl = oldPost.imgUrl;
 
   if (img instanceof File) {
-    const formData = {
-      file: img,
-      oldImgUrl: oldPost.imgUrl,
-    };
+    const formData = new FormData();
+    formData.append("file", img);
+    formData.append("oldImgUrl", oldPost.imgUrl);
 
     const { data } = await apiClient.put<UploadedPostResponse>(
       "/upload",
       formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      },
     );
 
     imgUrl = data.imgUrl;
