@@ -74,7 +74,7 @@ const FeedScreen = () => {
       return (
         <div className={styles.container}>
           <NoPosts
-            onCreatePost={(post) => setPosts((prev) => [post, ...prev])}
+            onCreatePost={(post) => setPosts((prev) => [post].concat(prev))}
           />
         </div>
       );
