@@ -35,7 +35,7 @@ const FeedScreen = () => {
         }
       });
 
-    return () => abort();
+    return abort;
   }, []);
 
   const handlePostCreation = () => {};
