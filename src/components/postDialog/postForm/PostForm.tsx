@@ -24,14 +24,20 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
     handleSubmit,
     control,
     formState: { errors },
+    setError,
   } = data;
 
-  const onSubmit = async (postToCreate: PostFormValues) => {
+  const onSubmit = async ({ description, img }: PostFormValues) => {
     try {
-      const post = await uploadPost(postToCreate);
+      if (img) {
+        const post = await uploadPost({ description, img });
 
-      onCreatePost(post);
-      onClose();
+        onCreatePost(post);
+        onClose();
+      } else {
+        console.error("No image file provided");
+        setError("img", { message: "Image is required" });
+      }
     } catch (error) {
       console.error("Image upload failed:", error);
     }
@@ -54,7 +60,7 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
                   message: "Description is required",
                 },
               })}
-              className={`${styles.textarea} ${errors.description && styles.error}`}
+              className={`${styles.textarea} ${errors.description ? styles.error : ""}`}
             />
           </div>
         </FormFieldErrorWrapper>

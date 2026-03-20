@@ -26,6 +26,10 @@ export type PostFormValues = {
   img: File | null;
 };
 
+export type PostFormValuesSubmission = Omit<PostFormValues, "img"> & {
+  img: File;
+};
+
 export type UploadedPostResponse = {
   imgUrl: string;
 };
