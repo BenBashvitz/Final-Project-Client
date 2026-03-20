@@ -37,19 +37,18 @@ const PostForm = ({
 
   const onSubmit = async ({ description, img }: PostFormValues) => {
     try {
-      if (img instanceof File) {
-        if (onEdit && existingPost) {
-          const editedPost = await editPost({ description, img }, existingPost);
+      if (onEdit && existingPost) {
+        const editedPost = await editPost({ description, img }, existingPost);
 
-          onEdit(editedPost);
-        } else {
-          const newPost = await uploadPost({ description, img });
-          onCreate?.(newPost);
-        }
-        onClose();
+        onEdit(editedPost);
+      } else if (img instanceof File) {
+        const newPost = await uploadPost({ description, img });
+        onCreate?.(newPost);
       } else {
         console.error("No image file provided");
       }
+
+      onClose();
     } catch (error) {
       console.error("Image upload failed:", error);
     }
