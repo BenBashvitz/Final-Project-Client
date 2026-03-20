@@ -35,17 +35,21 @@ const PostForm = ({
     formState: { errors },
   } = data;
 
-  const onSubmit = async (post: PostFormValues) => {
+  const onSubmit = async ({ description, img }: PostFormValues) => {
     try {
-      if (onEdit && existingPost) {
-        const editedPost = await editPost(post, existingPost);
+      if (img instanceof File) {
+        if (onEdit && existingPost) {
+          const editedPost = await editPost({ description, img }, existingPost);
 
-        onEdit(editedPost);
+          onEdit(editedPost);
+        } else {
+          const newPost = await uploadPost({ description, img });
+          onCreate?.(newPost);
+        }
+        onClose();
       } else {
-        const newPost = await uploadPost(post);
-        onCreate?.(newPost);
+        console.error("No image file provided");
       }
-      onClose();
     } catch (error) {
       console.error("Image upload failed:", error);
     }
@@ -63,7 +67,7 @@ const PostForm = ({
               id="description"
               placeholder="What's on your mind?"
               {...register("description")}
-              className={`${styles.textarea} ${errors.description && styles.error}`}
+              className={`${styles.textarea} ${errors.description ? styles.error : ""}`}
             />
           </div>
         </FormFieldErrorWrapper>

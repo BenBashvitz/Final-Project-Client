@@ -1,12 +1,13 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
+import type { ComponentProps } from "react";
 import styles from "./dialog.module.css";
 
 const DialogContent = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content>) => {
+}: ComponentProps<typeof DialogPrimitive.Content>) => {
   return (
     <DialogPrimitive.Portal data-slot="dialog-portal">
       <DialogPrimitive.Overlay className={styles.overlay} />

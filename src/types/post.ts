@@ -25,6 +25,10 @@ export type PostPage = {
 
 export type PostFormValues = z.infer<typeof PostFormSchema>;
 
+export type PostFormValuesSubmission = Omit<PostFormValues, "img"> & {
+  img: File;
+};
+
 export type UploadedPostResponse = {
   imgUrl: string;
 };
