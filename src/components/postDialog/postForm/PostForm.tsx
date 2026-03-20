@@ -62,12 +62,7 @@ const PostForm = ({
             <textarea
               id="description"
               placeholder="What's on your mind?"
-              {...register("description", {
-                required: {
-                  value: true,
-                  message: "Description is required",
-                },
-              })}
+              {...register("description")}
               className={`${styles.textarea} ${errors.description && styles.error}`}
             />
           </div>
