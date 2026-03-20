@@ -1,14 +1,3 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-body {
-  background-color: #f5eef4;
-}
-
 .formGroup {
   display: flex;
   flex-direction: column;
