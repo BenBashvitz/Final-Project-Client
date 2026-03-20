@@ -36,7 +36,7 @@ const FileSelector = ({
 
   return (
     <>
-      <div className={"formGroup"}>
+      <div className="formGroup">
         <LabelPrimitive.Root className={styles.label} htmlFor="image">
           Image
         </LabelPrimitive.Root>

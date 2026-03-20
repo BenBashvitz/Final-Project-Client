@@ -81,7 +81,7 @@
 .iconButton {
   height: auto;
   padding: 0;
-  background: transparent !important;
+  background: transparent;
 }
 
 .heartIcon {
