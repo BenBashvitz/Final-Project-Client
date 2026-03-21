@@ -6,6 +6,7 @@
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 50%;
+  border: 2px solid #c084fc;
 }
 
 .avatarImage {
@@ -22,7 +23,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: #e5e7eb;
+  background: linear-gradient(to bottom right, #c084fc, #f472b6);
+  color: #ffffff;
   font-size: 0.875rem;
   font-weight: 500;
 }
