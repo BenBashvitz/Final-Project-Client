@@ -22,7 +22,12 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
       refreshToken()
         .then((user) => {
           setCurrentUser(user);
-          if (location.pathname !== "/") navigate("/");
+          if (
+            location.pathname === "/sign-in" ||
+            location.pathname === "/sign-up"
+          ) {
+            navigate("/");
+          }
         })
         .catch(() => {
           navigate("/sign-in");
