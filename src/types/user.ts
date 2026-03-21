@@ -6,7 +6,7 @@ export type User = {
   imgUrl?: string;
 };
 
-export type PostUser = Omit<User, "email" | "password">;
+export type AttachedUser = Omit<User, "email" | "password">;
 
 export type UserSignInPayload = Omit<UserSignUpPayload, "email">;
 

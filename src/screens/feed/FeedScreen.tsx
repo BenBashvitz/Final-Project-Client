@@ -12,7 +12,7 @@ import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts";
 import { PostCard } from "./postCard/PostCard";
 import axios from "axios";
-import { mergeItems } from "../../utils/createPostDialog/merge";
+import { mergeItems } from "../../utils/postDialog/merge";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);

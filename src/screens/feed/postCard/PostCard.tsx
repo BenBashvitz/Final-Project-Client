@@ -1,6 +1,7 @@
 import { Heart, MessageCircle } from "lucide-react";
 import {
   Avatar,
+  CustomAvatar,
   AvatarFallback,
   AvatarImage,
 } from "../../../components/avatar/Avatar";
@@ -11,6 +12,7 @@ import useGetContext from "../../../hooks/useGetContext";
 import type { Post } from "../../../types/post";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
+import { formatDate } from "../../../utils/formatDate";
 
 interface PostCardProps {
   post: Post;
@@ -24,31 +26,20 @@ export const PostCard = ({ post, onEdit, onDelete, onLike }: PostCardProps) => {
 
   const isOwnPost = post.user._id === currentUser?._id;
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    return date.toLocaleDateString();
-  };
-
   return (
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.userInfo}>
-          <Avatar className={styles.avatar}>
+          {/* <Avatar className={styles.avatar}>
             <AvatarImage src={post.user.imgUrl} />
             <AvatarFallback className={styles.avatarFallback}>
               {post.user.username}
             </AvatarFallback>
-          </Avatar>
+          </Avatar> */}
+          <CustomAvatar
+            imgUrl={post.user.imgUrl}
+            username={post.user.username}
+          />
           <div>
             <div className={styles.senderName}>{post.user.username}</div>
             <div className={styles.dateText}>
