@@ -7,7 +7,7 @@ import { useState } from "react";
 import { signUp } from "../services/auth-api.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpFormSchema } from "../schemas/signUpFormSchema.ts";
-import { LoginHeader } from "../components/LoginHeader.tsx";
+import { LoginHeader } from "../components/LoginHeader/LoginHeader.tsx";
 import { Button } from "../components/button/Button.tsx";
 import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 import useGetContext from "../hooks/useGetContext.ts";
@@ -97,9 +97,7 @@ const SignUp = () => {
 
             {error && <div className={styles.errorMessage}>{error}</div>}
 
-            <Button type="submit" className={styles.btnPrimary}>
-              Sign Up
-            </Button>
+            <Button type="submit">Sign Up</Button>
           </form>
 
           <Button

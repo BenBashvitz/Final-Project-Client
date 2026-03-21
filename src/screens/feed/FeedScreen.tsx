@@ -1,12 +1,11 @@
+import axios from "axios";
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getPosts } from "../../services/posts-api";
-import type { Cursor } from "../../types/post";
-import type { Post } from "../../types/post";
+import type { Cursor, Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts";
-import { PostCard } from "./postCard/PostCard";
-import axios from "axios";
+import { PostCard } from "../../components/postCard/PostCard";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -35,7 +34,7 @@ const FeedScreen = () => {
         }
       });
 
-    return () => abort();
+    return abort;
   }, []);
 
   const fetchMorePosts = async () => {
