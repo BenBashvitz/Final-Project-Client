@@ -32,7 +32,7 @@ export const PostDialog = ({
           onClose={onClose}
           onCreate={onCreate}
           onEdit={onEdit}
-          existingPost={post}
+          post={post}
         />
       </DialogContent>
     </DialogPrimitive.Root>
