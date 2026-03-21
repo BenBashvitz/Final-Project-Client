@@ -1,6 +1,6 @@
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Upload, X } from "lucide-react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { Button } from "../button/Button";
 import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
 import styles from "./fileSelector.module.css";
@@ -36,8 +36,8 @@ const FileSelector = ({
 
   return (
     <>
-      <div className={"formGroup"}>
-        <LabelPrimitive.Root className={styles.label} htmlFor="image">
+      <div className="formGroup">
+        <LabelPrimitive.Root className={styles.label}>
           Image
         </LabelPrimitive.Root>
         <div className={styles.uploadSection}>

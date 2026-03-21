@@ -6,11 +6,11 @@
 }
 
 .submitButton {
-  background: linear-gradient(to right, #9333ea, #db2777) !important;
+  background: linear-gradient(to right, #9333ea, #db2777);
 }
 
 .submitButton:hover {
-  background: linear-gradient(to right, #7e22ce, #be185d) !important;
+  background: linear-gradient(to right, #7e22ce, #be185d);
 }
 
 .form {
