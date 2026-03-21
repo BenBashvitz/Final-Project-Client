@@ -1,18 +1,13 @@
 import { Heart, MessageCircle } from "lucide-react";
-import {
-  Avatar,
-  CustomAvatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../../../components/avatar/Avatar";
-import { Button } from "../../../components/button/Button";
-import { ImageWithFallback } from "../../../components/imageWithFallback/ImageWithFallback";
-import { CurrentUserContext } from "../../../contexts/contexts";
-import useGetContext from "../../../hooks/useGetContext";
-import type { Post } from "../../../types/post";
+import { CurrentUserContext } from "../../contexts/contexts";
+import useGetContext from "../../hooks/useGetContext";
+import type { Post } from "../../types/post";
+import { formatDate } from "../../utils/formatDate";
+import { Button } from "../button/Button";
+import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
-import { formatDate } from "../../../utils/formatDate";
+import { CustomAvatar } from "../avatar/Avatar";
 
 interface PostCardProps {
   post: Post;
@@ -30,12 +25,6 @@ export const PostCard = ({ post, onEdit, onDelete, onLike }: PostCardProps) => {
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.userInfo}>
-          {/* <Avatar className={styles.avatar}>
-            <AvatarImage src={post.user.imgUrl} />
-            <AvatarFallback className={styles.avatarFallback}>
-              {post.user.username}
-            </AvatarFallback>
-          </Avatar> */}
           <CustomAvatar
             imgUrl={post.user.imgUrl}
             username={post.user.username}
