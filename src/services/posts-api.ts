@@ -1,6 +1,7 @@
 import type {
   Cursor,
   Post,
+  PostFormValues,
   PostFormValuesSubmission,
   PostPage,
   UploadedPostResponse,
@@ -39,4 +40,31 @@ export const uploadPost = async ({
   });
 
   return uploadPostResponse.data;
+};
+
+export const editPost = async (
+  { description, img }: PostFormValues,
+  oldPost: Post,
+): Promise<Post> => {
+  let imgUrl = oldPost.imgUrl;
+
+  if (img instanceof File) {
+    const formData = new FormData();
+    formData.append("file", img);
+    formData.append("oldImgUrl", oldPost.imgUrl);
+
+    const { data } = await apiClient.put<UploadedPostResponse>(
+      "/upload",
+      formData,
+    );
+
+    imgUrl = data.imgUrl;
+  }
+
+  const { data } = await apiClient.put(`/post/${oldPost._id}`, {
+    imgUrl,
+    description,
+  });
+
+  return data;
 };

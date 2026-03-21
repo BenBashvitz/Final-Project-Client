@@ -1,16 +1,24 @@
 import { Heart, MessageCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar/Avatar";
 import { Button } from "../button/Button";
-import { ImageWithFallback } from "../imageWithFallback/imageWithFallback";
+import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
 import { ONE_DAY_IN_MS, ONE_HOUR_IN_MS, ONE_MINUTE_IN_MS } from "../../consts";
 import type { Post } from "../../types/post";
 import styles from "./postCard.module.css";
+import PostOptions from "./postOptions/PostOptions";
+import useGetContext from "../../hooks/useGetContext";
+import { CurrentUserContext } from "../../contexts/contexts";
 
 interface PostCardProps {
   post: Post;
+  onEdit: (post: Post) => void;
 }
 
-export const PostCard = ({ post }: PostCardProps) => {
+export const PostCard = ({ post, onEdit }: PostCardProps) => {
+  const { currentUser } = useGetContext(CurrentUserContext);
+
+  const isOwnPost = post.user._id === currentUser?._id;
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -43,15 +51,14 @@ export const PostCard = ({ post }: PostCardProps) => {
             </div>
           </div>
         </div>
+        {isOwnPost && <PostOptions onEdit={onEdit} post={post} />}
       </div>
 
-      {post.imgUrl && (
-        <ImageWithFallback
-          src={post.imgUrl}
-          alt="Post image"
-          className={styles.image}
-        />
-      )}
+      <ImageWithFallback
+        src={post.imgUrl}
+        alt="Post image"
+        className={styles.image}
+      />
 
       <div className={styles.actions}>
         <div className={styles.actionRow}>

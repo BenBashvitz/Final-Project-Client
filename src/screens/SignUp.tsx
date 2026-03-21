@@ -10,6 +10,8 @@ import { SignUpFormSchema } from "../schemas/signUpFormSchema.ts";
 import { LoginHeader } from "../components/LoginHeader/LoginHeader.tsx";
 import { Button } from "../components/button/Button.tsx";
 import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
+import useGetContext from "../hooks/useGetContext.ts";
+import { CurrentUserContext } from "../contexts/contexts.ts";
 
 const SignUp = () => {
   const {
@@ -20,6 +22,8 @@ const SignUp = () => {
     resolver: zodResolver(SignUpFormSchema),
   });
   const navigate = useNavigate();
+  const { setCurrentUser } = useGetContext(CurrentUserContext);
+
   const [error, setError] = useState<string | null>(null);
 
   const handleNavigateToSignIn = async () => {
@@ -30,8 +34,9 @@ const SignUp = () => {
     setError(null);
 
     try {
-      await signUp(payload);
+      const user = await signUp(payload);
 
+      setCurrentUser(user);
       navigate("/");
     } catch (error) {
       if (

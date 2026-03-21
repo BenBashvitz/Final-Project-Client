@@ -2,13 +2,13 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { Upload, X } from "lucide-react";
 import React, { useRef } from "react";
 import { Button } from "../button/Button";
-import { ImageWithFallback } from "../imageWithFallback/imageWithFallback";
+import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
 import styles from "./fileSelector.module.css";
 
 type FileSelectorProps = {
   onFileSelect: (file: File) => void;
   onResetFile: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  selectedFileUrl?: string;
+  selectedFileUrl: string;
   wrapperClassName?: string;
 };
 
@@ -55,7 +55,7 @@ const FileSelector = ({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/png,image/jpeg"
             onChange={handleFileSelect}
             className={styles.hiddenInput}
           />

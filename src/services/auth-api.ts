@@ -1,27 +1,48 @@
 import { apiClient } from "./api-client";
-import type { UserSignInPayload, UserSignUpPayload } from "../types";
+import type { User, UserSignInPayload, UserSignUpPayload } from "../types";
 import type { AxiosError } from "axios";
 
-export const signIn = (payload: UserSignInPayload) =>
-  apiClient.post("/auth/login", payload, {
-    withCredentials: true,
-  });
+export const signIn = async (
+  payload: UserSignInPayload,
+): Promise<Omit<User, "password">> => {
+  const { data } = await apiClient.post<Omit<User, "password">>(
+    "/auth/login",
+    payload,
+    {
+      withCredentials: true,
+    },
+  );
 
-export const signUp = (payload: UserSignUpPayload) =>
-  apiClient.post("/auth/register", payload, {
-    withCredentials: true,
-  });
+  return data;
+};
+
+export const signUp = async (
+  payload: UserSignUpPayload,
+): Promise<Omit<User, "password">> => {
+  const { data } = await apiClient.post<Omit<User, "password">>(
+    "/auth/register",
+    payload,
+    {
+      withCredentials: true,
+    },
+  );
+
+  return data;
+};
 
 const refreshTokenUrl = "/auth/refresh-token";
 
-export const refreshToken = () =>
-  apiClient.post(
+export const refreshToken = async (): Promise<Omit<User, "password">> => {
+  const { data } = await apiClient.post<Omit<User, "password">>(
     refreshTokenUrl,
     {},
     {
       withCredentials: true,
     },
   );
+
+  return data;
+};
 
 export const logout = () =>
   apiClient.post(

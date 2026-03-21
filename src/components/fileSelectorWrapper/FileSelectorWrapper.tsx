@@ -18,9 +18,11 @@ const FileSelectorWrapper = () => {
   });
 
   const selectedFileUrl = useMemo(() => {
-    if (value) {
+    if (value instanceof File) {
       return URL.createObjectURL(value);
     }
+
+    return value;
   }, [value]);
 
   useEffect(() => {
@@ -36,9 +38,7 @@ const FileSelectorWrapper = () => {
       <FileSelector
         onFileSelect={onChange}
         selectedFileUrl={selectedFileUrl}
-        onResetFile={() =>
-          setValue("img", null, { shouldValidate: isSubmitted })
-        }
+        onResetFile={() => setValue("img", "", { shouldValidate: isSubmitted })}
         wrapperClassName={error?.message && styles.error}
       />
     </FormFieldErrorWrapper>

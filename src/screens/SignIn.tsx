@@ -3,9 +3,11 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { LoginHeader } from "../components/LoginHeader/LoginHeader.tsx";
+import { LoginHeader } from "../components/LoginHeader/LoginHeader";
 import { Button } from "../components/button/Button.tsx";
 import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
+import { CurrentUserContext } from "../contexts/contexts.ts";
+import useGetContext from "../hooks/useGetContext.ts";
 import { SignInFormSchema } from "../schemas/signInFormSchema.ts";
 import { signIn } from "../services/auth-api.ts";
 import type { UserSignInPayload } from "../types";
@@ -20,6 +22,7 @@ const SignIn = () => {
     resolver: zodResolver(SignInFormSchema),
   });
   const navigate = useNavigate();
+  const { setCurrentUser } = useGetContext(CurrentUserContext);
   const [error, setError] = useState<string | null>(null);
 
   const handleNavigateToSignUp = async () => {
@@ -30,8 +33,9 @@ const SignIn = () => {
     setError(null);
 
     try {
-      await signIn(payload);
+      const user = await signIn(payload);
 
+      setCurrentUser(user);
       navigate("/");
     } catch (error) {
       if (
@@ -40,7 +44,7 @@ const SignIn = () => {
       ) {
         setError(error.response?.data);
       } else {
-        setError("there was a problem trying to register. please try again.");
+        setError("there was a problem trying to sign in. please try again.");
       }
     }
   };

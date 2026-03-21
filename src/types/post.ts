@@ -1,3 +1,5 @@
+import type z from "zod";
+import type { PostFormSchema } from "../schemas/postFormSchema";
 import type { PostUser } from "./user";
 
 export type Post = {
@@ -21,10 +23,7 @@ export type PostPage = {
   cursor: Cursor | null;
 };
 
-export type PostFormValues = {
-  description: string;
-  img: File | null;
-};
+export type PostFormValues = z.infer<typeof PostFormSchema>;
 
 export type PostFormValuesSubmission = Omit<PostFormValues, "img"> & {
   img: File;

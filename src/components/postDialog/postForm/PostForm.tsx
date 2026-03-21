@@ -1,22 +1,25 @@
 import { DevTool } from "@hookform/devtools";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { FormProvider, useForm } from "react-hook-form";
-import { uploadPost } from "../../../services/posts-api";
+import { editPost, uploadPost } from "../../../services/posts-api";
 import type { Post, PostFormValues } from "../../../types/post";
 import { getDefaultValues } from "../../../utils/createPostDialog/getDefaultValues";
 import { Button } from "../../button/Button";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper";
 import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper";
 import styles from "./postForm.module.css";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PostFormSchema } from "../../../schemas/postFormSchema";
 
 type PostFormProps = {
   post?: Post;
   onClose: () => void;
-  onCreatePost: (post: Post) => void;
+  onSubmit: (post: Post) => void;
 };
 
-const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
+const PostForm = ({ post, onClose, onSubmit }: PostFormProps) => {
   const data = useForm<PostFormValues>({
+    resolver: zodResolver(PostFormSchema),
     defaultValues: getDefaultValues(post),
   });
   const {
@@ -24,20 +27,22 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
     handleSubmit,
     control,
     formState: { errors },
-    setError,
   } = data;
 
-  const onSubmit = async ({ description, img }: PostFormValues) => {
+  const handleSubmission = async ({ description, img }: PostFormValues) => {
     try {
-      if (img) {
-        const post = await uploadPost({ description, img });
+      if (post) {
+        const editedPost = await editPost({ description, img }, post);
 
-        onCreatePost(post);
-        onClose();
+        onSubmit(editedPost);
+      } else if (img instanceof File) {
+        const newPost = await uploadPost({ description, img });
+        onSubmit(newPost);
       } else {
         console.error("No image file provided");
-        setError("img", { message: "Image is required" });
       }
+
+      onClose();
     } catch (error) {
       console.error("Image upload failed:", error);
     }
@@ -45,7 +50,7 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
 
   return (
     <FormProvider {...data}>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <form onSubmit={handleSubmit(handleSubmission)} className={styles.form}>
         <FormFieldErrorWrapper error={errors.description?.message}>
           <div className="formGroup">
             <LabelPrimitive.Root htmlFor="description">
@@ -54,12 +59,7 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
             <textarea
               id="description"
               placeholder="What's on your mind?"
-              {...register("description", {
-                required: {
-                  value: true,
-                  message: "Description is required",
-                },
-              })}
+              {...register("description")}
               className={`${styles.textarea} ${errors.description ? styles.error : ""}`}
             />
           </div>

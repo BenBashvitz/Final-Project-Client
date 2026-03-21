@@ -1,12 +1,11 @@
+import axios from "axios";
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getPosts } from "../../services/posts-api";
-import type { Cursor } from "../../types/post";
-import type { Post } from "../../types/post";
+import type { Cursor, Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
-import NoPosts from "./noPosts/noPosts";
+import NoPosts from "./noPosts/NoPosts";
 import { PostCard } from "../../components/postCard/PostCard";
-import axios from "axios";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -80,6 +79,14 @@ const FeedScreen = () => {
       );
     }
 
+    const handleEditPost = (editedPost: Post) => {
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === editedPost._id ? { ...post, ...editedPost } : post,
+        ),
+      );
+    };
+
     return (
       <InfiniteScroll
         className={styles.infiniteScroll}
@@ -94,7 +101,7 @@ const FeedScreen = () => {
         next={fetchMorePosts}
       >
         {posts.map((post) => (
-          <PostCard key={post._id} post={post} />
+          <PostCard key={post._id} post={post} onEdit={handleEditPost} />
         ))}
         {fetchMoreError && (
           <div className={styles.error}>Error: {fetchMoreError}</div>
