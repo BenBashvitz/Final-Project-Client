@@ -7,7 +7,7 @@ import { useState } from "react";
 import { signUp } from "../services/auth-api.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpFormSchema } from "../schemas/signUpFormSchema.ts";
-import { LoginHeader } from "../components/LoginHeader.tsx";
+import { LoginHeader } from "../components/LoginHeader/LoginHeader.tsx";
 import { Button } from "../components/button/Button.tsx";
 import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 

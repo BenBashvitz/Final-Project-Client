@@ -5,7 +5,7 @@ import type { Cursor } from "../../types/post";
 import type { Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/noPosts";
-import { PostCard } from "./postCard/PostCard";
+import { PostCard } from "../../components/postCard/PostCard";
 import axios from "axios";
 
 const FeedScreen = () => {
@@ -35,7 +35,7 @@ const FeedScreen = () => {
         }
       });
 
-    return () => abort();
+    return abort;
   }, []);
 
   const fetchMorePosts = async () => {
