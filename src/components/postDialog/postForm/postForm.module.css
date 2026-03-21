@@ -5,14 +5,6 @@
   padding-top: 1rem;
 }
 
-.submitButton {
-  background: linear-gradient(to right, #9333ea, #db2777);
-}
-
-.submitButton:hover {
-  background: linear-gradient(to right, #7e22ce, #be185d);
-}
-
 .form {
   display: flex;
   flex-direction: column;

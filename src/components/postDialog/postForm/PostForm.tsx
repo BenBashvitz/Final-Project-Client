@@ -71,9 +71,7 @@ const PostForm = ({ post, onClose, onCreatePost }: PostFormProps) => {
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" className={styles.submitButton}>
-            {post ? "Update" : "Post"}
-          </Button>
+          <Button type="submit">{post ? "Update" : "Post"}</Button>
         </div>
       </form>
       <DevTool control={control} />
