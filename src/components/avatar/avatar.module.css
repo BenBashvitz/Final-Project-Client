@@ -5,7 +5,7 @@
   height: 2.5rem;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: 50%;
 }
 
 .avatarImage {
@@ -21,7 +21,7 @@
   height: 100%;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
+  border-radius: 50%;
   background-color: #e5e7eb;
   font-size: 0.875rem;
   font-weight: 500;

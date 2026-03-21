@@ -1,17 +1,17 @@
-import { useState } from "react";
-import styles from "./Login.module.css";
-import { AxiosError } from "axios";
-import { useNavigate } from "react-router";
-import { useForm } from "react-hook-form";
-import type { UserSignInPayload } from "../types";
-import { signIn } from "../services/auth-api.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignInFormSchema } from "../schemas/signInFormSchema.ts";
-import { LoginHeader } from "../components/LoginHeader.tsx";
+import { AxiosError } from "axios";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { LoginHeader } from "../components/LoginHeader/LoginHeader";
 import { Button } from "../components/button/Button.tsx";
 import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
-import useGetContext from "../hooks/useGetContext.ts";
 import { CurrentUserContext } from "../contexts/contexts.ts";
+import useGetContext from "../hooks/useGetContext.ts";
+import { SignInFormSchema } from "../schemas/signInFormSchema.ts";
+import { signIn } from "../services/auth-api.ts";
+import type { UserSignInPayload } from "../types";
+import styles from "./Login.module.css";
 
 const SignIn = () => {
   const {
@@ -83,9 +83,7 @@ const SignIn = () => {
 
             {error && <div className={styles.errorMessage}>{error}</div>}
 
-            <Button type="submit" className={styles.btnPrimary}>
-              Sign In
-            </Button>
+            <Button type="submit">Sign In</Button>
           </form>
 
           <Button

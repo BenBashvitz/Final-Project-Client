@@ -1,10 +1,10 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../../../../components/button/Button";
+import type { Post } from "../../../types/post";
+import { Button } from "../../button/Button";
+import { PostDialog } from "../../postDialog/PostDialog";
 import styles from "./postOptions.module.css";
-import { PostDialog } from "../../../../components/postDialog/PostDialog";
-import type { Post } from "../../../../types/post";
 
 type PostOptionsProps = {
   onEdit: (post: Post) => void;

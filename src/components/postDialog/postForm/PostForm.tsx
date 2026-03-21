@@ -12,21 +12,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PostFormSchema } from "../../../schemas/postFormSchema";
 
 type PostFormProps = {
-  existingPost?: Post;
+  post?: Post;
   onClose: () => void;
   onCreate?: (post: Post) => void;
   onEdit?: (post: Post) => void;
 };
 
-const PostForm = ({
-  existingPost,
-  onClose,
-  onCreate,
-  onEdit,
-}: PostFormProps) => {
+const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
   const data = useForm<PostFormValues>({
     resolver: zodResolver(PostFormSchema),
-    defaultValues: getDefaultValues(existingPost),
+    defaultValues: getDefaultValues(post),
   });
   const {
     register,
@@ -37,8 +32,8 @@ const PostForm = ({
 
   const onSubmit = async ({ description, img }: PostFormValues) => {
     try {
-      if (onEdit && existingPost) {
-        const editedPost = await editPost({ description, img }, existingPost);
+      if (onEdit && post) {
+        const editedPost = await editPost({ description, img }, post);
 
         onEdit(editedPost);
       } else if (img instanceof File) {
@@ -77,9 +72,7 @@ const PostForm = ({
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" className={styles.submitButton}>
-            {existingPost ? "Update" : "Post"}
-          </Button>
+          <Button type="submit">{post ? "Update" : "Post"}</Button>
         </div>
       </form>
       <DevTool control={control} />
