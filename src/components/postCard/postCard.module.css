@@ -52,13 +52,6 @@
   text-align: start;
 }
 
-.imageWrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background-color: #f3f4f6;
-}
-
 .image {
   width: 100%;
   height: 100%;
@@ -88,7 +81,7 @@
 .iconButton {
   height: auto;
   padding: 0;
-  background: transparent !important;
+  background: transparent;
 }
 
 .heartIcon {

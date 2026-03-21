@@ -1,5 +1,10 @@
-import type { Cursor } from "../types/post";
-import type { PostPage } from "../types/post";
+import type {
+  Cursor,
+  Post,
+  PostFormValuesSubmission,
+  PostPage,
+  UploadedPostResponse,
+} from "../types/post";
 import { apiClient } from "./api-client";
 
 export const getPosts = (cursor: Cursor | null) => {
@@ -11,4 +16,27 @@ export const getPosts = (cursor: Cursor | null) => {
   });
 
   return { response, abort: () => abortController.abort() };
+};
+
+export const uploadPost = async ({
+  img,
+  description,
+}: PostFormValuesSubmission): Promise<Post> => {
+  const formData = new FormData();
+  formData.append("file", img);
+
+  const uploadPostImgResponse = await apiClient.post<UploadedPostResponse>(
+    "/upload",
+    formData,
+  );
+
+  const imgUrl = uploadPostImgResponse.data.imgUrl;
+
+  const uploadPostResponse = await apiClient.post<Post>("/post", {
+    description,
+    imgUrl,
+    creationDate: new Date(),
+  });
+
+  return uploadPostResponse.data;
 };

@@ -20,3 +20,16 @@ export type PostPage = {
   posts: Post[];
   cursor: Cursor | null;
 };
+
+export type PostFormValues = {
+  description: string;
+  img: File | null;
+};
+
+export type PostFormValuesSubmission = Omit<PostFormValues, "img"> & {
+  img: File;
+};
+
+export type UploadedPostResponse = {
+  imgUrl: string;
+};

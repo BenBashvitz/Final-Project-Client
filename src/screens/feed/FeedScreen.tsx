@@ -9,7 +9,7 @@ import { PostCard } from "../../components/postCard/PostCard";
 import axios from "axios";
 
 const FeedScreen = () => {
-  const [allPosts, setAllPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [initialFetchError, setInitialFetchError] = useState<string | null>(
     null,
@@ -21,7 +21,7 @@ const FeedScreen = () => {
     const { response, abort } = getPosts(null);
     response
       .then(({ data: { posts, cursor } }) => {
-        setAllPosts(posts);
+        setPosts(posts);
         setCurrentCursor(cursor);
         setIsLoading(false);
       })
@@ -38,8 +38,6 @@ const FeedScreen = () => {
     return abort;
   }, []);
 
-  const handlePostCreation = () => {};
-
   const fetchMorePosts = async () => {
     try {
       const { response } = getPosts(currentCursor);
@@ -47,7 +45,7 @@ const FeedScreen = () => {
         data: { posts, cursor },
       } = await response;
 
-      setAllPosts((prevPosts) => prevPosts.concat(posts));
+      setPosts((prevPosts) => prevPosts.concat(posts));
       setCurrentCursor(cursor);
     } catch (error) {
       console.error("Failed to fetch more posts:", error);
@@ -72,10 +70,12 @@ const FeedScreen = () => {
       );
     }
 
-    if (allPosts.length === 0) {
+    if (posts.length === 0) {
       return (
         <div className={styles.container}>
-          <NoPosts onCreatePost={handlePostCreation} />
+          <NoPosts
+            onCreatePost={(post) => setPosts((prev) => [post].concat(prev))}
+          />
         </div>
       );
     }
@@ -90,10 +90,10 @@ const FeedScreen = () => {
             You have reached the end of the feed
           </div>
         }
-        dataLength={allPosts.length}
+        dataLength={posts.length}
         next={fetchMorePosts}
       >
-        {allPosts.map((post) => (
+        {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
         {fetchMoreError && (
