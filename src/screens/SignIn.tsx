@@ -79,9 +79,7 @@ const SignIn = () => {
 
             {error && <div className={styles.errorMessage}>{error}</div>}
 
-            <Button type="submit" className={styles.btnPrimary}>
-              Sign In
-            </Button>
+            <Button type="submit">Sign In</Button>
           </form>
 
           <Button

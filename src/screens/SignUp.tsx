@@ -92,9 +92,7 @@ const SignUp = () => {
 
             {error && <div className={styles.errorMessage}>{error}</div>}
 
-            <Button type="submit" className={styles.btnPrimary}>
-              Sign Up
-            </Button>
+            <Button type="submit">Sign Up</Button>
           </form>
 
           <Button
