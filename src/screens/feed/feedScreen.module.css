@@ -1,0 +1,24 @@
+.endMessage {
+  margin-top: 1.5rem;
+}
+
+.error {
+  color: red;
+  margin-top: 1.5rem;
+}
+
+.infiniteScroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5eef4;
+  min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  background-color: #f5eef4;
+  align-items: center;
+  height: 100vh;
+}

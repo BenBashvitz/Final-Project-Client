@@ -1,0 +1,44 @@
+.container {
+  text-align: center;
+  padding: 5rem 0;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  border: 2px dashed #e9d5ff;
+  width: 35vw;
+}
+
+.icon {
+  width: 4rem;
+  height: 4rem;
+  display: block;
+  margin: 0 auto 1rem;
+  color: #d8b4fe;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.createButton {
+  background: linear-gradient(to right, #9333ea, #ec4899);
+  color: #ffffff;
+  border: none;
+}
+
+.createButton:hover {
+  background: linear-gradient(to right, #7e22ce, #db2777);
+}
+
+.createButton .plusIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}

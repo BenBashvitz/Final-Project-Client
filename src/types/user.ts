@@ -1,15 +1,15 @@
 export type User = {
-    id: string;
-    username: string;
-    email: string;
-    password: string;
-}
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
+  imgUrl?: string;
+};
 
-export type UserSignInPayload = Omit<UserSignUpPayload, 'email'>
+export type UserSignInPayload = Omit<UserSignUpPayload, "email">;
 
 export type UserSignUpPayload = {
-    username: string;
-    email: string;
-    password: string;
-}
-
+  username: string;
+  email: string;
+  password: string;
+};
