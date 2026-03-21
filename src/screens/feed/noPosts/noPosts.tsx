@@ -29,7 +29,7 @@ const NoPosts = ({ onCreatePost }: NoPostsProps) => {
       <PostDialog
         open={showPostCreationDialog}
         onClose={() => setShowPostCreationDialog(false)}
-        onCreate={onCreatePost}
+        onSubmit={onCreatePost}
       />
     </>
   );

@@ -7,7 +7,7 @@ import { PostDialog } from "../../postDialog/PostDialog";
 import styles from "./postOptions.module.css";
 
 type PostOptionsProps = {
-  onEdit?: (post: Post) => void;
+  onEdit: (post: Post) => void;
   post?: Post;
 };
 
@@ -39,14 +39,13 @@ const PostOptions = ({ onEdit, post }: PostOptionsProps) => {
           </DropdownMenuPrimitive.Content>
         </DropdownMenuPrimitive.Portal>
       </DropdownMenuPrimitive.Root>
-      {
-        <PostDialog
-          onClose={() => setIsPostDialogOpen(false)}
-          open={isPostDialogOpen}
-          onEdit={onEdit}
-          post={post}
-        />
-      }
+
+      <PostDialog
+        onClose={() => setIsPostDialogOpen(false)}
+        open={isPostDialogOpen}
+        onSubmit={onEdit}
+        post={post}
+      />
     </>
   );
 };
