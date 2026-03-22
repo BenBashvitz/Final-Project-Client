@@ -61,10 +61,13 @@ export const editPost = async (
     imgUrl = data.imgUrl;
   }
 
-  const { data } = await apiClient.put(`/post/${oldPost._id}`, {
-    imgUrl,
-    description,
-  });
+  const { data } = await apiClient.put(
+    `/post/${encodeURIComponent(oldPost._id)}`,
+    {
+      imgUrl,
+      description,
+    },
+  );
 
   return data;
 };
@@ -72,7 +75,9 @@ export const editPost = async (
 export const deletePost = async (
   postId: string,
 ): Promise<Pick<Post, "_id">> => {
-  const { data } = await apiClient.delete<Pick<Post, "_id">>(`/post/${postId}`);
+  const { data } = await apiClient.delete<Pick<Post, "_id">>(
+    `/post/${encodeURIComponent(postId)}`,
+  );
 
   return data;
 };
