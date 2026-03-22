@@ -8,16 +8,14 @@ interface PostDialogProps {
   open: boolean;
   onClose: () => void;
   post?: Post;
-  onCreate?: (post: Post) => void;
-  onEdit?: (post: Post) => void;
+  onSubmit: (post: Post) => void;
 }
 
 export const PostDialog = ({
   open,
   onClose,
   post,
-  onCreate,
-  onEdit,
+  onSubmit,
 }: PostDialogProps) => {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onClose}>
@@ -28,12 +26,7 @@ export const PostDialog = ({
           </DialogPrimitive.Title>
         </div>
 
-        <PostForm
-          onClose={onClose}
-          onCreate={onCreate}
-          onEdit={onEdit}
-          post={post}
-        />
+        <PostForm onClose={onClose} onSubmit={onSubmit} post={post} />
       </DialogContent>
     </DialogPrimitive.Root>
   );

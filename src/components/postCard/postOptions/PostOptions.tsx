@@ -51,7 +51,7 @@ const PostOptions = ({ onEdit, onDelete, post }: PostOptionsProps) => {
       <PostDialog
         onClose={() => setIsPostDialogOpen(false)}
         open={isPostDialogOpen}
-        onEdit={onEdit}
+        onSubmit={onEdit}
         post={post}
       />
     </>
