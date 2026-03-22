@@ -14,11 +14,10 @@ import { PostFormSchema } from "../../../schemas/postFormSchema";
 type PostFormProps = {
   post?: Post;
   onClose: () => void;
-  onCreate?: (post: Post) => void;
-  onEdit?: (post: Post) => void;
+  onSubmit: (post: Post) => void;
 };
 
-const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
+const PostForm = ({ post, onClose, onSubmit }: PostFormProps) => {
   const data = useForm<PostFormValues>({
     resolver: zodResolver(PostFormSchema),
     defaultValues: getDefaultValues(post),
@@ -30,15 +29,15 @@ const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
     formState: { errors },
   } = data;
 
-  const onSubmit = async ({ description, img }: PostFormValues) => {
+  const handleSubmission = async ({ description, img }: PostFormValues) => {
     try {
-      if (onEdit && post) {
+      if (post) {
         const editedPost = await editPost({ description, img }, post);
 
-        onEdit(editedPost);
+        onSubmit(editedPost);
       } else if (img instanceof File) {
         const newPost = await uploadPost({ description, img });
-        onCreate?.(newPost);
+        onSubmit(newPost);
       } else {
         console.error("No image file provided");
       }
@@ -51,7 +50,7 @@ const PostForm = ({ post, onClose, onCreate, onEdit }: PostFormProps) => {
 
   return (
     <FormProvider {...data}>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <form onSubmit={handleSubmit(handleSubmission)} className={styles.form}>
         <FormFieldErrorWrapper error={errors.description?.message}>
           <div className="formGroup">
             <LabelPrimitive.Root htmlFor="description">
