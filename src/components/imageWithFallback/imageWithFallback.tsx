@@ -8,6 +8,12 @@ export const ImageWithFallback = (
   props: React.ImgHTMLAttributes<HTMLImageElement>,
 ) => {
   const [didError, setDidError] = useState(false);
+  const [prevSrc, setPrevSrc] = useState(props.src);
+
+  if (props.src !== prevSrc) {
+    setPrevSrc(props.src);
+    setDidError(false);
+  }
 
   const handleError = () => {
     setDidError(true);

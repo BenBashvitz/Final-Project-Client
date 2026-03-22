@@ -55,7 +55,7 @@ const FileSelector = ({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/png,image/jpeg"
             onChange={handleFileSelect}
             className={styles.hiddenInput}
           />

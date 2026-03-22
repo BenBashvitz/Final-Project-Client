@@ -9,7 +9,7 @@ import styles from "./postOptions.module.css";
 type PostOptionsProps = {
   onEdit: (post: Post) => void;
   onDelete: () => void;
-  post?: Post;
+  post: Post;
 };
 
 const PostOptions = ({ onEdit, onDelete, post }: PostOptionsProps) => {
@@ -51,7 +51,7 @@ const PostOptions = ({ onEdit, onDelete, post }: PostOptionsProps) => {
       <PostDialog
         onClose={() => setIsPostDialogOpen(false)}
         open={isPostDialogOpen}
-        onEdit={onEdit}
+        onSubmit={onEdit}
         post={post}
       />
     </>
