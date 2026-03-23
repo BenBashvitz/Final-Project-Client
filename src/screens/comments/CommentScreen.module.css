@@ -111,3 +111,10 @@
   height: 1rem;
   width: 1rem;
 }
+
+.errorWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #dc2626;
+}

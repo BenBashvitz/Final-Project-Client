@@ -1,11 +1,12 @@
-import { MessageCircle, Send } from "lucide-react";
-import { useState } from "react";
+import axios from "axios";
+import { MessageCircle, Send, TriangleAlert } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CustomAvatar } from "../../components/avatar/Avatar";
 import { Button } from "../../components/button/Button";
 import { CurrentUserContext } from "../../contexts/contexts";
 import useGetContext from "../../hooks/useGetContext";
-import { createComment } from "../../services/comments-api";
+import { createComment, getComments } from "../../services/comments-api";
 import type { Comment, CommentInput } from "../../types/comment";
 import { formatDate } from "../../utils/formatDate";
 import { Input } from "./../../components/input/Input";
@@ -16,6 +17,31 @@ const CommentsScreen = () => {
   const { currentUser } = useGetContext(CurrentUserContext);
   const { postId } = useParams();
   const [comments, setComments] = useState<Comment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (postId) {
+      const { response, abort } = getComments(postId);
+      response
+        .then(({ data }) => {
+          setComments(data);
+        })
+        .catch((error) => {
+          if (axios.isCancel(error)) {
+            console.log("Request canceled:", error.message);
+          } else {
+            console.error("Failed to fetch comments:", error);
+            setError("Failed to fetch comments");
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+
+      return abort;
+    }
+  }, [postId]);
 
   const handleSubmit = async () => {
     try {
@@ -41,8 +67,8 @@ const CommentsScreen = () => {
     }
   };
 
-  return !currentUser ? (
-    <div>טוען...</div>
+  return !currentUser || isLoading ? (
+    <div>Loading...</div>
   ) : (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -53,11 +79,20 @@ const CommentsScreen = () => {
 
       {comments.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyStateContent}>
-            <MessageCircle className={styles.emptyStateIcon} />
-            <p className={styles.emptyStateText}>No comments yet</p>
-            <p className={styles.emptyStateSubtext}>Be the first to comment!</p>
-          </div>
+          {error ? (
+            <div className={styles.errorWrapper}>
+              <div>{error}</div>
+              <TriangleAlert />
+            </div>
+          ) : (
+            <div className={styles.emptyStateContent}>
+              <MessageCircle className={styles.emptyStateIcon} />
+              <p className={styles.emptyStateText}>No comments yet</p>
+              <p className={styles.emptyStateSubtext}>
+                Be the first to comment!
+              </p>
+            </div>
+          )}
         </div>
       ) : (
         <div className={styles.commentsList}>
