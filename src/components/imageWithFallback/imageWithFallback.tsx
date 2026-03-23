@@ -18,7 +18,6 @@ export const ImageWithFallback = (
   const handleError = () => {
     setDidError(true);
   };
-
   const { src, alt, style, className, ...rest } = props;
 
   return didError ? (

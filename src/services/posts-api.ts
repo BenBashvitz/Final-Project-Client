@@ -81,15 +81,3 @@ export const deletePost = async (
 
   return data;
 };
-
-export const likePost = async (postId: string): Promise<Post> => {
-  const { data } = await apiClient.post<Post>(`/like/${postId}`);
-
-  return data;
-};
-
-export const unlikePost = async (postId: string): Promise<Post> => {
-  const { data } = await apiClient.post<Post>(`/like/unlike/${postId}`);
-
-  return data;
-};
