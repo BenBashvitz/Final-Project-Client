@@ -1,5 +1,5 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { MoreVertical, Pencil } from "lucide-react";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Post } from "../../../types/post";
 import { Button } from "../../button/Button";
@@ -8,10 +8,11 @@ import styles from "./postOptions.module.css";
 
 type PostOptionsProps = {
   onEdit: (post: Post) => void;
-  post?: Post;
+  onDelete: () => void;
+  post: Post;
 };
 
-const PostOptions = ({ onEdit, post }: PostOptionsProps) => {
+const PostOptions = ({ onEdit, onDelete, post }: PostOptionsProps) => {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
 
   return (
@@ -35,6 +36,13 @@ const PostOptions = ({ onEdit, post }: PostOptionsProps) => {
             >
               <Pencil className={styles.dropdownIcon} />
               Edit
+            </DropdownMenuPrimitive.Item>
+            <DropdownMenuPrimitive.Item
+              onClick={onDelete}
+              className={`${styles.dropdownItem} ${styles.dropdownItemDelete}`}
+            >
+              <Trash2 className={styles.dropdownIcon} />
+              Delete
             </DropdownMenuPrimitive.Item>
           </DropdownMenuPrimitive.Content>
         </DropdownMenuPrimitive.Portal>

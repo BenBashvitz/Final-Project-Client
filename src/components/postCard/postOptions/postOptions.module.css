@@ -31,15 +31,17 @@
   border-radius: 0.25rem;
   font-size: 0.875rem;
   text-decoration: none;
+  font-family: system-ui;
   transition: background-color 0.15s ease;
-  &:hover {
-    background-color: #f3f4f6;
-  }
+}
 
-  &:focus {
-    background-color: #f3f4f6;
-    outline: none;
-  }
+.dropdownItem:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdownItem:focus {
+  background-color: #f3f4f6;
+  outline: none;
 }
 
 .dropdownIcon {
@@ -58,4 +60,12 @@
 .moreButtonIcon {
   height: 1rem;
   width: 1rem;
+}
+
+.dropdownItemDelete {
+  color: #dc2626;
+}
+
+.dropdownItemDelete:hover {
+  background-color: rgba(239, 68, 68, 0.1);
 }

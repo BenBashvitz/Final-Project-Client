@@ -12,9 +12,10 @@ import { CurrentUserContext } from "../../contexts/contexts";
 interface PostCardProps {
   post: Post;
   onEdit: (post: Post) => void;
+  onDelete: () => void;
 }
 
-export const PostCard = ({ post, onEdit }: PostCardProps) => {
+export const PostCard = ({ post, onEdit, onDelete }: PostCardProps) => {
   const { currentUser } = useGetContext(CurrentUserContext);
 
   const isOwnPost = post.user._id === currentUser?._id;
@@ -51,7 +52,9 @@ export const PostCard = ({ post, onEdit }: PostCardProps) => {
             </div>
           </div>
         </div>
-        {isOwnPost && <PostOptions onEdit={onEdit} post={post} />}
+        {isOwnPost && (
+          <PostOptions onEdit={onEdit} post={post} onDelete={onDelete} />
+        )}
       </div>
 
       <ImageWithFallback

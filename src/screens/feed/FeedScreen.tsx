@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getPosts } from "../../services/posts-api";
+import { PostCard } from "../../components/postCard/PostCard";
+import { deletePost, getPosts } from "../../services/posts-api";
 import type { Cursor, Post } from "../../types/post";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts";
-import { PostCard } from "../../components/postCard/PostCard";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -87,6 +87,15 @@ const FeedScreen = () => {
       );
     };
 
+    const handleDeletePost = async (postId: Post["_id"]) => {
+      try {
+        const { _id } = await deletePost(postId);
+        setPosts((prevPosts) => prevPosts.filter((post) => post._id !== _id));
+      } catch (error) {
+        console.error("Failed to delete post:", error);
+      }
+    };
+
     return (
       <InfiniteScroll
         className={styles.infiniteScroll}
@@ -101,7 +110,12 @@ const FeedScreen = () => {
         next={fetchMorePosts}
       >
         {posts.map((post) => (
-          <PostCard key={post._id} post={post} onEdit={handleEditPost} />
+          <PostCard
+            key={post._id}
+            post={post}
+            onEdit={handleEditPost}
+            onDelete={() => handleDeletePost(post._id)}
+          />
         ))}
         {fetchMoreError && (
           <div className={styles.error}>Error: {fetchMoreError}</div>
