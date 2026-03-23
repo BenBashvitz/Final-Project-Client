@@ -2,16 +2,12 @@ import axios from "axios";
 import { useEffect, useState, type JSX } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PostCard } from "../../components/postCard/PostCard";
-import {
-  deletePost,
-  getPosts,
-  likePost,
-  unlikePost,
-} from "../../services/posts-api";
+import { deletePost, getPosts } from "../../services/posts-api";
 import type { Cursor, Post } from "../../types/post";
 import { mergeItems } from "../../utils/createPostDialog/merge";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts";
+import { likePost, unlikePost } from "../../services/likes-api";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
