@@ -31,7 +31,7 @@ const App = () => {
           <Route index element={<FeedScreen />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/comments/:postId" element={<CommentsScreen />} />
+          <Route path="/posts/:postId/comments" element={<CommentsScreen />} />
         </Routes>
       </UserProvider>
     </>

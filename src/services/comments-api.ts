@@ -4,7 +4,10 @@ import { apiClient } from "./api-client";
 export const createComment = async (
   comment: CommentInput,
 ): Promise<Comment> => {
-  const { data } = await apiClient.post<Comment>("/comment", comment);
+  const { data } = await apiClient.post<Comment>(
+    `/post/${comment.postId}/comment`,
+    comment,
+  );
 
   return data;
 };

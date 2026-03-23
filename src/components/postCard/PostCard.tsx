@@ -8,6 +8,7 @@ import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
 import { CustomAvatar } from "../avatar/Avatar";
+import { Link } from "react-router-dom";
 
 interface PostCardProps {
   post: Post;
@@ -69,9 +70,12 @@ export const PostCard = ({ post, onEdit, onDelete, onLike }: PostCardProps) => {
             {post.commentCount > 0 && (
               <span className={styles.countText}>{post.commentCount}</span>
             )}
-            <Button variant="ghost" size="sm" className={styles.iconButton}>
+            <Link
+              to={`/posts/${post._id}/comments`}
+              className={styles.iconButton}
+            >
               <MessageCircle className={styles.commentIcon} />
-            </Button>
+            </Link>
           </div>
         </div>
 
