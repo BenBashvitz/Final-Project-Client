@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MessageCircle, Send, TriangleAlert } from "lucide-react";
+import { MessageCircle, Send, TriangleAlert, ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "../../components/button/Button";
@@ -9,7 +9,7 @@ import { createComment, getComments } from "../../services/comments-api";
 import type { Comment, CommentInput } from "../../types/comment";
 import { formatDate } from "../../utils/formatDate";
 import { Input } from "./../../components/input/Input";
-import styles from "./CommentScreen.module.css";
+import styles from "./commentScreen.module.css";
 import { UserAvatar } from "../../components/userAvatar/UserAvatar";
 
 const CommentsScreen = () => {
@@ -72,6 +72,10 @@ const CommentsScreen = () => {
   ) : (
     <div className={styles.container}>
       <div className={styles.header}>
+        <ArrowLeft
+          className={styles.backButton}
+          onClick={() => window.history.back()}
+        />
         <h2 className={styles.title}>
           {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
         </h2>
