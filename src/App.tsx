@@ -1,12 +1,15 @@
 import { lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router";
 import "./App.css";
-import FeedScreen from "./screens/feed/FeedScreen.tsx";
 import { logout } from "./services/auth-api.ts";
 import { UserProvider } from "./contexts/UserContext.tsx";
 
+const FeedScreen = lazy(() => import("./screens/feed/FeedScreen.tsx"));
 const SignUp = lazy(() => import("./screens/SignUp"));
 const SignIn = lazy(() => import("./screens/SignIn"));
+const CommentsScreen = lazy(
+  () => import("./screens/comments/CommentsScreen.tsx"),
+);
 
 const App = () => {
   const navigate = useNavigate();
@@ -28,6 +31,7 @@ const App = () => {
           <Route index element={<FeedScreen />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/posts/:postId/comments" element={<CommentsScreen />} />
         </Routes>
       </UserProvider>
     </>

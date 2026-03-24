@@ -1,12 +1,12 @@
 import type z from "zod";
 import type { PostFormSchema } from "../schemas/postFormSchema";
-import type { PostUser } from "./user";
+import type { AttachedUser } from "./user";
 
 export type Post = {
   _id: string;
   imgUrl: string;
   description: string;
-  user: PostUser;
+  user: AttachedUser;
   likeCount: number;
   commentCount: number;
   creationDate: string;

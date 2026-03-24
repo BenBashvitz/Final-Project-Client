@@ -1,13 +1,14 @@
 import { Heart, MessageCircle } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar/Avatar";
+import { CurrentUserContext } from "../../contexts/contexts";
+import useGetContext from "../../hooks/useGetContext";
+import type { Post } from "../../types/post";
+import { formatDate } from "../../utils/formatDate";
 import { Button } from "../button/Button";
 import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
-import { ONE_DAY_IN_MS, ONE_HOUR_IN_MS, ONE_MINUTE_IN_MS } from "../../consts";
-import type { Post } from "../../types/post";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
-import useGetContext from "../../hooks/useGetContext";
-import { CurrentUserContext } from "../../contexts/contexts";
+import { Link } from "react-router-dom";
+import { UserAvatar } from "../userAvatar/UserAvatar";
 
 interface PostCardProps {
   post: Post;
@@ -21,31 +22,11 @@ export const PostCard = ({ post, onEdit, onDelete, onLike }: PostCardProps) => {
 
   const isOwnPost = post.user._id === currentUser?._id;
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / ONE_MINUTE_IN_MS);
-    const diffHours = Math.floor(diffMs / ONE_HOUR_IN_MS);
-    const diffDays = Math.floor(diffMs / ONE_DAY_IN_MS);
-
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    return date.toLocaleDateString();
-  };
-
   return (
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.userInfo}>
-          <Avatar className={styles.avatar}>
-            <AvatarImage src={post.user.imgUrl} />
-            <AvatarFallback className={styles.avatarFallback}>
-              {post.user.username}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar imgUrl={post.user.imgUrl} username={post.user.username} />
           <div>
             <div className={styles.senderName}>{post.user.username}</div>
             <div className={styles.dateText}>
@@ -86,9 +67,12 @@ export const PostCard = ({ post, onEdit, onDelete, onLike }: PostCardProps) => {
             {post.commentCount > 0 && (
               <span className={styles.countText}>{post.commentCount}</span>
             )}
-            <Button variant="ghost" size="sm" className={styles.iconButton}>
+            <Link
+              to={`/posts/${post._id}/comments`}
+              className={styles.iconButton}
+            >
               <MessageCircle className={styles.commentIcon} />
-            </Button>
+            </Link>
           </div>
         </div>
 

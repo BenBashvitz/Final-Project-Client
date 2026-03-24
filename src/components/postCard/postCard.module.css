@@ -88,6 +88,7 @@
   height: auto;
   padding: 0;
   background: transparent;
+  display: flex;
 }
 
 .heartIcon {

@@ -3,7 +3,7 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { FormProvider, useForm } from "react-hook-form";
 import { editPost, uploadPost } from "../../../services/posts-api";
 import type { Post, PostFormValues } from "../../../types/post";
-import { getDefaultValues } from "../../../utils/createPostDialog/getDefaultValues";
+import { getDefaultValues } from "../../../utils/postDialog/getDefaultValues";
 import { Button } from "../../button/Button";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper";
 import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper";
