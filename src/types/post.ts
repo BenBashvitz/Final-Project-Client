@@ -1,3 +1,4 @@
+import React from 'react';
 import type z from "zod";
 import type { PostFormSchema } from "../schemas/postFormSchema";
 import type { AttachedUser } from "./user";
@@ -32,3 +33,8 @@ export type PostFormValuesSubmission = Omit<PostFormValues, "img"> & {
 export type UploadedPostResponse = {
   imgUrl: string;
 };
+
+export type PostsContext = {
+  posts: Post[];
+  setPosts:  React.Dispatch<React.SetStateAction<Post[]>>
+}
