@@ -71,6 +71,12 @@
   gap: 1rem;
 }
 
+.action {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
 .countText {
   font-size: 0.875rem;
   font-weight: 500;

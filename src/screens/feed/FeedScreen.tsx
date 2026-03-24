@@ -4,8 +4,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { PostCard } from "../../components/postCard/PostCard";
 import { deletePost, getPosts } from "../../services/posts-api";
 import type { Cursor, Post } from "../../types/post";
+import { mergeItems } from "../../utils/merge";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts";
+import { likePost, unlikePost } from "../../services/likes-api";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -80,11 +82,7 @@ const FeedScreen = () => {
     }
 
     const handleEditPost = (editedPost: Post) => {
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post._id === editedPost._id ? { ...post, ...editedPost } : post,
-        ),
-      );
+      setPosts((prevPosts) => mergeItems(prevPosts, editedPost));
     };
 
     const handleDeletePost = async (postId: Post["_id"]) => {
@@ -93,6 +91,18 @@ const FeedScreen = () => {
         setPosts((prevPosts) => prevPosts.filter((post) => post._id !== _id));
       } catch (error) {
         console.error("Failed to delete post:", error);
+      }
+    };
+
+    const handleLikePost = async (post: Post) => {
+      try {
+        const updatedPost = post.isLikedByCurrentUser
+          ? await unlikePost(post._id)
+          : await likePost(post._id);
+
+        setPosts((prevPosts) => mergeItems(prevPosts, updatedPost));
+      } catch (error) {
+        console.error("Failed to like post:", error);
       }
     };
 
@@ -115,6 +125,7 @@ const FeedScreen = () => {
             post={post}
             onEdit={handleEditPost}
             onDelete={() => handleDeletePost(post._id)}
+            onLike={() => handleLikePost(post)}
           />
         ))}
         {fetchMoreError && (
