@@ -40,18 +40,4 @@ const AvatarFallback = ({
   );
 };
 
-type AvatarCustomProps = {
-  imgUrl?: string;
-  username: string;
-};
-
-export const CustomAvatar = ({ imgUrl, username }: AvatarCustomProps) => {
-  return (
-    <Avatar>
-      <AvatarImage src={imgUrl} />
-      <AvatarFallback>{username}</AvatarFallback>
-    </Avatar>
-  );
-};
-
 export { Avatar, AvatarImage, AvatarFallback };
