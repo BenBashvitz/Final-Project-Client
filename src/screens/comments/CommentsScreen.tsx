@@ -2,7 +2,6 @@ import axios from "axios";
 import { MessageCircle, Send, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CustomAvatar } from "../../components/avatar/Avatar";
 import { Button } from "../../components/button/Button";
 import { CurrentUserContext } from "../../contexts/contexts";
 import useGetContext from "../../hooks/useGetContext";
@@ -11,6 +10,7 @@ import type { Comment, CommentInput } from "../../types/comment";
 import { formatDate } from "../../utils/formatDate";
 import { Input } from "./../../components/input/Input";
 import styles from "./CommentScreen.module.css";
+import { UserAvatar } from "../../components/userAvatar/UserAvatar";
 
 const CommentsScreen = () => {
   const [inputValue, setInputValue] = useState("");
@@ -98,7 +98,7 @@ const CommentsScreen = () => {
         <div className={styles.commentsList}>
           {comments.map((comment) => (
             <div key={comment._id} className={styles.commentItem}>
-              <CustomAvatar
+              <UserAvatar
                 imgUrl={comment.user.imgUrl}
                 username={comment.user.username}
               />
@@ -119,7 +119,7 @@ const CommentsScreen = () => {
       )}
 
       <div className={styles.commentInputWrapper}>
-        <CustomAvatar
+        <UserAvatar
           imgUrl={currentUser.imgUrl}
           username={currentUser.username}
         />
