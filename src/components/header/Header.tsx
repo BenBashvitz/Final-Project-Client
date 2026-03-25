@@ -1,6 +1,6 @@
 import {Button} from "../button/Button.tsx";
 import {LogOut, PlusCircle} from "lucide-react";
-import {Avatar, AvatarFallback, AvatarImage} from "../avatar/avatar";
+import {Avatar, AvatarFallback, AvatarImage} from "../avatar/Avatar.tsx";
 import {logout} from "../../services/auth-api.ts";
 import {useNavigate} from "react-router";
 import useGetContext from "../../hooks/useGetContext.ts";
@@ -8,7 +8,7 @@ import {CurrentUserContext, LoadedPostsContext} from "../../contexts/contexts.ts
 
 import styles from "./Header.module.css";
 import {useState} from "react";
-import {PostDialog} from "../postDialog/postDialog.tsx";
+import {PostDialog} from "../postDialog/PostDialog.tsx";
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -49,7 +49,9 @@ export const Header = () => {
                             <div className={styles.divider}/>
 
                             <div className={styles.userSection}>
-                                <Avatar className={styles.avatarContainer}>
+                                <Avatar className={styles.avatarContainer} onClick={() => {
+                                    navigate("/profile");
+                                }}>
                                     <AvatarImage src={currentUser?.imgUrl} alt={currentUser?.username}/>
                                     <AvatarFallback className={styles.avatarFallback}>
                                         {currentUser?.username?.[0].toUpperCase()}

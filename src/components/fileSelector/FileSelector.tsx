@@ -2,7 +2,7 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { Upload, X } from "lucide-react";
 import React, { useRef } from "react";
 import { Button } from "../button/Button";
-import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
+import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback.tsx";
 import styles from "./fileSelector.module.css";
 
 type FileSelectorProps = {

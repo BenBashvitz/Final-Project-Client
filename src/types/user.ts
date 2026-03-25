@@ -1,3 +1,6 @@
+import type {ProfileFormSchema} from "../schemas/profileFormSchema.ts";
+import {z} from "zod";
+
 export type User = {
   _id: string;
   username: string;
@@ -15,6 +18,8 @@ export type UserSignUpPayload = {
   email: string;
   password: string;
 };
+
+export type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
 
 export type UserContext = {
   currentUser: Omit<User, "password"> | null;
