@@ -11,3 +11,13 @@ export const createComment = async (
 
   return data;
 };
+
+export const getComments = (postId: string) => {
+  const abortController = new AbortController();
+
+  const response = apiClient.get<Comment[]>(`/post/${postId}/comment`, {
+    signal: abortController.signal,
+  });
+
+  return { response, abort: () => abortController.abort() };
+};
