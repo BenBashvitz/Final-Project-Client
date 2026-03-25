@@ -7,8 +7,8 @@ import { Button } from "../button/Button";
 import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
-import { CustomAvatar } from "../avatar/Avatar";
 import { Link } from "react-router-dom";
+import { UserAvatar } from "../userAvatar/UserAvatar";
 
 interface PostCardProps {
   post: Post;
@@ -26,10 +26,7 @@ export const PostCard = ({ post, onEdit, onDelete, onLike }: PostCardProps) => {
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.userInfo}>
-          <CustomAvatar
-            imgUrl={post.user.imgUrl}
-            username={post.user.username}
-          />
+          <UserAvatar imgUrl={post.user.imgUrl} username={post.user.username} />
           <div>
             <div className={styles.senderName}>{post.user.username}</div>
             <div className={styles.dateText}>
