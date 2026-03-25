@@ -8,7 +8,6 @@ import {mergeItems} from "../../utils/merge";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts.tsx";
 import {likePost, unlikePost} from "../../services/likes-api";
-import {Header} from "../../components/header/Header.tsx";
 import useGetContext from "../../hooks/useGetContext.ts";
 import {LoadedPostsContext} from "../../contexts/contexts.ts";
 

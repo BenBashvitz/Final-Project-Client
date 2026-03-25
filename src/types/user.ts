@@ -1,5 +1,4 @@
 import type {Dispatch, SetStateAction} from "react";
-import type {Post} from "./post.ts";
 
 export type User = {
   _id: string;

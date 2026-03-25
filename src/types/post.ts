@@ -1,7 +1,7 @@
-import React, {type Dispatch, type SetStateAction} from 'react';
+import {type Dispatch, type SetStateAction} from 'react';
 import type z from "zod";
-import type { PostFormSchema } from "../schemas/postFormSchema";
-import type { AttachedUser } from "./user";
+import type {PostFormSchema} from "../schemas/postFormSchema";
+import type {AttachedUser} from "./user";
 
 export type Post = {
   _id: string;
