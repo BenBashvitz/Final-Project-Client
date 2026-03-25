@@ -111,7 +111,6 @@ const FeedScreen = () => {
 
         return (
             <>
-                <Header/>
                 <InfiniteScroll
                     className={styles.infiniteScroll}
                     hasMore={!!currentCursor}

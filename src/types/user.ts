@@ -1,3 +1,6 @@
+import type {Dispatch, SetStateAction} from "react";
+import type {Post} from "./post.ts";
+
 export type User = {
   _id: string;
   username: string;
@@ -18,5 +21,5 @@ export type UserSignUpPayload = {
 
 export type UserContext = {
   currentUser: Omit<User, "password"> | null;
-  setCurrentUser: (user: Omit<User, "password">) => void;
+  setCurrentUser: Dispatch<SetStateAction<Omit<User, "password"> | null>>
 };

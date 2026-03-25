@@ -4,7 +4,7 @@ import useGetContext from "../../hooks/useGetContext";
 import type { Post } from "../../types/post";
 import { formatDate } from "../../utils/formatDate";
 import { Button } from "../button/Button";
-import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback";
+import { ImageWithFallback } from "../imageWithFallback/ImageWithFallback.tsx";
 import styles from "./postCard.module.css";
 import PostOptions from "./postOptions/PostOptions";
 import { Link } from "react-router-dom";

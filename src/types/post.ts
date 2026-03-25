@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {type Dispatch, type SetStateAction} from 'react';
 import type z from "zod";
 import type { PostFormSchema } from "../schemas/postFormSchema";
 import type { AttachedUser } from "./user";
@@ -36,5 +36,5 @@ export type UploadedPostResponse = {
 
 export type PostsContext = {
   posts: Post[];
-  setPosts:  React.Dispatch<React.SetStateAction<Post[]>>
+  setPosts:  Dispatch<SetStateAction<Post[]>>
 }

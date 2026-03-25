@@ -1,20 +1,29 @@
 import {Button} from "../button/Button.tsx";
-import {LogOut, PlusCircle} from "lucide-react";
-import {Avatar, AvatarFallback, AvatarImage} from "../avatar/avatar";
+import {Home, LogOut, PlusCircle} from "lucide-react";
 import {logout} from "../../services/auth-api.ts";
 import {useNavigate} from "react-router";
 import useGetContext from "../../hooks/useGetContext.ts";
 import {CurrentUserContext, LoadedPostsContext} from "../../contexts/contexts.ts";
 
 import styles from "./Header.module.css";
-import {useState} from "react";
-import {PostDialog} from "../postDialog/postDialog.tsx";
+import {useEffect, useState} from "react";
+import {PostDialog} from "../postDialog/PostDialog.tsx";
+import {UserAvatar} from "../userAvatar/UserAvatar.tsx";
+import {useLocation} from "react-router-dom";
 
 export const Header = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const {currentUser} = useGetContext(CurrentUserContext);
     const {setPosts} = useGetContext(LoadedPostsContext);
+    const [hideHeader, setHideHeader] = useState(true);
     const [showPostCreationDialog, setShowPostCreationDialog] = useState(false);
+
+
+    useEffect(() => {
+        console.log(location.pathname === "/sign-in" || location.pathname === "/sign-up")
+        setHideHeader(location.pathname === "/sign-in" || location.pathname === "/sign-up");
+    }, [location]);
 
     const handleLogout = async (): Promise<void> => {
         try {
@@ -26,9 +35,13 @@ export const Header = () => {
         }
     };
 
+    const handleGoToHome = () => {
+        navigate("/");
+    }
+
     return (
         <>
-            <header className={styles.header}>
+            <header className={styles.header + ' ' + (hideHeader && styles.hide)}>
                 <div className={styles.container}>
                     <div className={styles.wrapper}>
                         <div className={styles.logoSection}>
@@ -37,25 +50,32 @@ export const Header = () => {
                         </div>
 
                         <div className={styles.actionsSection}>
-                            <Button
-                                size="sm"
-                                variant="default"
-                                onClick={() => setShowPostCreationDialog(true)}
-                            >
-                                <PlusCircle size={16}/>
-                                <span className={styles.navLabel}>Create Post</span>
-                            </Button>
+                            {
+                                location.pathname === '/' ?
+                                    <Button
+                                        size="sm"
+                                        variant="default"
+                                        onClick={() => setShowPostCreationDialog(true)}
+                                    >
+                                        <PlusCircle size={16}/>
+                                        <span className={styles.navLabel}>Create Post</span>
+                                    </Button> : <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={handleGoToHome}
+                                    >
+                                        <Home size={16}/>
+                                        <span className={styles.navLabel}>Home</span>
+                                    </Button>
+                            }
 
                             <div className={styles.divider}/>
 
                             <div className={styles.userSection}>
-                                <Avatar className={styles.avatarContainer}>
-                                    <AvatarImage src={currentUser?.imgUrl} alt={currentUser?.username}/>
-                                    <AvatarFallback className={styles.avatarFallback}>
-                                        {currentUser?.username?.[0].toUpperCase()}
-                                    </AvatarFallback>
-                                </Avatar>
-
+                                {
+                                    currentUser &&
+                                    <UserAvatar username={currentUser.username} imgUrl={currentUser.imgUrl}/>
+                                }
                                 <Button
                                     variant="ghost"
                                     size="sm"
