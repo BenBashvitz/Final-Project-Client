@@ -3,7 +3,7 @@ import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Post } from "../../../types/post";
 import { Button } from "../../button/Button";
-import { PostDialog } from "../../postDialog/PostDialog";
+import { PostDialog } from "../../postDialog/PostDialog.tsx";
 import styles from "./postOptions.module.css";
 
 type PostOptionsProps = {

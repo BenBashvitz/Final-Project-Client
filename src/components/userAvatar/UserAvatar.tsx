@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar/Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar/Avatar.tsx";
 
 type AvatarCustomProps = {
   imgUrl?: string;
