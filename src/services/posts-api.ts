@@ -14,7 +14,7 @@ export const getPosts = (cursor?: Cursor, userId?: string) => {
   const response = apiClient.get<PostPage>("/post", {
     signal: abortController.signal,
     params: {
-      cursor,
+      cursor: cursor ? JSON.stringify(cursor) : undefined,
       userId,
     },
   });

@@ -125,18 +125,19 @@ const FeedScreen = () => {
     };
 
     return (
-      <>
+      <div id="scrollableTarget" className={styles.scrollContainer}>
         <InfiniteScroll
-          // className={styles.infiniteScroll}
+          className={styles.infiniteScroll}
           hasMore={!!currentCursor}
-          loader={<div>loading...</div>}
+          loader={<div className={styles.text}>loading...</div>}
           endMessage={
-            <div className={styles.endMessage}>
+            <div className={styles.text}>
               You have reached the end of the feed
             </div>
           }
           dataLength={posts.length}
           next={fetchMorePosts}
+          scrollableTarget="scrollableTarget"
         >
           {posts.map((post) => (
             <PostCard
@@ -151,31 +152,44 @@ const FeedScreen = () => {
             <div className={styles.error}>Error: {fetchMoreError}</div>
           )}
         </InfiniteScroll>
-      </>
+      </div>
     );
+  };
+
+  const handleTabSelection = () => {
+    setIsLoading(true);
+    setCurrentCursor(null);
+  };
+
+  const handleMyPostsSelection = () => {
+    handleTabSelection();
+    setMyPostsSelected(true);
+  };
+
+  const handleAllPostsSelection = () => {
+    handleTabSelection();
+    setMyPostsSelected(false);
   };
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.contentWrapper}>
-        <div className={styles.tabs}>
-          <div
-            className={`${styles.tab} ${!myPostsSelected ? styles.active : ""}`}
-            onClick={() => setMyPostsSelected(false)}
-          >
-            <Home className={styles.icon} />
-            All Posts
-          </div>
-          <div
-            className={`${styles.tab} ${myPostsSelected ? styles.active : ""}`}
-            onClick={() => setMyPostsSelected(true)}
-          >
-            <UserIcon className={styles.icon} />
-            My Posts
-          </div>
+      <div className={styles.tabs}>
+        <div
+          className={`${styles.tab} ${!myPostsSelected ? styles.active : ""}`}
+          onClick={handleAllPostsSelection}
+        >
+          <Home className={styles.icon} />
+          All Posts
         </div>
-        {getContent()}
+        <div
+          className={`${styles.tab} ${myPostsSelected ? styles.active : ""}`}
+          onClick={handleMyPostsSelection}
+        >
+          <UserIcon className={styles.icon} />
+          My Posts
+        </div>
       </div>
+      {getContent()}
     </div>
   );
 };

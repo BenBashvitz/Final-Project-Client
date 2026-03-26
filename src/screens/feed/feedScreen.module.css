@@ -1,5 +1,5 @@
-.endMessage {
-  margin-top: 1.5rem;
+.text {
+  margin: 1.5rem 0;
   text-align: center;
 }
 
@@ -8,12 +8,21 @@
   margin-top: 1.5rem;
 }
 
+.scrollContainer {
+  flex: 1;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .infiniteScroll {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #f5eef4;
-  min-height: 100vh;
+  width: 100vw;
 }
 
 .container {
@@ -26,17 +35,14 @@
 
 .wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
   background-color: #f5eef4;
   height: calc(100vh - var(--header-height) - var(--header-border-thickness));
-}
-
-.contentWrapper {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  width: 20vw;
-  gap: 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .tabs {
@@ -45,6 +51,7 @@
   border-radius: calc(0.625rem + 4px);
   background-color: oklch(94.8% 0.028 342.258);
   padding: 3px;
+  width: 30vw;
 }
 
 .tab {
