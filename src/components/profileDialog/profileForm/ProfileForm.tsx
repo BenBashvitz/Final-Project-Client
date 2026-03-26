@@ -63,7 +63,6 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
                             {...register("username")}
                             className={styles.inputField}
                         />
-                        {errors.username && <span className="text-red-500 text-xs">{errors.username.message}</span>}
                     </div>
                 </FormFieldErrorWrapper>
                 <div className={styles.actions}>
