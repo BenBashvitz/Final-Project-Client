@@ -188,14 +188,14 @@ const FeedScreen = () => {
       <div className={styles.tabs}>
         <div
           className={`${styles.tab} ${!myPostsSelected ? styles.active : ""}`}
-          onClick={handleAllPostsSelection}
+          onClick={() => myPostsSelected && handleAllPostsSelection()}
         >
           <Home className={styles.icon} />
           All Posts
         </div>
         <div
           className={`${styles.tab} ${myPostsSelected ? styles.active : ""}`}
-          onClick={handleMyPostsSelection}
+          onClick={() => !myPostsSelected && handleMyPostsSelection()}
         >
           <UserIcon className={styles.icon} />
           My Posts
