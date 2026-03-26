@@ -53,7 +53,7 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
                 </div>
 
                 <FormFieldErrorWrapper error={errors.username?.message}>
-                    <div className={styles.fieldGroup}>
+                    <div className="formGroup">
                         <LabelPrimitive.Root
                             htmlFor="edit-username"
                             className={styles.label}
