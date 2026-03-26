@@ -7,7 +7,9 @@ import type { Cursor, Post } from "../../types/post";
 import { mergeItems } from "../../utils/merge";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts.tsx";
-import { likePost, unlikePost } from "../../services/likes-api";
+import {likePost, unlikePost} from "../../services/likes-api";
+import useGetContext from "../../hooks/useGetContext.ts";
+import {LoadedPostsContext} from "../../contexts/contexts.ts";
 
 const FeedScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);

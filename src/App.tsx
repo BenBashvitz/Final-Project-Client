@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router";
 import "./App.css";
 import {UserProvider} from "./contexts/UserContext.tsx";
 import {PostsProvider} from "./contexts/PostsContext.tsx";
+import {Header} from "./components/header/Header.tsx";
 
 const FeedScreen = lazy(() => import("./screens/feed/FeedScreen.tsx"));
 const SignUp = lazy(() => import("./screens/SignUp"));
@@ -17,6 +18,7 @@ const App = () => {
         <>
             <UserProvider>
                 <PostsProvider>
+                    <Header/>
                     <Routes>
                         <Route index element={<FeedScreen/>}/>
                         <Route path="/sign-in" element={<SignIn/>}/>
