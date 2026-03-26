@@ -72,10 +72,11 @@ export const Header = () => {
 
                             <div className={styles.userSection}>
                                 {
-                                    currentUser &&
-                                    <UserAvatar username={currentUser.username} imgUrl={currentUser.imgUrl} onClick={() => {
+                                    currentUser && <div onClick={() => {
                                         navigate("/profile");
-                                    }}/>
+                                    }}>
+                                        <UserAvatar className={styles.avatarContainer} username={currentUser.username} imgUrl={currentUser.imgUrl}/>
+                                    </div>
                                 }
                                 <Button
                                     variant="ghost"

@@ -1,16 +1,17 @@
-import { FormProvider, useForm } from "react-hook-form";
-import type { ProfileFormValues, User } from "../../../types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ProfileFormSchema } from "../../../schemas/profileFormSchema.ts";
-import { editProfile } from "../../../services/user-api.ts";
-import { Button } from "../../button/Button.tsx";
+import {FormProvider, useForm} from "react-hook-form";
+import type {ProfileFormValues, User} from "../../../types";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {ProfileFormSchema} from "../../../schemas/profileFormSchema.ts";
+import {editProfile} from "../../../services/user-api.ts";
+import {Button} from "../../button/Button.tsx";
 import * as LabelPrimitive from "@radix-ui/react-label";
-import { Input } from "../../input/Input.tsx";
+import {Input} from "../../input/Input.tsx";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper.tsx";
-import { DevTool } from "@hookform/devtools";
+import {DevTool} from "@hookform/devtools";
 
 // Import styles
 import styles from "./ProfileForm.module.css";
+import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 
 type ProfileFormProps = {
     user: Omit<User, "password">;
@@ -51,35 +52,22 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
                     <FileSelectorWrapper/>
                 </div>
 
-                <div className={styles.fieldGroup}>
-                    <LabelPrimitive.Root
-                        htmlFor="edit-username"
-                        className={styles.label}
-                    >
-                        Username
-                    </LabelPrimitive.Root>
-                    <Input
-                        id="edit-username"
-                        {...register("username")}
-                        className={styles.inputField}
-                    />
-                    {errors.username && <span className="text-red-500 text-xs">{errors.username.message}</span>}
-                </div>
-
-                <div className={styles.fieldGroup}>
-                    <LabelPrimitive.Root
-                        htmlFor="edit-email"
-                        className={styles.label}
-                    >
-                        Email
-                    </LabelPrimitive.Root>
-                    <Input
-                        id="edit-email"
-                        type="email"
-                        className={styles.inputField}
-                    />
-                </div>
-
+                <FormFieldErrorWrapper error={errors.username?.message}>
+                    <div className={styles.fieldGroup}>
+                        <LabelPrimitive.Root
+                            htmlFor="edit-username"
+                            className={styles.label}
+                        >
+                            Username
+                        </LabelPrimitive.Root>
+                        <Input
+                            id="edit-username"
+                            {...register("username")}
+                            className={styles.inputField}
+                        />
+                        {errors.username && <span className="text-red-500 text-xs">{errors.username.message}</span>}
+                    </div>
+                </FormFieldErrorWrapper>
                 <div className={styles.actions}>
                     <Button type="button" variant="outline" onClick={onClose}>
                         Cancel
@@ -91,7 +79,7 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
                     </Button>
                 </div>
             </form>
-            <DevTool control={control} />
+            <DevTool control={control}/>
         </FormProvider>
     )
 }
