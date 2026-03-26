@@ -8,8 +8,6 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import {Input} from "../../input/Input.tsx";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper.tsx";
 import {DevTool} from "@hookform/devtools";
-
-// Import styles
 import styles from "./ProfileForm.module.css";
 import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 
@@ -48,7 +46,7 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
     return (
         <FormProvider {...data}>
             <form onSubmit={handleSubmit(handleSubmission)} className={styles.form}>
-                <div className={styles.fieldGroup}>
+                <div className="formGroup">
                     <FileSelectorWrapper/>
                 </div>
 
