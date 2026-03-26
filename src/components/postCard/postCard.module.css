@@ -8,7 +8,6 @@
   transition: box-shadow 0.2s ease;
   background-color: #ffffff;
   color: #111827;
-  width: 30vw;
 }
 
 .card:hover {

@@ -1,5 +1,6 @@
 .endMessage {
   margin-top: 1.5rem;
+  text-align: center;
 }
 
 .error {
@@ -21,4 +22,48 @@
   background-color: #f5eef4;
   align-items: center;
   height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: #f5eef4;
+  height: calc(100vh - var(--header-height) - var(--header-border-thickness));
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 20vw;
+  gap: 1.5rem;
+}
+
+.tabs {
+  background-color: red;
+  display: flex;
+  border-radius: calc(0.625rem + 4px);
+  background-color: oklch(94.8% 0.028 342.258);
+  padding: 3px;
+}
+
+.tab {
+  flex: 1;
+  border-radius: calc(0.625rem + 4px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 3px;
+}
+
+.tab.active {
+  background-color: red;
+  color: white;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
 }
