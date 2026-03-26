@@ -8,12 +8,15 @@ import type {
 } from "../types/post";
 import { apiClient } from "./api-client";
 
-export const getPosts = (cursor: Cursor | null) => {
+export const getPosts = (cursor?: Cursor, userId?: string) => {
   const abortController = new AbortController();
 
   const response = apiClient.get<PostPage>("/post", {
     signal: abortController.signal,
-    params: cursor ? { cursor: JSON.stringify(cursor) } : undefined,
+    params: {
+      cursor,
+      userId,
+    },
   });
 
   return { response, abort: () => abortController.abort() };
