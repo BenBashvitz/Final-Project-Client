@@ -134,7 +134,9 @@ const FeedScreen = () => {
         <InfiniteScroll
           className={styles.infiniteScroll}
           hasMore={!!currentCursor}
-          loader={<div className={styles.text}>loading...</div>}
+          loader={
+            !fetchMoreError && <div className={styles.text}>loading...</div>
+          }
           endMessage={
             <div className={styles.text}>
               You have reached the end of the feed
