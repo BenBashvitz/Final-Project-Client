@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Home, UserIcon } from "lucide-react";
-import { type JSX, useEffect, useState } from "react";
+import { type JSX, useEffect, useState, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PostCard } from "../../components/postCard/PostCard";
 import {
@@ -26,6 +26,7 @@ const FeedScreen = () => {
   const [fetchMoreError, setFetchMoreError] = useState<string | null>(null);
   const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
   const [myPostsSelected, setMyPostsSelected] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const { response, abort } = myPostsSelected
@@ -125,7 +126,11 @@ const FeedScreen = () => {
     };
 
     return (
-      <div id="scrollableTarget" className={styles.scrollContainer}>
+      <div
+        ref={scrollRef}
+        id="scrollableTarget"
+        className={styles.scrollContainer}
+      >
         <InfiniteScroll
           className={styles.infiniteScroll}
           hasMore={!!currentCursor}
@@ -149,7 +154,11 @@ const FeedScreen = () => {
             />
           ))}
           {fetchMoreError && (
-            <div className={styles.error}>Error: {fetchMoreError}</div>
+            <div
+              className={[styles.error, styles.text].filter(Boolean).join(" ")}
+            >
+              Error: {fetchMoreError}
+            </div>
           )}
         </InfiniteScroll>
       </div>
@@ -157,6 +166,9 @@ const FeedScreen = () => {
   };
 
   const handleTabSelection = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
     setIsLoading(true);
     setCurrentCursor(null);
   };
