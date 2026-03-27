@@ -2,7 +2,6 @@ import type {Dispatch, SetStateAction} from "react";
 import type {ProfileFormSchema} from "../schemas/profileFormSchema.ts";
 import {z} from "zod";
 
-
 export type User = {
     _id: string;
     username: string;
