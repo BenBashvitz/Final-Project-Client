@@ -1,12 +1,12 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import DialogContent from "../dialog/Dialog.tsx";
 import ProfileForm from './profileForm/ProfileForm.tsx'
-import type {ProfileUpdate, User} from "../../types";
+import type {LoggedInUser, ProfileUpdate} from "../../types";
 
 type ProfileDialogProps = {
     open: boolean;
     onClose: () => void;
-    user: Omit<User, "password">;
+    user: LoggedInUser;
     onSubmit: (user: ProfileUpdate) => void;
 }
 

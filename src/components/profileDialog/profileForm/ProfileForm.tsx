@@ -1,5 +1,5 @@
 import {FormProvider, useForm} from "react-hook-form";
-import type {ProfileFormValues, ProfileUpdate, User} from "../../../types";
+import type {LoggedInUser, ProfileFormValues, ProfileUpdate} from "../../../types";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ProfileFormSchema} from "../../../schemas/profileFormSchema.ts";
 import {editProfile} from "../../../services/user-api.ts";
@@ -11,7 +11,7 @@ import styles from "./ProfileForm.module.css";
 import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 
 type ProfileFormProps = {
-    user: Omit<User, "password">;
+    user: LoggedInUser;
     onClose: () => void;
     onSubmit: (user: ProfileUpdate) => void;
 }
