@@ -23,7 +23,7 @@ const App = () => {
                         <Route index element={<FeedScreen/>}/>
                         <Route path="/sign-in" element={<SignIn/>}/>
                         <Route path="/sign-up" element={<SignUp/>}/>
-                        <Route path="/profile" element={<ProfileScreen/>}></Route>
+                        <Route path="/profile" element={<ProfileScreen/>}/>
                         <Route path="/posts/:postId/comments" element={<CommentsScreen/>}/>
                     </Routes>
                 </PostsProvider>

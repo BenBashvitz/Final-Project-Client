@@ -27,3 +27,5 @@ export type UserContext = {
   currentUser: Omit<User, "password"> | null;
   setCurrentUser: Dispatch<SetStateAction<Omit<User, "password"> | null>>
 };
+
+export type ProfileUpdate = Pick<User, 'imgUrl' | 'username'>

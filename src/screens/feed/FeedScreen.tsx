@@ -12,7 +12,7 @@ import useGetContext from "../../hooks/useGetContext.ts";
 import {LoadedPostsContext} from "../../contexts/contexts.ts";
 
 const FeedScreen = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const {posts, setPosts} = useGetContext(LoadedPostsContext);
   const [isLoading, setIsLoading] = useState(true);
   const [initialFetchError, setInitialFetchError] = useState<string | null>(
     null,

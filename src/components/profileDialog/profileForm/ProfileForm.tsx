@@ -1,5 +1,5 @@
 import {FormProvider, useForm} from "react-hook-form";
-import type {ProfileFormValues, User} from "../../../types";
+import type {ProfileFormValues, ProfileUpdate, User} from "../../../types";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ProfileFormSchema} from "../../../schemas/profileFormSchema.ts";
 import {editProfile} from "../../../services/user-api.ts";
@@ -7,14 +7,13 @@ import {Button} from "../../button/Button.tsx";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import {Input} from "../../input/Input.tsx";
 import FileSelectorWrapper from "../../fileSelectorWrapper/FileSelectorWrapper.tsx";
-import {DevTool} from "@hookform/devtools";
 import styles from "./ProfileForm.module.css";
 import FormFieldErrorWrapper from "../../formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
 
 type ProfileFormProps = {
     user: Omit<User, "password">;
     onClose: () => void;
-    onSubmit: (user: User) => void;
+    onSubmit: (user: ProfileUpdate) => void;
 }
 
 const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
@@ -29,13 +28,12 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
     const {
         register,
         handleSubmit,
-        control,
         formState: {errors},
     } = data;
 
-    const handleSubmission = async ({username, img}: ProfileFormValues) => {
+    const handleSubmission = async (profileForm: ProfileFormValues) => {
         try {
-            const editedProfile = await editProfile({username, img}, user);
+            const editedProfile = await editProfile(profileForm, user);
             onSubmit(editedProfile);
             onClose();
         } catch (error) {
@@ -46,10 +44,7 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
     return (
         <FormProvider {...data}>
             <form onSubmit={handleSubmit(handleSubmission)} className={styles.form}>
-                <div className="formGroup">
-                    <FileSelectorWrapper/>
-                </div>
-
+                <FileSelectorWrapper/>
                 <FormFieldErrorWrapper error={errors.username?.message}>
                     <div className="formGroup">
                         <LabelPrimitive.Root
@@ -76,7 +71,6 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
                     </Button>
                 </div>
             </form>
-            <DevTool control={control}/>
         </FormProvider>
     )
 }

@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Camera, Grid3x3, Settings} from 'lucide-react';
-import type {User, UserContext} from "../../types";
+import type {ProfileUpdate, User, UserContext} from "../../types";
 import type {Post} from "../../types/post.ts";
 import {Button} from "../../components/button/Button.tsx";
 import {PostCard} from "../../components/postCard/PostCard.tsx";
@@ -61,14 +61,15 @@ const ProfileScreen = () => {
             console.error("Failed to like post:", error);
         }
     };
+    const handleUpdateUser = (profileUpdate: ProfileUpdate)=> {
+        setCurrentUser(mergeItems([user], profileUpdate)[0])
+    }
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.headerContent}>
-                    <div className="relative">
-                        <UserAvatar className={styles.avatarLarge} username={user.username} imgUrl={user.imgUrl} />
-                    </div>
+                    <UserAvatar className={styles.avatarLarge} username={user.username} imgUrl={user.imgUrl}/>
 
                     <div className={styles.infoSection}>
                         <div className={styles.titleRow}>
@@ -79,7 +80,7 @@ const ProfileScreen = () => {
                                 onClick={() => setIsEditDialogOpen(true)}
                                 className={styles.editButton}
                             >
-                                <Settings className="h-4 w-4 mr-2" />
+                                <Settings className="h-4 w-4 mr-2"/>
                                 Edit Profile
                             </Button>
                         </div>
@@ -98,14 +99,14 @@ const ProfileScreen = () => {
 
             <div className={styles.gridHeader}>
                 <div className={styles.gridTab}>
-                    <Grid3x3 />
+                    <Grid3x3/>
                     <span className={styles.gridTabText}>Posts</span>
                 </div>
             </div>
 
             {posts.length === 0 ? (
                 <div className={styles.emptyState}>
-                    <Camera className={styles.emptyIcon} />
+                    <Camera className={styles.emptyIcon}/>
                     <p className="text-xl font-semibold text-gray-600 mb-2">No Posts Yet</p>
                     <p className="text-gray-500">
                         Share your first post!
@@ -125,7 +126,8 @@ const ProfileScreen = () => {
                 </div>
             )}
 
-            <ProfileDialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} user={user} onSubmit={setCurrentUser}/>
+            <ProfileDialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} user={user}
+                           onSubmit={handleUpdateUser}/>
         </div>
     );
 }
