@@ -4,7 +4,6 @@ import {logout} from "../../services/auth-api.ts";
 import {useNavigate} from "react-router";
 import useGetContext from "../../hooks/useGetContext.ts";
 import {CurrentUserContext, LoadedPostsContext} from "../../contexts/contexts.ts";
-
 import styles from "./Header.module.css";
 import {useEffect, useState} from "react";
 import {PostDialog} from "../postDialog/PostDialog.tsx";
@@ -74,7 +73,10 @@ export const Header = () => {
                             <div className={styles.userSection}>
                                 {
                                     currentUser &&
-                                    <UserAvatar username={currentUser.username} imgUrl={currentUser.imgUrl}/>
+                                    <UserAvatar className={styles.avatarContainer} username={currentUser.username}
+                                                imgUrl={currentUser.imgUrl} onClick={() => {
+                                        navigate("/profile");
+                                    }}/>
                                 }
                                 <Button
                                     variant="ghost"
