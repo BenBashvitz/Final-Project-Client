@@ -45,10 +45,9 @@
 }
 
 .tabs {
-  background-color: red;
   display: flex;
   border-radius: calc(0.625rem + 4px);
-  background-color: oklch(94.8% 0.028 342.258);
+  background-color: #eef4f8;
   padding: 3px;
   width: 30vw;
 }
@@ -65,8 +64,8 @@
 }
 
 .tab.active {
-  background-color: red;
   color: white;
+  background: linear-gradient(to right, #a855f7, #57d0ee);
 }
 
 .icon {

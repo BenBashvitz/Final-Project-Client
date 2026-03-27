@@ -1,18 +1,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: calc(
-    100vh - var(--header-height) - var(--header-border-thickness)
-  );
+  height: calc(100vh - var(--header-height) - var(--header-border-thickness));
   box-sizing: border-box;
 }
 
 .header {
   padding: 1rem;
   border-bottom: 2px solid #f9a8d4;
-  display: flex;
-  align-items: center;
-  gap: 32px;
 }
 
 .title {
@@ -55,6 +50,7 @@
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
+  overflow-y: auto;
   flex: 1;
 }
 
