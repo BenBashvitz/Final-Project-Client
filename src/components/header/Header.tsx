@@ -20,8 +20,7 @@ export const Header = () => {
 
 
     useEffect(() => {
-        console.log(location.pathname === "/sign-in" || location.pathname === "/sign-up")
-        setHideHeader(location.pathname === "/sign-in" || location.pathname === "/sign-up");
+        setHideHeader(location.pathname === "/login" || location.pathname === "/sign-up");
     }, [location]);
 
     const handleLogout = async (): Promise<void> => {

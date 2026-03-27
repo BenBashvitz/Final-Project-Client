@@ -1,5 +1,5 @@
 import z from "zod";
-import {DESCRIPTION_ERROR_MESSAGE,} from "../consts/postForm";
+import {DESCRIPTION_ERROR_MESSAGE,} from "../components/postDialog/postForm/consts.ts";
 import {IMAGE_ERROR_MESSAGE} from "../consts.ts";
 
 export const PostFormSchema = z.object({

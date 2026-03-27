@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {PASSWORD_REQUIRED} from "../consts/loginForms.ts";
+import {PASSWORD_REQUIRED} from "../screens/login/consts.ts";
 import {USERNAME_REQUIRED} from "../consts.ts";
 
 export const SignInFormSchema = z.object({
