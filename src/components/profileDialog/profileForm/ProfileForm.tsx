@@ -37,7 +37,7 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
             onSubmit(editedProfile);
             onClose();
         } catch (error) {
-            console.error("Image upload failed:", error);
+            console.error("Error updating profile:", error);
         }
     };
 
