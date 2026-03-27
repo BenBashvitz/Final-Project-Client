@@ -9,9 +9,10 @@ import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormField
 import { CurrentUserContext } from "../contexts/contexts.ts";
 import useGetContext from "../hooks/useGetContext.ts";
 import { SignInFormSchema } from "../schemas/signInFormSchema.ts";
-import { signIn } from "../services/auth-api.ts";
+import {googleSignIn, signIn} from "../services/auth-api.ts";
 import type { UserSignInPayload } from "../types";
 import styles from "./Login.module.css";
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 
 const SignIn = () => {
   const {
@@ -49,6 +50,25 @@ const SignIn = () => {
     }
   };
 
+  const handleGoogleLoginSuccess = async (
+      credentialResponse: CredentialResponse,
+  ) => {
+    console.log("Google login successful:", credentialResponse);
+
+    try {
+      const user = await googleSignIn(credentialResponse);
+
+      setCurrentUser(user);
+      navigate("/");
+    } catch (error) {
+      console.error("Google login error:", error);
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    console.error("Google login failed");
+  };
+
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
@@ -84,6 +104,11 @@ const SignIn = () => {
             {error && <div className={styles.errorMessage}>{error}</div>}
 
             <Button type="submit">Sign In</Button>
+
+            <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+            />
           </form>
 
           <Button

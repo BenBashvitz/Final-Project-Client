@@ -1,6 +1,7 @@
 import { apiClient } from "./api-client";
 import type { User, UserSignInPayload, UserSignUpPayload } from "../types";
 import type { AxiosError } from "axios";
+import type {CredentialResponse} from "@react-oauth/google";
 
 export const signIn = async (
   payload: UserSignInPayload,
@@ -77,4 +78,13 @@ export const refreshTokenOnUnauthorized = (onRefreshError: () => void) => {
       return Promise.reject(error);
     },
   );
+};
+
+export const googleSignIn = async (credentialResponse: CredentialResponse) => {
+    const {data} = await apiClient.post<Omit<User, "password">>(
+        "/auth/google",
+        credentialResponse,
+    );
+
+    return data;
 };
