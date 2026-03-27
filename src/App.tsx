@@ -11,6 +11,7 @@ const SignIn = lazy(() => import("./screens/SignIn"));
 const CommentsScreen = lazy(
     () => import("./screens/comments/CommentsScreen.tsx"),
 );
+const ProfileScreen = lazy(() => import("./screens/profile/ProfileScreen"))
 
 const App = () => {
     return (
@@ -22,6 +23,7 @@ const App = () => {
                         <Route index element={<FeedScreen/>}/>
                         <Route path="/sign-in" element={<SignIn/>}/>
                         <Route path="/sign-up" element={<SignUp/>}/>
+                        <Route path="/profile" element={<ProfileScreen/>}/>
                         <Route path="/posts/:postId/comments" element={<CommentsScreen/>}/>
                     </Routes>
                 </PostsProvider>

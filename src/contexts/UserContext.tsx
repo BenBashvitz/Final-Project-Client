@@ -1,11 +1,11 @@
 import {type PropsWithChildren, useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {refreshToken, refreshTokenOnUnauthorized} from "../services/auth-api";
-import type {User} from "../types";
+import type {LoggedInUser} from "../types";
 import {CurrentUserContext} from "./contexts";
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
-  const [currentUser, setCurrentUser] = useState<Omit<User, "password"> | null>(
+  const [currentUser, setCurrentUser] = useState<LoggedInUser | null>(
     null,
   );
 

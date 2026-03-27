@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Home, UserIcon } from "lucide-react";
-import { type JSX, useEffect, useState, useRef } from "react";
+import { type JSX, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PostCard } from "../../components/postCard/PostCard";
 import {
