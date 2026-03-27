@@ -2,16 +2,16 @@ import styles from "./Login.module.css";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import type { UserSignUpPayload } from "../types";
+import type { UserSignUpPayload } from "../../types";
 import { useState } from "react";
-import { signUp } from "../services/auth-api.ts";
+import { signUp } from "../../services/auth-api.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpFormSchema } from "../schemas/signUpFormSchema.ts";
-import { LoginHeader } from "../components/LoginHeader/LoginHeader.tsx";
-import { Button } from "../components/button/Button.tsx";
-import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
-import useGetContext from "../hooks/useGetContext.ts";
-import { CurrentUserContext } from "../contexts/contexts.ts";
+import { SignUpFormSchema } from "../../schemas/signUpFormSchema.ts";
+import { LoginHeader } from "../../components/LoginHeader/LoginHeader.tsx";
+import { Button } from "../../components/button/Button.tsx";
+import FormFieldErrorWrapper from "../../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
+import useGetContext from "../../hooks/useGetContext.ts";
+import { CurrentUserContext } from "../../contexts/contexts.ts";
 
 const SignUp = () => {
   const {

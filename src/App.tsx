@@ -8,8 +8,8 @@ import {GoogleOAuthProvider} from "@react-oauth/google";
 import {googleClientId} from "./consts.ts";
 
 const FeedScreen = lazy(() => import("./screens/feed/FeedScreen.tsx"));
-const SignUp = lazy(() => import("./screens/SignUp"));
-const SignIn = lazy(() => import("./screens/SignIn"));
+const SignUp = lazy(() => import("./screens/login/SignUp.tsx"));
+const SignIn = lazy(() => import("./screens/login/SignIn.tsx"));
 const CommentsScreen = lazy(
     () => import("./screens/comments/CommentsScreen.tsx"),
 );

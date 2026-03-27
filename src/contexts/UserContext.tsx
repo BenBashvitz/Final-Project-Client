@@ -23,7 +23,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
         .then((user) => {
           setCurrentUser(user);
           if (
-            location.pathname === "/sign-in" ||
+            location.pathname === "/login" ||
             location.pathname === "/sign-up"
           ) {
             navigate("/");
