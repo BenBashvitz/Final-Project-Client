@@ -1,8 +1,9 @@
 import axios from "axios";
-import { MessageCircle, Send, TriangleAlert, ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { MessageCircle, Send, TriangleAlert } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Button } from "../../components/button/Button";
+import { UserAvatar } from "../../components/userAvatar/UserAvatar";
 import { CurrentUserContext } from "../../contexts/contexts";
 import useGetContext from "../../hooks/useGetContext";
 import { createComment, getComments } from "../../services/comments-api";
@@ -10,16 +11,15 @@ import type { Comment, CommentInput } from "../../types/comment";
 import { formatDate } from "../../utils/formatDate";
 import { Input } from "./../../components/input/Input";
 import styles from "./commentScreen.module.css";
-import { UserAvatar } from "../../components/userAvatar/UserAvatar";
 
 const CommentsScreen = () => {
   const [inputValue, setInputValue] = useState("");
   const { currentUser } = useGetContext(CurrentUserContext);
   const { postId } = useParams();
-  const navigate = useNavigate();
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const commentsListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (postId) {
@@ -43,6 +43,13 @@ const CommentsScreen = () => {
       return abort;
     }
   }, [postId]);
+
+  useEffect(() => {
+    commentsListRef.current?.scrollTo({
+      top: commentsListRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [comments]);
 
   const handleSubmit = async () => {
     try {
@@ -73,7 +80,6 @@ const CommentsScreen = () => {
   ) : (
     <div className={styles.container}>
       <div className={styles.header}>
-        <ArrowLeft className={styles.backButton} onClick={() => navigate(-1)} />
         <h2 className={styles.title}>
           {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
         </h2>
@@ -97,7 +103,7 @@ const CommentsScreen = () => {
           )}
         </div>
       ) : (
-        <div className={styles.commentsList}>
+        <div className={styles.commentsList} ref={commentsListRef}>
           {comments.map((comment) => (
             <div key={comment._id} className={styles.commentItem}>
               <UserAvatar

@@ -5,3 +5,8 @@ body {
 #root {
   font-family: system-ui;
 }
+
+:root {
+  --header-height: 4rem;
+  --header-border-thickness: 1px;
+}

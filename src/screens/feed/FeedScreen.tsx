@@ -1,27 +1,37 @@
 import axios from "axios";
-import { useEffect, useState, type JSX } from "react";
+import { Home, UserIcon } from "lucide-react";
+import { type JSX, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PostCard } from "../../components/postCard/PostCard";
+import {
+  CurrentUserContext,
+  LoadedPostsContext,
+} from "../../contexts/contexts.ts";
+import useGetContext from "../../hooks/useGetContext.ts";
+import { likePost, unlikePost } from "../../services/likes-api";
 import { deletePost, getPosts } from "../../services/posts-api";
 import type { Cursor, Post } from "../../types/post";
 import { mergeItems } from "../../utils/merge";
 import styles from "./feedScreen.module.css";
 import NoPosts from "./noPosts/NoPosts.tsx";
-import {likePost, unlikePost} from "../../services/likes-api";
-import useGetContext from "../../hooks/useGetContext.ts";
-import {LoadedPostsContext} from "../../contexts/contexts.ts";
 
 const FeedScreen = () => {
-  const {posts, setPosts} = useGetContext(LoadedPostsContext);
+  const { posts, setPosts } = useGetContext(LoadedPostsContext);
+  const { currentUser } = useGetContext(CurrentUserContext);
+
   const [isLoading, setIsLoading] = useState(true);
   const [initialFetchError, setInitialFetchError] = useState<string | null>(
     null,
   );
   const [fetchMoreError, setFetchMoreError] = useState<string | null>(null);
   const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
+  const [myPostsSelected, setMyPostsSelected] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const { response, abort } = getPosts(null);
+    const { response, abort } = myPostsSelected
+      ? getPosts(currentCursor ?? undefined, currentUser?._id)
+      : getPosts(currentCursor ?? undefined);
     response
       .then(({ data: { posts, cursor } }) => {
         setPosts(posts);
@@ -39,17 +49,24 @@ const FeedScreen = () => {
       });
 
     return abort;
-  }, []);
+  }, [myPostsSelected]);
 
   const fetchMorePosts = async () => {
     try {
-      const { response } = getPosts(currentCursor);
-      const {
-        data: { posts, cursor },
-      } = await response;
+      if (!currentCursor) {
+        console.error("current cursor is null, cannot fetch more posts");
+        setFetchMoreError("Failed to fetch more posts");
+      } else {
+        const { response } = myPostsSelected
+          ? getPosts(currentCursor, currentUser?._id)
+          : getPosts(currentCursor);
+        const {
+          data: { posts, cursor },
+        } = await response;
 
-      setPosts((prevPosts) => prevPosts.concat(posts));
-      setCurrentCursor(cursor);
+        setPosts((prevPosts) => prevPosts.concat(posts));
+        setCurrentCursor(cursor);
+      }
     } catch (error) {
       console.error("Failed to fetch more posts:", error);
       setFetchMoreError("Failed to fetch more posts");
@@ -109,35 +126,86 @@ const FeedScreen = () => {
     };
 
     return (
-      <InfiniteScroll
-        className={styles.infiniteScroll}
-        hasMore={!!currentCursor}
-        loader={<div>loading...</div>}
-        endMessage={
-          <div className={styles.endMessage}>
-            You have reached the end of the feed
-          </div>
-        }
-        dataLength={posts.length}
-        next={fetchMorePosts}
+      <div
+        ref={scrollRef}
+        id="scrollableTarget"
+        className={styles.scrollContainer}
       >
-        {posts.map((post) => (
-          <PostCard
-            key={post._id}
-            post={post}
-            onEdit={handleEditPost}
-            onDelete={() => handleDeletePost(post._id)}
-            onLike={() => handleLikePost(post)}
-          />
-        ))}
-        {fetchMoreError && (
-          <div className={styles.error}>Error: {fetchMoreError}</div>
-        )}
-      </InfiniteScroll>
+        <InfiniteScroll
+          className={styles.infiniteScroll}
+          hasMore={!!currentCursor}
+          loader={
+            !fetchMoreError && <div className={styles.text}>loading...</div>
+          }
+          endMessage={
+            <div className={styles.text}>
+              You have reached the end of the feed
+            </div>
+          }
+          dataLength={posts.length}
+          next={fetchMorePosts}
+          scrollableTarget="scrollableTarget"
+        >
+          {posts.map((post) => (
+            <PostCard
+              key={post._id}
+              post={post}
+              onEdit={handleEditPost}
+              onDelete={() => handleDeletePost(post._id)}
+              onLike={() => handleLikePost(post)}
+            />
+          ))}
+          {fetchMoreError && (
+            <div
+              className={[styles.error, styles.text].filter(Boolean).join(" ")}
+            >
+              Error: {fetchMoreError}
+            </div>
+          )}
+        </InfiniteScroll>
+      </div>
     );
   };
 
-  return getContent();
+  const handleTabSelection = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+    setIsLoading(true);
+    setCurrentCursor(null);
+  };
+
+  const handleMyPostsSelection = () => {
+    handleTabSelection();
+    setMyPostsSelected(true);
+  };
+
+  const handleAllPostsSelection = () => {
+    handleTabSelection();
+    setMyPostsSelected(false);
+  };
+
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.tabs}>
+        <div
+          className={`${styles.tab} ${!myPostsSelected ? styles.active : ""}`}
+          onClick={() => myPostsSelected && handleAllPostsSelection()}
+        >
+          <Home className={styles.icon} />
+          All Posts
+        </div>
+        <div
+          className={`${styles.tab} ${myPostsSelected ? styles.active : ""}`}
+          onClick={() => !myPostsSelected && handleMyPostsSelection()}
+        >
+          <UserIcon className={styles.icon} />
+          My Posts
+        </div>
+      </div>
+      {getContent()}
+    </div>
+  );
 };
 
 export default FeedScreen;
