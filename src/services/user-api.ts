@@ -5,7 +5,7 @@ import type {ProfileFormValues, User} from "../types";
 export const editProfile = async (
     { username, img }: ProfileFormValues,
     user: Omit<User, 'password'>,
-): Promise<Pick<User, 'imgUrl' | 'username' | '_id'>> => {
+): Promise<Omit<User, 'password' | 'email'>> => {
     let imgUrl = user.imgUrl;
 
     if (img instanceof File) {

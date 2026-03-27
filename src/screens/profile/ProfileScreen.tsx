@@ -13,9 +13,9 @@ const ProfileScreen = () => {
     const navigate = useNavigate();
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const {currentUser, setCurrentUser} = useGetContext(CurrentUserContext);
-    const assertUser = (user: UserContext["currentUser"]): Omit<User, 'password'> => {
-        if (user) {
-            return user;
+    const assertUser = (): Omit<User, 'password'> => {
+        if (currentUser) {
+            return currentUser;
         }
 
         console.error("Cannot show profile without a logged in user");
@@ -29,7 +29,7 @@ const ProfileScreen = () => {
         }
     }
 
-    const user = assertUser(currentUser);
+    const user = assertUser();
 
     const handleUpdateUser = (profileUpdate: ProfileUpdate) => {
         setCurrentUser((prevCurrentUser) => prevCurrentUser ? {
