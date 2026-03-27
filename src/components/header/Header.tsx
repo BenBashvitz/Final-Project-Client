@@ -20,7 +20,6 @@ export const Header = () => {
 
 
     useEffect(() => {
-        console.log(location.pathname === "/login" || location.pathname === "/sign-up")
         setHideHeader(location.pathname === "/login" || location.pathname === "/sign-up");
     }, [location]);
 
