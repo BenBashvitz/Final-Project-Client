@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Grid3x3, Settings} from 'lucide-react';
-import type {ProfileUpdate, User, UserContext} from "../../types";
+import type {ProfileUpdate, User} from "../../types";
 import {Button} from "../../components/button/Button.tsx";
 import {ProfileDialog} from "../../components/profileDialog/ProfileDialog.tsx";
 import useGetContext from "../../hooks/useGetContext.ts";
