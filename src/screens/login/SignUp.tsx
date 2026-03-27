@@ -1,39 +1,40 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import { LoginHeader } from "../components/LoginHeader/LoginHeader";
-import { Button } from "../components/button/Button.tsx";
-import FormFieldErrorWrapper from "../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
-import { CurrentUserContext } from "../contexts/contexts.ts";
-import useGetContext from "../hooks/useGetContext.ts";
-import { SignInFormSchema } from "../schemas/signInFormSchema.ts";
-import { signIn } from "../services/auth-api.ts";
-import type { UserSignInPayload } from "../types";
 import styles from "./Login.module.css";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import type { UserSignUpPayload } from "../../types";
+import { useState } from "react";
+import { signUp } from "../../services/auth-api.ts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignUpFormSchema } from "../../schemas/signUpFormSchema.ts";
+import { LoginHeader } from "../../components/LoginHeader/LoginHeader.tsx";
+import { Button } from "../../components/button/Button.tsx";
+import FormFieldErrorWrapper from "../../components/formFieldErrorWrapper/FormFieldErrorWrapper.tsx";
+import useGetContext from "../../hooks/useGetContext.ts";
+import { CurrentUserContext } from "../../contexts/contexts.ts";
 
-const SignIn = () => {
+const SignUp = () => {
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<UserSignInPayload>({
-    resolver: zodResolver(SignInFormSchema),
+  } = useForm<UserSignUpPayload>({
+    resolver: zodResolver(SignUpFormSchema),
   });
   const navigate = useNavigate();
   const { setCurrentUser } = useGetContext(CurrentUserContext);
+
   const [error, setError] = useState<string | null>(null);
 
-  const handleNavigateToSignUp = async () => {
-    navigate("/sign-up");
+  const handleNavigateToSignIn = async () => {
+    navigate("/sign-in");
   };
 
-  const onSubmit = async (payload: UserSignInPayload) => {
+  const onSubmit = async (payload: UserSignUpPayload) => {
     setError(null);
 
     try {
-      const user = await signIn(payload);
+      const user = await signUp(payload);
 
       setCurrentUser(user);
       navigate("/");
@@ -44,7 +45,7 @@ const SignIn = () => {
       ) {
         setError(error.response?.data);
       } else {
-        setError("there was a problem trying to sign in. please try again.");
+        setError("there was a problem trying to register. please try again.");
       }
     }
   };
@@ -52,7 +53,7 @@ const SignIn = () => {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
-        <LoginHeader description="Welcome Back" title="Sign In" />
+        <LoginHeader description="Welcome" title="Sign Up" />
         <main className={styles.cardContent}>
           <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <FormFieldErrorWrapper error={errors.username?.message}>
@@ -64,6 +65,19 @@ const SignIn = () => {
                   type="text"
                   placeholder="Enter username"
                   {...register("username")}
+                />
+              </div>
+            </FormFieldErrorWrapper>
+
+            <FormFieldErrorWrapper error={errors.email?.message}>
+              <div className="formGroup">
+                <label htmlFor="email">Email</label>
+                <input
+                  className={styles.formInput}
+                  id="email"
+                  type="text"
+                  placeholder="Enter email"
+                  {...register("email")}
                 />
               </div>
             </FormFieldErrorWrapper>
@@ -83,16 +97,16 @@ const SignIn = () => {
 
             {error && <div className={styles.errorMessage}>{error}</div>}
 
-            <Button type="submit">Sign In</Button>
+            <Button type="submit">Sign Up</Button>
           </form>
 
           <Button
             type="button"
-            variant="outline"
             className={styles.toggleBtn}
-            onClick={handleNavigateToSignUp}
+            variant="outline"
+            onClick={handleNavigateToSignIn}
           >
-            Don't have an account? Sign up
+            Already have an account? Sign in
           </Button>
         </main>
       </div>
@@ -100,4 +114,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
