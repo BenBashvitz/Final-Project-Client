@@ -1,11 +1,11 @@
-import { apiClient } from "./api-client";
-import type { User, UserSignInPayload, UserSignUpPayload } from "../types";
-import type { AxiosError } from "axios";
+import {apiClient} from "./api-client";
+import type {LoggedInUser, UserSignInPayload, UserSignUpPayload} from "../types";
+import type {AxiosError} from "axios";
 
 export const signIn = async (
   payload: UserSignInPayload,
-): Promise<Omit<User, "password">> => {
-  const { data } = await apiClient.post<Omit<User, "password">>(
+): Promise<LoggedInUser> => {
+  const { data } = await apiClient.post<LoggedInUser>(
     "/auth/login",
     payload,
     {
@@ -18,8 +18,8 @@ export const signIn = async (
 
 export const signUp = async (
   payload: UserSignUpPayload,
-): Promise<Omit<User, "password">> => {
-  const { data } = await apiClient.post<Omit<User, "password">>(
+): Promise<LoggedInUser> => {
+  const { data } = await apiClient.post<LoggedInUser>(
     "/auth/register",
     payload,
     {
@@ -32,8 +32,8 @@ export const signUp = async (
 
 const refreshTokenUrl = "/auth/refresh-token";
 
-export const refreshToken = async (): Promise<Omit<User, "password">> => {
-  const { data } = await apiClient.post<Omit<User, "password">>(
+export const refreshToken = async (): Promise<LoggedInUser> => {
+  const { data } = await apiClient.post<LoggedInUser>(
     refreshTokenUrl,
     {},
     {

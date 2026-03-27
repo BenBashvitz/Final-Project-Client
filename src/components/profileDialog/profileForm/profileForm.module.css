@@ -1,0 +1,28 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.inputField {
+    border-color: #f3e8ff;
+    transition: border-color 0.2s;
+}
+
+.inputField:focus {
+    border-color: #a855f7;
+    outline: none;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}

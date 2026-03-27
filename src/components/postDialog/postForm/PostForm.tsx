@@ -1,4 +1,3 @@
-import { DevTool } from "@hookform/devtools";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { FormProvider, useForm } from "react-hook-form";
 import { editPost, uploadPost } from "../../../services/posts-api";
@@ -25,7 +24,6 @@ const PostForm = ({ post, onClose, onSubmit }: PostFormProps) => {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = data;
 
@@ -74,7 +72,6 @@ const PostForm = ({ post, onClose, onSubmit }: PostFormProps) => {
           <Button type="submit">{post ? "Update" : "Post"}</Button>
         </div>
       </form>
-      <DevTool control={control} />
     </FormProvider>
   );
 };
