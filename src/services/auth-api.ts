@@ -81,7 +81,7 @@ export const refreshTokenOnUnauthorized = (onRefreshError: () => void) => {
 };
 
 export const googleSignIn = async (credentialResponse: CredentialResponse) => {
-    const {data} = await apiClient.post<Omit<User, "password">>(
+    const {data} = await apiClient.post<LoggedInUser>(
         "/auth/google",
         credentialResponse,
     );

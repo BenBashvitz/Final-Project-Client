@@ -5,7 +5,7 @@ import {UserProvider} from "./contexts/UserContext.tsx";
 import {PostsProvider} from "./contexts/PostsContext.tsx";
 import {Header} from "./components/header/Header.tsx";
 import {GoogleOAuthProvider} from "@react-oauth/google";
-import {clientId} from "./firebase/firebase.ts";
+import {googleClientId} from "./consts.ts";
 
 const FeedScreen = lazy(() => import("./screens/feed/FeedScreen.tsx"));
 const SignUp = lazy(() => import("./screens/SignUp"));
@@ -18,7 +18,7 @@ const ProfileScreen = lazy(() => import("./screens/profile/ProfileScreen"))
 const App = () => {
     return (
         <>
-            <GoogleOAuthProvider clientId={clientId}>
+            <GoogleOAuthProvider clientId={googleClientId}>
                 <UserProvider>
                     <PostsProvider>
                         <Header/>

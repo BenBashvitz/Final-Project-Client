@@ -53,8 +53,6 @@ const SignIn = () => {
   const handleGoogleLoginSuccess = async (
       credentialResponse: CredentialResponse,
   ) => {
-    console.log("Google login successful:", credentialResponse);
-
     try {
       const user = await googleSignIn(credentialResponse);
 
