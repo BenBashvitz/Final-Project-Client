@@ -1,8 +1,9 @@
 import axios from "axios";
-import { MessageCircle, Send, TriangleAlert, ArrowLeft } from "lucide-react";
+import { MessageCircle, Send, TriangleAlert } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button } from "../../components/button/Button";
+import { UserAvatar } from "../../components/userAvatar/UserAvatar";
 import { CurrentUserContext } from "../../contexts/contexts";
 import useGetContext from "../../hooks/useGetContext";
 import { createComment, getComments } from "../../services/comments-api";
@@ -10,7 +11,6 @@ import type { Comment, CommentInput } from "../../types/comment";
 import { formatDate } from "../../utils/formatDate";
 import { Input } from "./../../components/input/Input";
 import styles from "./commentScreen.module.css";
-import { UserAvatar } from "../../components/userAvatar/UserAvatar";
 
 const CommentsScreen = () => {
   const [inputValue, setInputValue] = useState("");
