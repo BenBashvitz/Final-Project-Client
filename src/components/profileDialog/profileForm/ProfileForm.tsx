@@ -31,9 +31,9 @@ const ProfileForm = ({user, onClose, onSubmit}: ProfileFormProps) => {
         formState: {errors},
     } = data;
 
-    const handleSubmission = async (profileForm: ProfileFormValues) => {
+    const handleSubmission = async (profileUpdate: ProfileFormValues) => {
         try {
-            const editedProfile = await editProfile(profileForm, user);
+            const editedProfile = await editProfile(profileUpdate, user);
             onSubmit(editedProfile);
             onClose();
         } catch (error) {
