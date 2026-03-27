@@ -3,7 +3,6 @@ import {Grid3x3, Settings} from 'lucide-react';
 import type {ProfileUpdate, User, UserContext} from "../../types";
 import {Button} from "../../components/button/Button.tsx";
 import {ProfileDialog} from "../../components/profileDialog/ProfileDialog.tsx";
-import {mergeItems} from "../../utils/merge.ts";
 import useGetContext from "../../hooks/useGetContext.ts";
 import {CurrentUserContext} from "../../contexts/contexts.ts";
 import {useNavigate} from "react-router-dom";
@@ -32,8 +31,11 @@ const ProfileScreen = () => {
 
     const user = assertUser(currentUser);
 
-    const handleUpdateUser = (profileUpdate: ProfileUpdate)=> {
-        setCurrentUser(mergeItems([user], profileUpdate)[0])
+    const handleUpdateUser = (profileUpdate: ProfileUpdate) => {
+        setCurrentUser((prevCurrentUser) => prevCurrentUser ? {
+            ...prevCurrentUser,
+            ...profileUpdate,
+        } : null)
     }
 
     return (
