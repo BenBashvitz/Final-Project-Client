@@ -22,6 +22,19 @@ export const getPosts = (cursor?: Cursor, userId?: string) => {
   return { response, abort: () => abortController.abort() };
 };
 
+export const searchPosts = (query: string) => {
+  const abortController = new AbortController();
+
+  const response = apiClient.get<Post[]>("/post/search", {
+    signal: abortController.signal,
+    params: {
+      query,
+    },
+  });
+
+  return { response, abort: () => abortController.abort() };
+};
+
 export const uploadPost = async ({
   img,
   description,
