@@ -1,20 +1,20 @@
-import {Button} from "../button/Button.tsx";
-import {Home, LogOut, PlusCircle} from "lucide-react";
-import {logout} from "../../services/auth-api.ts";
-import {useNavigate} from "react-router";
+import { Button } from "../button/Button.tsx";
+import { Home, LogOut, PlusCircle, Search } from "lucide-react";
+import { logout } from "../../services/auth-api.ts";
+import { useNavigate } from "react-router";
 import useGetContext from "../../hooks/useGetContext.ts";
-import {CurrentUserContext, LoadedPostsContext} from "../../contexts/contexts.ts";
+import { CurrentUserContext, LoadedPostsContext } from "../../contexts/contexts.ts";
 import styles from "./Header.module.css";
-import {useEffect, useState} from "react";
-import {PostDialog} from "../postDialog/PostDialog.tsx";
-import {UserAvatar} from "../userAvatar/UserAvatar.tsx";
-import {useLocation} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { PostDialog } from "../postDialog/PostDialog.tsx";
+import { UserAvatar } from "../userAvatar/UserAvatar.tsx";
+import { useLocation } from "react-router-dom";
 
 export const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const {currentUser} = useGetContext(CurrentUserContext);
-    const {setPosts} = useGetContext(LoadedPostsContext);
+    const { currentUser } = useGetContext(CurrentUserContext);
+    const { setPosts } = useGetContext(LoadedPostsContext);
     const [hideHeader, setHideHeader] = useState(true);
     const [showPostCreationDialog, setShowPostCreationDialog] = useState(false);
 
@@ -49,33 +49,46 @@ export const Header = () => {
 
                         <div className={styles.actionsSection}>
                             {
+                                location.pathname !== "/search" && (
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => navigate("/search")}
+                                    >
+                                        <Search size={16} />
+                                        <span className={styles.navLabel}>Search</span>
+                                    </Button>
+                                )
+                            }
+
+                            {
                                 location.pathname === '/' ?
                                     <Button
                                         size="sm"
                                         variant="default"
                                         onClick={() => setShowPostCreationDialog(true)}
                                     >
-                                        <PlusCircle size={16}/>
+                                        <PlusCircle size={16} />
                                         <span className={styles.navLabel}>Create Post</span>
                                     </Button> : <Button
                                         size="sm"
                                         variant="outline"
                                         onClick={handleGoToHome}
                                     >
-                                        <Home size={16}/>
+                                        <Home size={16} />
                                         <span className={styles.navLabel}>Home</span>
                                     </Button>
                             }
 
-                            <div className={styles.divider}/>
+                            <div className={styles.divider} />
 
                             <div className={styles.userSection}>
                                 {
                                     currentUser &&
                                     <UserAvatar className={styles.avatarContainer} username={currentUser.username}
-                                                imgUrl={currentUser.imgUrl} onClick={() => {
-                                        navigate("/profile");
-                                    }}/>
+                                        imgUrl={currentUser.imgUrl} onClick={() => {
+                                            navigate("/profile");
+                                        }} />
                                 }
                                 <Button
                                     variant="ghost"
@@ -83,7 +96,7 @@ export const Header = () => {
                                     onClick={handleLogout}
                                     className={styles.logoutButton}
                                 >
-                                    <LogOut size={16}/>
+                                    <LogOut size={16} />
                                 </Button>
                             </div>
                         </div>
