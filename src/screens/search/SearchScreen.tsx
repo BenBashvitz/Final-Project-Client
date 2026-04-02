@@ -90,7 +90,7 @@ const SearchScreen = () => {
 
                         isLoading
                             ? <div className={styles.loading}>Searching posts...</div>
-                            : (error && posts.length === 0 && query)
+                            : (!error && posts.length === 0 && query)
                                 ? <div className={styles.noResults}>No posts found for "{query}"</div>
                                 : <>
                                     {posts.map((post) => (
