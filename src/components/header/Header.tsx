@@ -1,7 +1,7 @@
 import { Button } from "../button/Button.tsx";
 import { Home, LogOut, PlusCircle, Search } from "lucide-react";
 import { logout } from "../../services/auth-api.ts";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useGetContext from "../../hooks/useGetContext.ts";
 import { CurrentUserContext, LoadedPostsContext } from "../../contexts/contexts.ts";
 import styles from "./Header.module.css";
@@ -50,14 +50,15 @@ export const Header = () => {
                         <div className={styles.actionsSection}>
                             {
                                 location.pathname !== "/search" && (
-                                    <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={() => navigate("/search")}
-                                    >
-                                        <Search size={16} />
-                                        <span className={styles.navLabel}>Search</span>
-                                    </Button>
+                                    <Link to={`/search`}>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                        >
+                                            <Search size={16} />
+                                            <span className={styles.navLabel}>Search</span>
+                                        </Button>
+                                    </Link>
                                 )
                             }
 

@@ -17,25 +17,25 @@ const SearchScreen = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleSearch = useCallback(async () => {
-        if (!query.trim()) return;
+    const handleSearch = async () => {
+        if (query.trim()) {
+            setIsLoading(true);
+            setError(null);
 
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const { response } = searchPosts(query);
-            const { data } = await response;
-            setPosts(data);
-        } catch (err) {
-            if (!axios.isCancel(err)) {
-                console.error("Failed to search posts:", err);
-                setError("Failed to fetch posts. Please try again.");
+            try {
+                const { response } = searchPosts(query);
+                const { data } = await response;
+                setPosts(data);
+            } catch (err) {
+                if (!axios.isCancel(err)) {
+                    console.error("Failed to search posts:", err);
+                    setError("Failed to fetch posts. Please try again.");
+                }
+            } finally {
+                setIsLoading(false);
             }
-        } finally {
-            setIsLoading(false);
         }
-    }, [query]);
+    }
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
@@ -90,19 +90,20 @@ const SearchScreen = () => {
 
                     {error && <div className={styles.error}>{error}</div>}
 
-                    {!isLoading && !error && posts.length === 0 && query && (
+                    {!isLoading && <>
+                        !error && posts.length === 0 && query && (
                         <div className={styles.noResults}>No posts found for "{query}"</div>
-                    )}
-
-                    {!isLoading && posts.map((post) => (
-                        <PostCard
-                            key={post._id}
-                            post={post}
-                            onEdit={handleEditPost}
-                            onDelete={() => handleDeletePost(post._id)}
-                            onLike={() => handleLikePost(post)}
-                        />
-                    ))}
+                        )
+                        {posts.map((post) => (
+                            <PostCard
+                                key={post._id}
+                                post={post}
+                                onEdit={handleEditPost}
+                                onDelete={() => handleDeletePost(post._id)}
+                                onLike={() => handleLikePost(post)}
+                            />
+                        ))}
+                    </>}
                 </div>
             </div>
         </div>
