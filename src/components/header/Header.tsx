@@ -18,7 +18,6 @@ export const Header = () => {
     const [hideHeader, setHideHeader] = useState(true);
     const [showPostCreationDialog, setShowPostCreationDialog] = useState(false);
 
-
     useEffect(() => {
         setHideHeader(location.pathname === "/login" || location.pathname === "/sign-up");
     }, [location]);
@@ -85,9 +84,7 @@ export const Header = () => {
                                     currentUser &&
                                     <Link to="/profile">
                                         <UserAvatar className={styles.avatarContainer} username={currentUser.username}
-                                            imgUrl={currentUser.imgUrl} onClick={() => {
-                                                navigate("/profile");
-                                            }} />
+                                            imgUrl={currentUser.imgUrl} />
                                     </Link>
                                 }
                                 <Button
