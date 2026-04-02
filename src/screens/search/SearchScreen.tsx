@@ -68,6 +68,26 @@ const SearchScreen = () => {
         }
     };
 
+    const getContent = () => {
+        if (isLoading) {
+            return <div className={styles.loading}>Searching posts...</div>
+        } else if (error) {
+            return <div className={styles.error}>{error}</div>
+        } else if (posts.length === 0 && query) {
+            return <div className={styles.noResults}>No posts found for "{query}"</div>
+        } else {
+            return posts.map((post) => (
+                <PostCard
+                    key={post._id}
+                    post={post}
+                    onEdit={handleEditPost}
+                    onDelete={() => handleDeletePost(post._id)}
+                    onLike={() => handleLikePost(post)}
+                />
+            ))
+        }
+    }
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.searchContainer}>
@@ -87,25 +107,7 @@ const SearchScreen = () => {
             <div className={styles.scrollContainer}>
                 <div className={styles.resultsContainer}>
                     {
-
-                        isLoading
-                            ? <div className={styles.loading}>Searching posts...</div>
-                            : error
-                                ? <div className={styles.error}>{error}</div>
-                                : (!error && posts.length === 0 && query)
-                                    ? <div className={styles.noResults}>No posts found for "{query}"</div>
-                                    : <>
-                                        {posts.map((post) => (
-                                            <PostCard
-                                                key={post._id}
-                                                post={post}
-                                                onEdit={handleEditPost}
-                                                onDelete={() => handleDeletePost(post._id)}
-                                                onLike={() => handleLikePost(post)}
-                                            />
-                                        ))}
-                                    </>
-
+                        getContent()
                     }
                 </div>
             </div>
