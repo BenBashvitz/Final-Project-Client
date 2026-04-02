@@ -90,22 +90,23 @@ const SearchScreen = () => {
 
                         isLoading
                             ? <div className={styles.loading}>Searching posts...</div>
-                            : (!error && posts.length === 0 && query)
-                                ? <div className={styles.noResults}>No posts found for "{query}"</div>
-                                : <>
-                                    {posts.map((post) => (
-                                        <PostCard
-                                            key={post._id}
-                                            post={post}
-                                            onEdit={handleEditPost}
-                                            onDelete={() => handleDeletePost(post._id)}
-                                            onLike={() => handleLikePost(post)}
-                                        />
-                                    ))}
-                                </>
+                            : error
+                                ? <div className={styles.error}>{error}</div>
+                                : (!error && posts.length === 0 && query)
+                                    ? <div className={styles.noResults}>No posts found for "{query}"</div>
+                                    : <>
+                                        {posts.map((post) => (
+                                            <PostCard
+                                                key={post._id}
+                                                post={post}
+                                                onEdit={handleEditPost}
+                                                onDelete={() => handleDeletePost(post._id)}
+                                                onLike={() => handleLikePost(post)}
+                                            />
+                                        ))}
+                                    </>
 
                     }
-                    {error && <div className={styles.error}>{error}</div>}
                 </div>
             </div>
         </div>
