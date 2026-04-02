@@ -33,10 +33,6 @@ export const Header = () => {
         }
     };
 
-    const handleGoToHome = () => {
-        navigate("/");
-    }
-
     return (
         <>
             <header className={styles.header + ' ' + (hideHeader && styles.hide)}>
@@ -61,7 +57,6 @@ export const Header = () => {
                                     </Link>
                                 )
                             }
-
                             {
                                 location.pathname === '/' ?
                                     <Button
@@ -71,14 +66,16 @@ export const Header = () => {
                                     >
                                         <PlusCircle size={16} />
                                         <span className={styles.navLabel}>Create Post</span>
-                                    </Button> : <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={handleGoToHome}
-                                    >
-                                        <Home size={16} />
-                                        <span className={styles.navLabel}>Home</span>
-                                    </Button>
+                                    </Button> :
+                                    <Link to="/">
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                        >
+                                            <Home size={16} />
+                                            <span className={styles.navLabel}>Home</span>
+                                        </Button>
+                                    </Link>
                             }
 
                             <div className={styles.divider} />
@@ -86,10 +83,12 @@ export const Header = () => {
                             <div className={styles.userSection}>
                                 {
                                     currentUser &&
-                                    <UserAvatar className={styles.avatarContainer} username={currentUser.username}
-                                        imgUrl={currentUser.imgUrl} onClick={() => {
-                                            navigate("/profile");
-                                        }} />
+                                    <Link to="/profile">
+                                        <UserAvatar className={styles.avatarContainer} username={currentUser.username}
+                                            imgUrl={currentUser.imgUrl} onClick={() => {
+                                                navigate("/profile");
+                                            }} />
+                                    </Link>
                                 }
                                 <Button
                                     variant="ghost"
