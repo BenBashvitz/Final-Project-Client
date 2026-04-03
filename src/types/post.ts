@@ -1,7 +1,7 @@
-import {type Dispatch, type SetStateAction} from 'react';
+import { type Dispatch, type SetStateAction } from 'react';
 import type z from "zod";
-import type {PostFormSchema} from "../schemas/postFormSchema";
-import type {AttachedUser} from "./user";
+import type { PostFormSchema } from "../schemas/postFormSchema";
+import type { AttachedUser } from "./user";
 
 export type Post = {
   _id: string;
@@ -36,5 +36,9 @@ export type UploadedPostResponse = {
 
 export type PostsContext = {
   posts: Post[];
-  setPosts:  Dispatch<SetStateAction<Post[]>>
+  setPosts: Dispatch<SetStateAction<Post[]>>,
+  handleEditPost: (editedPost: Post) => void
+  handleDeletePost: (postId: string) => Promise<void>
+  handleLikePost: (post: Post) => Promise<void>
 }
+
