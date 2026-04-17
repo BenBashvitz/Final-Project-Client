@@ -1,14 +1,11 @@
 import axios from "axios";
-import { type JSX, useEffect, useRef, useState } from "react";
+import {type JSX, useEffect, useRef, useState} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { PostCard } from "../../components/postCard/PostCard";
-import {
-    CurrentUserContext,
-    LoadedPostsContext,
-} from "../../contexts/contexts.ts";
+import {PostCard} from "../../components/postCard/PostCard";
+import {CurrentUserContext, LoadedPostsContext,} from "../../contexts/contexts.ts";
 import useGetContext from "../../hooks/useGetContext.ts";
-import { getPosts } from "../../services/posts-api";
-import type { Cursor } from "../../types/post";
+import {getPosts} from "../../services/posts-api";
+import type {Cursor} from "../../types/post";
 import styles from "./feed.module.css";
 import NoPosts from "./noPosts/NoPosts.tsx";
 
@@ -34,7 +31,15 @@ const Feed = ({ myPostsSelected }: FeedProps) => {
     const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
+    const handleTabSelection = () => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = 0;
+        }
+    };
+
     useEffect(() => {
+        handleTabSelection()
+
         const { response, abort } = myPostsSelected
             ? getPosts(currentCursor ?? undefined, currentUser?._id)
             : getPosts(currentCursor ?? undefined);

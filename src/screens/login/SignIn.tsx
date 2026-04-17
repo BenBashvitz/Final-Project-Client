@@ -106,6 +106,8 @@ const SignIn = () => {
             <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleLoginError}
+                useOneTap={false}
+                width="400"
             />
           </form>
 

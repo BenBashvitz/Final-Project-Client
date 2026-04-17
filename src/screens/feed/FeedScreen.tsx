@@ -1,25 +1,16 @@
 import {Home, UserIcon} from "lucide-react";
-import {useRef, useState} from "react";
+import {useState} from "react";
 import styles from "./feedScreen.module.css";
 import Feed from "../../components/feed/Feed.tsx";
 
 const FeedScreen = () => {
   const [myPostsSelected, setMyPostsSelected] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const handleTabSelection = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
-  };
 
   const handleMyPostsSelection = () => {
-    handleTabSelection();
     setMyPostsSelected(true);
   };
 
   const handleAllPostsSelection = () => {
-    handleTabSelection();
     setMyPostsSelected(false);
   };
 
