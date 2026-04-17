@@ -31,18 +31,23 @@ const Feed = ({ myPostsSelected }: FeedProps) => {
     const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    const handleTabSelection = () => {
+    const scrollToTop = () => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = 0;
         }
     };
 
-    useEffect(() => {
-        handleTabSelection()
-
-        const { response, abort } = myPostsSelected
+    const fetchPosts = () => {
+        return myPostsSelected
             ? getPosts(currentCursor ?? undefined, currentUser?._id)
             : getPosts(currentCursor ?? undefined);
+    }
+
+    useEffect(() => {
+        scrollToTop();
+
+        const { response, abort } = fetchPosts();
+
         response
             .then(({ data: { posts, cursor } }) => {
                 setPosts(posts);
