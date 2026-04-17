@@ -1,12 +1,9 @@
-import { Home, UserIcon } from "lucide-react";
-import { useRef, useState } from "react";
-import type { Cursor } from "../../types/post";
+import {Home, UserIcon} from "lucide-react";
+import {useRef, useState} from "react";
 import styles from "./feedScreen.module.css";
 import Feed from "../../components/feed/Feed.tsx";
 
 const FeedScreen = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
   const [myPostsSelected, setMyPostsSelected] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -14,8 +11,6 @@ const FeedScreen = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = 0;
     }
-    setIsLoading(true);
-    setCurrentCursor(null);
   };
 
   const handleMyPostsSelection = () => {
@@ -46,7 +41,7 @@ const FeedScreen = () => {
           My Posts
         </div>
       </div>
-      <Feed myPostsSelected={myPostsSelected} initialIsLoading={isLoading} initialCurrentCursor={currentCursor} />
+      <Feed myPostsSelected={myPostsSelected} />
     </div>
   );
 };

@@ -22,3 +22,12 @@
     align-items: center;
     height: 100vh;
 }
+
+.error {
+    color: red;
+}
+
+.text {
+     margin: 1.5rem 0;
+     text-align: center;
+ }

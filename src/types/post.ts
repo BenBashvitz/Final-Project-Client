@@ -34,11 +34,16 @@ export type UploadedPostResponse = {
   imgUrl: string;
 };
 
-export type PostsContext = {
-  posts: Post[];
-  setPosts: Dispatch<SetStateAction<Post[]>>,
+export type SetPostFn = Dispatch<SetStateAction<Post[]>>
+
+export type PostFunctions = {
   handleEditPost: (editedPost: Post) => void
   handleDeletePost: (postId: string) => Promise<void>
   handleLikePost: (post: Post) => Promise<void>
 }
+
+export type PostsContext = {
+  posts: Post[];
+  setPosts: SetPostFn,
+} & PostFunctions;
 

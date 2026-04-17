@@ -14,11 +14,9 @@ import NoPosts from "./noPosts/NoPosts.tsx";
 
 type FeedProps = {
     myPostsSelected: boolean,
-    initialIsLoading: boolean,
-    initialCurrentCursor: Cursor | null
 }
 
-const Feed = ({ myPostsSelected, initialIsLoading, initialCurrentCursor }: FeedProps) => {
+const Feed = ({ myPostsSelected }: FeedProps) => {
     const {
         posts,
         setPosts,
@@ -28,12 +26,12 @@ const Feed = ({ myPostsSelected, initialIsLoading, initialCurrentCursor }: FeedP
     } = useGetContext(LoadedPostsContext);
     const { currentUser } = useGetContext(CurrentUserContext);
 
-    const [isLoading, setIsLoading] = useState(initialIsLoading);
+    const [isLoading, setIsLoading] = useState(true);
     const [initialFetchError, setInitialFetchError] = useState<string | null>(
         null,
     );
     const [fetchMoreError, setFetchMoreError] = useState<string | null>(null);
-    const [currentCursor, setCurrentCursor] = useState<Cursor | null>(initialCurrentCursor);
+    const [currentCursor, setCurrentCursor] = useState<Cursor | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

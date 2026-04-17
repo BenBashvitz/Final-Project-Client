@@ -183,3 +183,9 @@
     color: #6b7280;
     font-style: italic;
 }
+
+.settings {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 0.5rem;
+}

@@ -6,7 +6,7 @@ import { PostCard } from "../../components/postCard/PostCard";
 import { searchPosts } from "../../services/posts-api";
 import styles from "./searchScreen.module.css";
 import axios from "axios";
-import { createPostState } from "../../utils/post";
+import { usePostState } from "../../utils/post";
 
 const SearchScreen = () => {
     const [query, setQuery] = useState("");
@@ -16,7 +16,7 @@ const SearchScreen = () => {
         handleEditPost,
         handleDeletePost,
         handleLikePost
-    } = createPostState();
+    } = usePostState();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 

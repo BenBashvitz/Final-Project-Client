@@ -55,7 +55,7 @@ const ProfileScreen = () => {
                                     onClick={() => setIsEditDialogOpen(true)}
                                     className={styles.editButton}
                                 >
-                                    <Settings className="h-4 w-4 mr-2" />
+                                    <Settings className={styles.settings} />
                                     Edit Profile
                                 </Button>
                             </div>
@@ -80,7 +80,7 @@ const ProfileScreen = () => {
                 </div>
             </div>
 
-            <Feed myPostsSelected={true} initialIsLoading={false} initialCurrentCursor={null} />
+            <Feed myPostsSelected={true} />
 
             <ProfileDialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} user={user}
                 onSubmit={handleUpdateUser} />
