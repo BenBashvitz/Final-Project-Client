@@ -1,19 +1,25 @@
-import { useState } from 'react';
-import { Grid3x3, Settings } from 'lucide-react';
-import type { ProfileUpdate, User } from "../../types";
-import { Button } from "../../components/button/Button.tsx";
-import { ProfileDialog } from "../../components/profileDialog/ProfileDialog.tsx";
+import {useState} from 'react';
+import {Grid3x3, Settings} from 'lucide-react';
+import type {ProfileUpdate, User} from "../../types";
+import {Button} from "../../components/button/Button.tsx";
+import {ProfileDialog} from "../../components/profileDialog/ProfileDialog.tsx";
 import useGetContext from "../../hooks/useGetContext.ts";
-import { CurrentUserContext } from "../../contexts/contexts.ts";
-import { useNavigate } from "react-router-dom";
-import { UserAvatar } from "../../components/userAvatar/UserAvatar.tsx";
+import {CurrentUserContext} from "../../contexts/contexts.ts";
+import {useNavigate} from "react-router-dom";
+import {UserAvatar} from "../../components/userAvatar/UserAvatar.tsx";
 import styles from './profileScreen.module.css'
 import Feed from '../../components/feed/Feed.tsx';
+import {useInfiniteFeed} from "../../hooks/useInfiniteScroll.ts";
+import {getPosts} from "../../services/posts-api.ts";
 
 const ProfileScreen = () => {
     const navigate = useNavigate();
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    const { currentUser, setCurrentUser } = useGetContext(CurrentUserContext);
+    const {currentUser, setCurrentUser} = useGetContext(CurrentUserContext);
+    const {cursor, loadMore, isLoading, error} = useInfiniteFeed(
+        (cursor) => getPosts(cursor, currentUser?._id),
+        [currentUser?._id]
+    );
     const assertUser = (): Omit<User, 'password'> => {
         if (currentUser) {
             return currentUser;
@@ -44,7 +50,7 @@ const ProfileScreen = () => {
             <div className={styles.headerContainer}>
                 <div className={styles.header}>
                     <div className={styles.headerContent}>
-                        <UserAvatar className={styles.avatarLarge} username={user.username} imgUrl={user.imgUrl} />
+                        <UserAvatar className={styles.avatarLarge} username={user.username} imgUrl={user.imgUrl}/>
 
                         <div className={styles.infoSection}>
                             <div className={styles.titleRow}>
@@ -55,7 +61,7 @@ const ProfileScreen = () => {
                                     onClick={() => setIsEditDialogOpen(true)}
                                     className={styles.editButton}
                                 >
-                                    <Settings className={styles.settings} />
+                                    <Settings className={styles.settings}/>
                                     Edit Profile
                                 </Button>
                             </div>
@@ -74,16 +80,21 @@ const ProfileScreen = () => {
 
                 <div className={styles.gridHeader}>
                     <div className={styles.gridTab}>
-                        <Grid3x3 />
+                        <Grid3x3/>
                         <span className={styles.gridTabText}>Posts</span>
                     </div>
                 </div>
             </div>
 
-            <Feed myPostsSelected={true} />
+            <Feed
+                hasMore={!!cursor}
+                onLoadMore={loadMore}
+                isLoading={isLoading}
+                error={error}
+            />
 
             <ProfileDialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} user={user}
-                onSubmit={handleUpdateUser} />
+                           onSubmit={handleUpdateUser}/>
         </div>
     );
 }
