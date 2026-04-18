@@ -1,19 +1,22 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "../../components/input/Input";
 import { Button } from "../../components/button/Button";
 import { PostCard } from "../../components/postCard/PostCard";
 import { searchPosts } from "../../services/posts-api";
-import { mergeItems } from "../../utils/merge";
-import type { Post } from "../../types/post";
 import styles from "./searchScreen.module.css";
 import axios from "axios";
-import { likePost, unlikePost } from "../../services/likes-api";
-import { deletePost } from "../../services/posts-api";
+import { usePostState } from "../../utils/post";
 
 const SearchScreen = () => {
     const [query, setQuery] = useState("");
-    const [posts, setPosts] = useState<Post[]>([]);
+    const {
+        posts,
+        setPosts,
+        handleEditPost,
+        handleDeletePost,
+        handleLikePost
+    } = usePostState();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -40,31 +43,6 @@ const SearchScreen = () => {
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
             handleSearch();
-        }
-    };
-
-    const handleEditPost = (editedPost: Post) => {
-        setPosts((prevPosts) => mergeItems(prevPosts, editedPost));
-    };
-
-    const handleDeletePost = async (postId: Post["_id"]) => {
-        try {
-            const { _id } = await deletePost(postId);
-            setPosts((prevPosts) => prevPosts.filter((post) => post._id !== _id));
-        } catch (err) {
-            console.error("Failed to delete post:", err);
-        }
-    };
-
-    const handleLikePost = async (post: Post) => {
-        try {
-            const updatedPost = post.isLikedByCurrentUser
-                ? await unlikePost(post._id)
-                : await likePost(post._id);
-
-            setPosts((prevPosts) => mergeItems(prevPosts, updatedPost));
-        } catch (err) {
-            console.error("Failed to like post:", err);
         }
     };
 
