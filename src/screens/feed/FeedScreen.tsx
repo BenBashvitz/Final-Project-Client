@@ -20,14 +20,14 @@ const FeedScreen = () => {
             <div className={styles.tabs}>
                 <div
                     className={`${styles.tab} ${!myPostsSelected ? styles.active : ""}`}
-                    onClick={() => myPostsSelected && setMyPostsSelected(false)}
+                    onClick={() => setMyPostsSelected(false)}
                 >
                     <Home className={styles.icon}/>
                     All Posts
                 </div>
                 <div
                     className={`${styles.tab} ${myPostsSelected ? styles.active : ""}`}
-                    onClick={() => !myPostsSelected && setMyPostsSelected(true)}
+                    onClick={() => setMyPostsSelected(true)}
                 >
                     <UserIcon className={styles.icon}/>
                     My Posts
