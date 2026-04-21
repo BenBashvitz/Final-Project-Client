@@ -9,10 +9,11 @@ type FeedProps = {
     hasMore: boolean;
     onLoadMore: () => void;
     isLoading: boolean;
-    error: string | null;
+    initialFetchError: string | null;
+    fetchMoreError: string | null;
 };
 
-const Feed = ({hasMore, onLoadMore, isLoading, error}: FeedProps) => {
+const Feed = ({hasMore, onLoadMore, isLoading, initialFetchError, fetchMoreError}: FeedProps) => {
     const {
         posts,
         setPosts,
@@ -29,10 +30,10 @@ const Feed = ({hasMore, onLoadMore, isLoading, error}: FeedProps) => {
         );
     }
 
-    if (error) {
+    if (initialFetchError) {
         return (
             <div className={styles.container}>
-                <div className={styles.error}>Error: {error}</div>
+                <div className={styles.error}>Error: {initialFetchError}</div>
             </div>
         );
     }
@@ -56,7 +57,7 @@ const Feed = ({hasMore, onLoadMore, isLoading, error}: FeedProps) => {
                 className={styles.infiniteScroll}
                 hasMore={hasMore}
                 loader={
-                    !error && <div className={styles.text}>loading...</div>
+                    !fetchMoreError && <div className={styles.text}>loading...</div>
                 }
                 endMessage={
                     <div className={styles.text}>
@@ -76,11 +77,11 @@ const Feed = ({hasMore, onLoadMore, isLoading, error}: FeedProps) => {
                         onLike={() => handleLikePost(post)}
                     />
                 ))}
-                {error && (
+                {fetchMoreError && (
                     <div
                         className={[styles.error, styles.text].filter(Boolean).join(" ")}
                     >
-                        Error: {error}
+                        Error: {fetchMoreError}
                     </div>
                 )}
             </InfiniteScroll>

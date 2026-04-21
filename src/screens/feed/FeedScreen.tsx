@@ -10,31 +10,24 @@ import {getPosts} from "../../services/posts-api.ts";
 const FeedScreen = () => {
     const [myPostsSelected, setMyPostsSelected] = useState(false);
     const {currentUser} = useGetContext(CurrentUserContext);
-    const {cursor, loadMore, isLoading, error} = useInfiniteFeed(
+    const {cursor, loadMore, isLoading, fetchMoreError, initialFetchError} = useInfiniteFeed(
         (cursor) => getPosts(cursor, myPostsSelected ? currentUser?._id : undefined),
         [myPostsSelected, currentUser?._id]
     );
-    const handleMyPostsSelection = () => {
-        setMyPostsSelected(true);
-    };
-
-    const handleAllPostsSelection = () => {
-        setMyPostsSelected(false);
-    };
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.tabs}>
                 <div
                     className={`${styles.tab} ${!myPostsSelected ? styles.active : ""}`}
-                    onClick={() => myPostsSelected && handleAllPostsSelection()}
+                    onClick={() => myPostsSelected && setMyPostsSelected(false)}
                 >
                     <Home className={styles.icon}/>
                     All Posts
                 </div>
                 <div
                     className={`${styles.tab} ${myPostsSelected ? styles.active : ""}`}
-                    onClick={() => !myPostsSelected && handleMyPostsSelection()}
+                    onClick={() => !myPostsSelected && setMyPostsSelected(true)}
                 >
                     <UserIcon className={styles.icon}/>
                     My Posts
@@ -45,7 +38,8 @@ const FeedScreen = () => {
                 hasMore={!!cursor}
                 onLoadMore={loadMore}
                 isLoading={isLoading}
-                error={error}
+                initialFetchError={initialFetchError}
+                fetchMoreError={fetchMoreError}
             />
         </div>
     );

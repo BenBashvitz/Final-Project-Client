@@ -90,7 +90,7 @@ const ProfileScreen = () => {
                 hasMore={!!cursor}
                 onLoadMore={loadMore}
                 isLoading={isLoading}
-                error={error}
+                initialFetchError={error}
             />
 
             <ProfileDialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} user={user}

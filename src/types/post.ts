@@ -2,6 +2,7 @@ import { type Dispatch, type SetStateAction } from 'react';
 import type z from "zod";
 import type { PostFormSchema } from "../schemas/postFormSchema";
 import type { AttachedUser } from "./user";
+import type {AxiosResponse} from "axios";
 
 export type Post = {
   _id: string;
@@ -46,4 +47,6 @@ export type PostsContext = {
   posts: Post[];
   setPosts: SetPostFn,
 } & PostFunctions;
+
+export type PostFetchFn = (cursor?: Cursor) => {response: Promise<AxiosResponse<PostPage>>, abort: () => void}
 
