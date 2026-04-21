@@ -1,12 +1,12 @@
-import {lazy, useEffect, useState} from "react";
+import {lazy} from "react";
 import {Route, Routes} from "react-router";
 import {useLocation} from 'react-router-dom';
 import "./App.css";
-import { UserProvider } from "./contexts/UserContext.tsx";
-import { PostsProvider } from "./contexts/PostsContext.tsx";
-import { Header } from "./components/header/Header.tsx";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { googleClientId } from "./consts.ts";
+import {UserProvider} from "./contexts/UserContext.tsx";
+import {PostsProvider} from "./contexts/PostsContext.tsx";
+import {Header} from "./components/header/Header.tsx";
+import {GoogleOAuthProvider} from "@react-oauth/google";
+import {googleClientId} from "./consts.ts";
 
 const FeedScreen = lazy(() => import("./screens/feed/FeedScreen.tsx"));
 const SignUp = lazy(() => import("./screens/login/SignUp.tsx"));
