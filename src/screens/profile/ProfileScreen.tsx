@@ -16,7 +16,7 @@ const ProfileScreen = () => {
     const navigate = useNavigate();
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const {currentUser, setCurrentUser} = useGetContext(CurrentUserContext);
-    const {cursor, loadMore, isLoading, error} = useInfiniteFeed(
+    const {cursor, loadMore, isLoading, initialFetchError, fetchMoreError} = useInfiniteFeed(
         (cursor) => getPosts(cursor, currentUser?._id),
         [currentUser?._id]
     );
@@ -78,11 +78,9 @@ const ProfileScreen = () => {
                     </div>
                 </div>
 
-                <div className={styles.gridHeader}>
-                    <div className={styles.gridTab}>
-                        <Grid3x3/>
-                        <span className={styles.gridTabText}>Posts</span>
-                    </div>
+                <div className={styles.gridTab}>
+                    <Grid3x3/>
+                    <span className={styles.gridTabText}>Posts</span>
                 </div>
             </div>
 
@@ -90,7 +88,8 @@ const ProfileScreen = () => {
                 hasMore={!!cursor}
                 onLoadMore={loadMore}
                 isLoading={isLoading}
-                initialFetchError={error}
+                initialFetchError={initialFetchError}
+                fetchMoreError={fetchMoreError}
             />
 
             <ProfileDialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)} user={user}

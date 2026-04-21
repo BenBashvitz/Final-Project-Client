@@ -1,5 +1,6 @@
-import { lazy } from "react";
-import { Route, Routes } from "react-router";
+import {lazy, useEffect, useState} from "react";
+import {Route, Routes} from "react-router";
+import {useLocation} from 'react-router-dom';
 import "./App.css";
 import { UserProvider } from "./contexts/UserContext.tsx";
 import { PostsProvider } from "./contexts/PostsContext.tsx";
@@ -17,19 +18,24 @@ const ProfileScreen = lazy(() => import("./screens/profile/ProfileScreen"))
 const SearchScreen = lazy(() => import("./screens/search/SearchScreen"));
 
 const App = () => {
+    const location = useLocation();
+    const isLogin = location.pathname === '/sign-in' || location.pathname === '/sign-up'
+
     return (
         <>
             <GoogleOAuthProvider clientId={googleClientId}>
                 <UserProvider>
                     <PostsProvider>
-                        <Header />
+                        {
+                            !isLogin && <Header/>
+                        }
                         <Routes>
-                            <Route index element={<FeedScreen />} />
-                            <Route path="/sign-in" element={<SignIn />} />
-                            <Route path="/sign-up" element={<SignUp />} />
-                            <Route path="/profile" element={<ProfileScreen />} />
-                            <Route path="/search" element={<SearchScreen />} />
-                            <Route path="/posts/:postId/comments" element={<CommentsScreen />} />
+                            <Route index element={<FeedScreen/>}/>
+                            <Route path="/sign-in" element={<SignIn/>}/>
+                            <Route path="/sign-up" element={<SignUp/>}/>
+                            <Route path="/profile" element={<ProfileScreen/>}/>
+                            <Route path="/search" element={<SearchScreen/>}/>
+                            <Route path="/posts/:postId/comments" element={<CommentsScreen/>}/>
                         </Routes>
                     </PostsProvider>
                 </UserProvider>

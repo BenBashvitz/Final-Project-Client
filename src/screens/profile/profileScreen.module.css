@@ -18,7 +18,7 @@
 .header {
     background-color: white;
     border-bottom: 1px solid #e5e7eb;
-    padding: 1.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .headerContent {
@@ -112,11 +112,6 @@
 .emailText {
     color: #4b5563;
     margin: 0;
-}
-
-.gridHeader {
-    border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 0.25rem;
 }
 
 .gridTab {
