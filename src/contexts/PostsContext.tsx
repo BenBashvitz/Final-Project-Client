@@ -1,12 +1,10 @@
-import {type PropsWithChildren, useState} from "react";
-import {LoadedPostsContext} from "./contexts";
-import type {Post} from "../types/post.ts";
+import { type PropsWithChildren } from "react";
+import { LoadedPostsContext } from "./contexts";
+import { usePostState } from "../utils/post.ts";
 
 export const PostsProvider = ({ children }: PropsWithChildren) => {
-    const [posts, setPosts] = useState<Post[]>([]);
-
     return (
-        <LoadedPostsContext value={{ posts, setPosts }}>
+        <LoadedPostsContext value={{ ...usePostState() }}>
             {children}
         </LoadedPostsContext>
     );
