@@ -35,9 +35,15 @@ export type UploadedPostResponse = {
   imgUrl: string;
 };
 
+export type PostCountResponse = {
+  count: number;
+}
+
 export type SetPostFn = Dispatch<SetStateAction<Post[]>>
+export type SetCurrentUserPostCountFn = Dispatch<SetStateAction<number>>
 
 export type PostFunctions = {
+  handleAddPost: (createdPost: Post) => void
   handleEditPost: (editedPost: Post) => void
   handleDeletePost: (postId: string) => Promise<void>
   handleLikePost: (post: Post) => Promise<void>
@@ -46,6 +52,8 @@ export type PostFunctions = {
 export type PostsContext = {
   posts: Post[];
   setPosts: SetPostFn,
+  currentUserPostsCount: number
+  setCurrentUserPostsCount: SetCurrentUserPostCountFn
 } & PostFunctions;
 
 export type PostFetchFn = (cursor?: Cursor) => {response: Promise<AxiosResponse<PostPage>>, abort: () => void}

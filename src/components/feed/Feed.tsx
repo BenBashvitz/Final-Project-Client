@@ -16,7 +16,7 @@ type FeedProps = {
 const Feed = ({hasMore, onLoadMore, isLoading, initialFetchError, fetchMoreError}: FeedProps) => {
     const {
         posts,
-        setPosts,
+        handleAddPost,
         handleEditPost,
         handleLikePost,
         handleDeletePost,
@@ -42,7 +42,7 @@ const Feed = ({hasMore, onLoadMore, isLoading, initialFetchError, fetchMoreError
         return (
             <div className={styles.container}>
                 <NoPosts
-                    onCreatePost={(post) => setPosts((prev) => [post].concat(prev))}
+                    onCreatePost={handleAddPost}
                 />
             </div>
         );

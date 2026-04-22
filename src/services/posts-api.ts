@@ -1,6 +1,6 @@
 import type {
   Cursor,
-  Post,
+  Post, PostCountResponse,
   PostFormValues,
   PostFormValuesSubmission,
   PostPage,
@@ -97,3 +97,9 @@ export const deletePost = async (
 
   return data;
 };
+
+export const getPostCountForCurrentUser = async () => {
+  const {data} = await apiClient.get<PostCountResponse>('/post/count');
+
+  return data.count;
+}

@@ -14,7 +14,7 @@ export const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { currentUser } = useGetContext(CurrentUserContext);
-    const { setPosts } = useGetContext(LoadedPostsContext);
+    const { handleAddPost } = useGetContext(LoadedPostsContext);
     const [hideHeader, setHideHeader] = useState(true);
     const [showPostCreationDialog, setShowPostCreationDialog] = useState(false);
 
@@ -103,7 +103,7 @@ export const Header = () => {
             <PostDialog
                 open={showPostCreationDialog}
                 onClose={() => setShowPostCreationDialog(false)}
-                onSubmit={(post) => setPosts((prev) => [post].concat(prev))}
+                onSubmit={handleAddPost}
             />
         </>
     );

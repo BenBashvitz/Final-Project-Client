@@ -19,6 +19,7 @@ const SearchScreen = () => {
     } = usePostState();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [hasSearched, setHasSearched] = useState(false);
 
     const handleSearch = async () => {
         if (query.trim()) {
@@ -29,6 +30,7 @@ const SearchScreen = () => {
                 const { response } = searchPosts(query);
                 const { data } = await response;
                 setPosts(data);
+                setHasSearched(true);
             } catch (err) {
                 if (!axios.isCancel(err)) {
                     console.error("Failed to search posts:", err);
@@ -44,26 +46,32 @@ const SearchScreen = () => {
         if (e.key === "Enter") {
             handleSearch();
         }
+
+        setHasSearched(false);
     };
 
     const getContent = () => {
         if (isLoading) {
             return <div className={styles.loading}>Searching posts...</div>
-        } else if (error) {
-            return <div className={styles.error}>{error}</div>
-        } else if (posts.length === 0 && query) {
-            return <div className={styles.noResults}>No posts found for "{query}"</div>
-        } else {
-            return posts.map((post) => (
-                <PostCard
-                    key={post._id}
-                    post={post}
-                    onEdit={handleEditPost}
-                    onDelete={() => handleDeletePost(post._id)}
-                    onLike={() => handleLikePost(post)}
-                />
-            ))
         }
+
+        if (error) {
+            return <div className={styles.error}>{error}</div>
+        }
+
+        if (hasSearched && posts.length === 0) {
+            return <div className={styles.noResults}>No posts found for "{query}"</div>
+        }
+
+        return posts.map((post) => (
+            <PostCard
+                key={post._id}
+                post={post}
+                onEdit={handleEditPost}
+                onDelete={() => handleDeletePost(post._id)}
+                onLike={() => handleLikePost(post)}
+            />
+        ))
     }
 
     return (
@@ -84,9 +92,7 @@ const SearchScreen = () => {
 
             <div className={styles.scrollContainer}>
                 <div className={styles.resultsContainer}>
-                    {
-                        getContent()
-                    }
+                    {getContent()}
                 </div>
             </div>
         </div>
