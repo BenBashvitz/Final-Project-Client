@@ -25,6 +25,7 @@ const SearchScreen = () => {
         if (query.trim()) {
             setIsLoading(true);
             setError(null);
+            setHasSearched(false);
 
             try {
                 const {response} = searchPosts(query);
@@ -38,7 +39,6 @@ const SearchScreen = () => {
                 }
             } finally {
                 setIsLoading(false);
-                setHasSearched(false);
                 setQuery('');
             }
         }
