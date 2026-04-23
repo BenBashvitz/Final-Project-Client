@@ -1,35 +1,39 @@
 .scrollContainer {
-    flex: 1;
-    width: 100vw;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .infiniteScroll {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f5eef4;
-    width: 100vw;
-    padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5eef4;
+  width: 100vw;
+  padding: 0.5rem;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    background-color: #f5eef4;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #f5eef4;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
 }
 
 .error {
-    color: red;
+  color: red;
 }
 
 .text {
-     margin: 1.5rem 0;
-     text-align: center;
- }
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.loader {
+  margin: 1.5rem 0;
+}
