@@ -16,7 +16,7 @@ const ProfileScreen = () => {
     const {currentUser, setCurrentUser} = useGetContext(CurrentUserContext);
     const {cursor, loadMore, isLoading, initialFetchError, fetchMoreError} = useInfiniteFeed(
         (cursor) => getPosts(cursor, currentUser?._id),
-        [currentUser?._id]
+        [currentUser]
     );
     const {currentUserPostsCount, setCurrentUserPostsCount} = useGetContext(LoadedPostsContext);
     const [currentUserPostsError, setCurrentUserPostsError] = useState<string | null>(null)
