@@ -6,6 +6,7 @@
     height: calc(100vh - var(--header-height) - var(--header-border-thickness));
     box-sizing: border-box;
     overflow: hidden;
+    background-color: #f5eef4;
 }
 
 .headerContainer {
@@ -13,26 +14,21 @@
     flex-direction: column;
     align-items: center;
     gap: 0.375rem;
+    background-color: #ffffff;
+    width: 80%;
 }
 
 .header {
     background-color: white;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 0.5rem;
+    padding: 1rem;
+    align-self: flex-start;
 }
 
 .headerContent {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
     gap: 2rem;
-}
-
-@media (min-width: 768px) {
-    .headerContent {
-        flex-direction: row;
-        align-items: flex-start;
-    }
 }
 
 .avatarLarge {
@@ -42,29 +38,17 @@
 
 .infoSection {
     flex: 1;
-    text-align: center;
+    text-align: left;
     display: flex;
     flex-direction: column;
     gap: 0.375rem;
 }
 
-@media (min-width: 768px) {
-    .infoSection {
-        text-align: left;
-    }
-}
-
 .titleRow {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 1rem;
-}
-
-@media (min-width: 768px) {
-    .titleRow {
-        flex-direction: row;
-    }
 }
 
 .username {
@@ -84,13 +68,7 @@
 .statsRow {
     display: flex;
     gap: 2rem;
-    justify-content: center;
-}
-
-@media (min-width: 768px) {
-    .statsRow {
-        justify-content: flex-start;
-    }
+    justify-content: flex-start;
 }
 
 .statItem {
@@ -122,6 +100,9 @@
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     color: #374151;
+    width: 100%;
+    background-color: #f5eef4;
+    border-bottom: 1px solid lightgrey;
 }
 
 .gridTabText {
