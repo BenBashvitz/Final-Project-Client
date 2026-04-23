@@ -41,7 +41,7 @@ const createAddPostFn = (setFn: SetPostFn, setCurrentUserPostCountFn: SetCurrent
 
     return (createdPost: Post) => {
         setCurrentUserPostCountFn(prevCount => prevCount + 1)
-        setFn((prevPosts) => prevPosts.concat(createdPost));
+        setFn((prevPosts) => [createdPost].concat(prevPosts));
     }
 };
 

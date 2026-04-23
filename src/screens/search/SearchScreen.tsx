@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Search } from "lucide-react";
-import { Input } from "../../components/input/Input";
-import { Button } from "../../components/button/Button";
-import { PostCard } from "../../components/postCard/PostCard";
-import { searchPosts } from "../../services/posts-api";
+import {useState} from "react";
+import {Search} from "lucide-react";
+import {Input} from "../../components/input/Input";
+import {Button} from "../../components/button/Button";
+import {PostCard} from "../../components/postCard/PostCard";
+import {searchPosts} from "../../services/posts-api";
 import styles from "./searchScreen.module.css";
 import axios from "axios";
-import { usePostState } from "../../utils/post";
+import {usePostState} from "../../utils/post";
 
 const SearchScreen = () => {
     const [query, setQuery] = useState("");
@@ -27,8 +27,8 @@ const SearchScreen = () => {
             setError(null);
 
             try {
-                const { response } = searchPosts(query);
-                const { data } = await response;
+                const {response} = searchPosts(query);
+                const {data} = await response;
                 setPosts(data);
                 setHasSearched(true);
             } catch (err) {
@@ -44,10 +44,10 @@ const SearchScreen = () => {
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
+            setHasSearched(false);
             handleSearch();
         }
 
-        setHasSearched(false);
     };
 
     const getContent = () => {
@@ -85,7 +85,7 @@ const SearchScreen = () => {
                     className={styles.searchInput}
                 />
                 <Button onClick={handleSearch} disabled={isLoading}>
-                    <Search size={18} />
+                    <Search size={18}/>
                     <span>Search</span>
                 </Button>
             </div>

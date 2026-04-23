@@ -57,7 +57,7 @@ export const Header = () => {
                                 )
                             }
                             {
-                                location.pathname === '/' ?
+                                location.pathname === '/' || location.pathname === '/profile' ?
                                     <Button
                                         size="sm"
                                         variant="default"
