@@ -1,83 +1,93 @@
-import { apiClient } from "./api-client";
-import type { LoggedInUser, UserSignInPayload, UserSignUpPayload } from "../types";
-import type { AxiosError } from "axios";
+import {apiClient} from "./api-client";
+import type {LoggedInUser, UserSignInPayload, UserSignUpPayload} from "../types";
+import type {AxiosError} from "axios";
 import type {CredentialResponse} from "@react-oauth/google";
 
-export const signIn = async (
-  payload: UserSignInPayload,
-): Promise<LoggedInUser> => {
-  const { data } = await apiClient.post<LoggedInUser>(
-    "/auth/login",
-    payload,
-    {
-      withCredentials: true,
-    },
-  );
+const signInUrl = '/auth/login';
 
-  return data;
+export const signIn = async (
+    payload: UserSignInPayload,
+): Promise<LoggedInUser> => {
+    const {data} = await apiClient.post<LoggedInUser>(
+        signInUrl,
+        payload,
+        {
+            withCredentials: true,
+        },
+    );
+
+    return data;
 };
 
-export const signUp = async (
-  payload: UserSignUpPayload,
-): Promise<LoggedInUser> => {
-  const { data } = await apiClient.post<LoggedInUser>(
-    "/auth/register",
-    payload,
-    {
-      withCredentials: true,
-    },
-  );
+const signUpUrl = '/auth/register'
 
-  return data;
+export const signUp = async (
+    payload: UserSignUpPayload,
+): Promise<LoggedInUser> => {
+    const {data} = await apiClient.post<LoggedInUser>(
+        signUpUrl,
+        payload,
+        {
+            withCredentials: true,
+        },
+    );
+
+    return data;
 };
 
 const refreshTokenUrl = "/auth/refresh-token";
 
 export const refreshToken = async (): Promise<LoggedInUser> => {
-  const { data } = await apiClient.post<LoggedInUser>(
-    refreshTokenUrl,
-    {},
-    {
-      withCredentials: true,
-    },
-  );
+    const {data} = await apiClient.post<LoggedInUser>(
+        refreshTokenUrl,
+        {},
+        {
+            withCredentials: true,
+        },
+    );
 
-  return data;
+    return data;
 };
 
 export const logout = () =>
-  apiClient.post(
-    `/auth/logout`,
-    {},
-    {
-      withCredentials: true,
-    },
-  );
+    apiClient.post(
+        `/auth/logout`,
+        {},
+        {
+            withCredentials: true,
+        },
+    );
+
+const isRouteRelevantForRefresh = (url: string | undefined) => {
+    return url !== signInUrl && url !== signUpUrl && url !== refreshTokenUrl
+}
 
 export const refreshTokenOnUnauthorized = (onRefreshError: () => void) => {
-  apiClient.interceptors.response.use(
-    (response) => response,
-    async (error: AxiosError<unknown, { _retry: boolean }>) => {
-      const originalRequest = error.config;
+    apiClient.interceptors.response.use(
+        (response) => response,
+        async (error: AxiosError<unknown, { _retry: boolean }>) => {
+            const originalRequest = error.config;
 
-      if (
-        error.response?.status === 401 &&
-        !!originalRequest &&
-        originalRequest.url !== refreshTokenUrl
-      ) {
-        try {
-          await refreshToken();
+            const rel = isRouteRelevantForRefresh(originalRequest?.url);
 
-          return apiClient(originalRequest);
-        } catch (refreshError) {
-          onRefreshError();
-          return Promise.reject(refreshError);
-        }
-      }
+            if (
+                error.response?.status === 401 &&
+                !!originalRequest &&
+                isRouteRelevantForRefresh(originalRequest.url)
+            ) {
+                try {
+                    await refreshToken();
 
-      return Promise.reject(error);
-    },
-  );
+                    return apiClient(originalRequest);
+                } catch (refreshError) {
+                    onRefreshError();
+                    return Promise.reject(refreshError);
+                }
+            }
+
+            return Promise.reject(error);
+        },
+    );
 };
 
 export const googleSignIn = async (credentialResponse: CredentialResponse) => {
