@@ -1,11 +1,10 @@
 import {useEffect, useState} from 'react';
 import {Grid3x3, Settings} from 'lucide-react';
-import type {ProfileUpdate, User} from "../../types";
+import type {ProfileUpdate} from "../../types";
 import {Button} from "../../components/button/Button.tsx";
 import {ProfileDialog} from "../../components/profileDialog/ProfileDialog.tsx";
 import useGetContext from "../../hooks/useGetContext.ts";
 import {CurrentUserContext, LoadedPostsContext} from "../../contexts/contexts.ts";
-import {useNavigate} from "react-router-dom";
 import {UserAvatar} from "../../components/userAvatar/UserAvatar.tsx";
 import styles from './profileScreen.module.css'
 import Feed from '../../components/feed/Feed.tsx';
@@ -13,7 +12,6 @@ import {useInfiniteFeed} from "../../hooks/useInfiniteScroll.ts";
 import {getPostCountForCurrentUser, getPosts} from "../../services/posts-api.ts";
 
 const ProfileScreen = () => {
-    const navigate = useNavigate();
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const {currentUser, setCurrentUser} = useGetContext(CurrentUserContext);
     const {cursor, loadMore, isLoading, initialFetchError, fetchMoreError} = useInfiniteFeed(
@@ -22,21 +20,10 @@ const ProfileScreen = () => {
     );
     const {currentUserPostsCount, setCurrentUserPostsCount} = useGetContext(LoadedPostsContext);
     const [currentUserPostsError, setCurrentUserPostsError] = useState<string | null>(null)
-
-    const assertUser = (): Omit<User, 'password'> => {
-        if (currentUser) {
-            return currentUser;
-        }
-
-        console.error("Cannot show profile without a logged in user");
-        navigate("/sign-in");
-
-        return {
-            _id: '',
-            username: '',
-            email: '',
-            imgUrl: ''
-        }
+    const user = currentUser ?? {
+        _id: "",
+        username: "",
+        email: "",
     }
 
     useEffect(() => {
@@ -46,8 +33,6 @@ const ProfileScreen = () => {
             setCurrentUserPostsError("Error fetching current user post count");
         })
     }, []);
-
-    const user = assertUser();
 
     const handleUpdateUser = (profileUpdate: ProfileUpdate) => {
         setCurrentUser((prevCurrentUser) => prevCurrentUser ? {
