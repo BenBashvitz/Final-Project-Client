@@ -48,7 +48,6 @@ const SearchScreen = () => {
         if (e.key === "Enter") {
             handleSearch();
         }
-
     };
 
     const getContent = () => {
@@ -61,7 +60,7 @@ const SearchScreen = () => {
         }
 
         if (hasSearched && posts.length === 0) {
-            return <div className={styles.noResults}>No posts found for "{query}"</div>
+            return <div className={styles.noResults}>No posts found</div>
         }
 
         return posts.map((post) => (

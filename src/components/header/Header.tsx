@@ -57,7 +57,19 @@ export const Header = () => {
                                 )
                             }
                             {
-                                location.pathname === '/' || location.pathname === '/profile' ?
+                                location.pathname != '/' &&
+                                <Link to="/">
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                    >
+                                        <Home size={16} />
+                                        <span className={styles.navLabel}>Home</span>
+                                    </Button>
+                                </Link>
+                            }
+                            {
+                                (location.pathname === '/' || location.pathname === '/profile') &&
                                     <Button
                                         size="sm"
                                         variant="default"
@@ -65,16 +77,7 @@ export const Header = () => {
                                     >
                                         <PlusCircle size={16} />
                                         <span className={styles.navLabel}>Create Post</span>
-                                    </Button> :
-                                    <Link to="/">
-                                        <Button
-                                            size="sm"
-                                            variant="outline"
-                                        >
-                                            <Home size={16} />
-                                            <span className={styles.navLabel}>Home</span>
-                                        </Button>
-                                    </Link>
+                                    </Button>
                             }
 
                             <div className={styles.divider} />
