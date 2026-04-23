@@ -2,8 +2,7 @@ import {apiClient} from "./api-client";
 import type {LoggedInUser, UserSignInPayload, UserSignUpPayload} from "../types";
 import type {AxiosError} from "axios";
 import type {CredentialResponse} from "@react-oauth/google";
-
-const signInUrl = '/auth/login';
+import {refreshTokenUrl, signInUrl, signUpUrl} from "../consts.ts";
 
 export const signIn = async (
     payload: UserSignInPayload,
@@ -19,8 +18,6 @@ export const signIn = async (
     return data;
 };
 
-const signUpUrl = '/auth/register'
-
 export const signUp = async (
     payload: UserSignUpPayload,
 ): Promise<LoggedInUser> => {
@@ -34,8 +31,6 @@ export const signUp = async (
 
     return data;
 };
-
-const refreshTokenUrl = "/auth/refresh-token";
 
 export const refreshToken = async (): Promise<LoggedInUser> => {
     const {data} = await apiClient.post<LoggedInUser>(
