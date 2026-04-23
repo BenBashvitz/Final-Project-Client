@@ -38,13 +38,14 @@ const SearchScreen = () => {
                 }
             } finally {
                 setIsLoading(false);
+                setHasSearched(false);
+                setQuery('');
             }
         }
     }
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
-            setHasSearched(false);
             handleSearch();
         }
 
