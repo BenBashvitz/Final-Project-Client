@@ -68,8 +68,6 @@ export const refreshTokenOnUnauthorized = (onRefreshError: () => void) => {
         async (error: AxiosError<unknown, { _retry: boolean }>) => {
             const originalRequest = error.config;
 
-            const rel = isRouteRelevantForRefresh(originalRequest?.url);
-
             if (
                 error.response?.status === 401 &&
                 !!originalRequest &&
