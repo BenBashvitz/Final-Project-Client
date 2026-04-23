@@ -1,99 +1,106 @@
 import type {
-  Cursor,
-  Post,
-  PostFormValues,
-  PostFormValuesSubmission,
-  PostPage,
-  UploadedPostResponse,
+    Cursor,
+    Post,
+    PostCountResponse,
+    PostFormValues,
+    PostFormValuesSubmission,
+    PostPage,
+    UploadedPostResponse,
 } from "../types/post";
-import { apiClient } from "./api-client";
+import {apiClient} from "./api-client";
 
 export const getPosts = (cursor?: Cursor, userId?: string) => {
-  const abortController = new AbortController();
+    const abortController = new AbortController();
 
-  const response = apiClient.get<PostPage>("/post", {
-    signal: abortController.signal,
-    params: {
-      cursor: cursor ? JSON.stringify(cursor) : undefined,
-      userId,
-    },
-  });
+    const response = apiClient.get<PostPage>("/post", {
+        signal: abortController.signal,
+        params: {
+            cursor: cursor ? JSON.stringify(cursor) : undefined,
+            userId,
+        },
+    });
 
-  return { response, abort: () => abortController.abort() };
+    return {response, abort: () => abortController.abort()};
 };
 
 export const searchPosts = (query: string) => {
-  const abortController = new AbortController();
+    const abortController = new AbortController();
 
-  const response = apiClient.get<Post[]>("/post/search", {
-    signal: abortController.signal,
-    params: {
-      query,
-    },
-  });
+    const response = apiClient.get<Post[]>("/post/search", {
+        signal: abortController.signal,
+        params: {
+            query,
+        },
+    });
 
-  return { response, abort: () => abortController.abort() };
+    return {response, abort: () => abortController.abort()};
 };
 
 export const uploadPost = async ({
-  img,
-  description,
-}: PostFormValuesSubmission): Promise<Post> => {
-  const formData = new FormData();
-  formData.append("file", img);
+                                     img,
+                                     description,
+                                 }: PostFormValuesSubmission): Promise<Post> => {
+    const formData = new FormData();
+    formData.append("file", img);
 
-  const uploadPostImgResponse = await apiClient.post<UploadedPostResponse>(
-    "/upload",
-    formData,
-  );
+    const uploadPostImgResponse = await apiClient.post<UploadedPostResponse>(
+        "/upload",
+        formData,
+    );
 
-  const imgUrl = uploadPostImgResponse.data.imgUrl;
+    const imgUrl = uploadPostImgResponse.data.imgUrl;
 
-  const uploadPostResponse = await apiClient.post<Post>("/post", {
-    description,
-    imgUrl,
-    creationDate: new Date(),
-  });
+    const uploadPostResponse = await apiClient.post<Post>("/post", {
+        description,
+        imgUrl,
+        creationDate: new Date(),
+    });
 
-  return uploadPostResponse.data;
+    return uploadPostResponse.data;
 };
 
 export const editPost = async (
-  { description, img }: PostFormValues,
-  oldPost: Post,
+    {description, img}: PostFormValues,
+    oldPost: Post,
 ): Promise<Post> => {
-  let imgUrl = oldPost.imgUrl;
+    let imgUrl = oldPost.imgUrl;
 
-  if (img instanceof File) {
-    const formData = new FormData();
-    formData.append("file", img);
-    formData.append("oldImgUrl", oldPost.imgUrl);
+    if (img instanceof File) {
+        const formData = new FormData();
+        formData.append("file", img);
+        formData.append("oldImgUrl", oldPost.imgUrl);
 
-    const { data } = await apiClient.put<UploadedPostResponse>(
-      "/upload",
-      formData,
+        const {data} = await apiClient.put<UploadedPostResponse>(
+            "/upload",
+            formData,
+        );
+
+        imgUrl = data.imgUrl;
+    }
+
+    const {data} = await apiClient.put(
+        `/post/${encodeURIComponent(oldPost._id)}`,
+        {
+            imgUrl,
+            description,
+        },
     );
 
-    imgUrl = data.imgUrl;
-  }
-
-  const { data } = await apiClient.put(
-    `/post/${encodeURIComponent(oldPost._id)}`,
-    {
-      imgUrl,
-      description,
-    },
-  );
-
-  return data;
+    return data;
 };
 
 export const deletePost = async (
-  postId: string,
+    postId: string,
 ): Promise<Pick<Post, "_id">> => {
-  const { data } = await apiClient.delete<Pick<Post, "_id">>(
-    `/post/${encodeURIComponent(postId)}`,
-  );
+    const {data} = await apiClient.delete<Pick<Post, "_id">>(
+        `/post/${encodeURIComponent(postId)}`,
+    );
 
-  return data;
+    return data;
 };
+
+export const getPostCountForCurrentUser = async () => {
+    const {data} = await apiClient.get<PostCountResponse>('/post/count');
+
+    return data.count;
+}

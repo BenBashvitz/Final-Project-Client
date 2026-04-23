@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Search } from "lucide-react";
-import { Input } from "../../components/input/Input";
-import { Button } from "../../components/button/Button";
-import { PostCard } from "../../components/postCard/PostCard";
-import { searchPosts } from "../../services/posts-api";
+import {useState} from "react";
+import {Search} from "lucide-react";
+import {Input} from "../../components/input/Input";
+import {Button} from "../../components/button/Button";
+import {PostCard} from "../../components/postCard/PostCard";
+import {searchPosts} from "../../services/posts-api";
 import styles from "./searchScreen.module.css";
 import axios from "axios";
-import { usePostState } from "../../utils/post";
+import {usePostState} from "../../utils/post";
 
 const SearchScreen = () => {
     const [query, setQuery] = useState("");
@@ -19,16 +19,19 @@ const SearchScreen = () => {
     } = usePostState();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [hasSearched, setHasSearched] = useState(false);
 
     const handleSearch = async () => {
         if (query.trim()) {
             setIsLoading(true);
             setError(null);
+            setHasSearched(false);
 
             try {
-                const { response } = searchPosts(query);
-                const { data } = await response;
+                const {response} = searchPosts(query);
+                const {data} = await response;
                 setPosts(data);
+                setHasSearched(true);
             } catch (err) {
                 if (!axios.isCancel(err)) {
                     console.error("Failed to search posts:", err);
@@ -36,6 +39,7 @@ const SearchScreen = () => {
                 }
             } finally {
                 setIsLoading(false);
+                setQuery('');
             }
         }
     }
@@ -49,21 +53,25 @@ const SearchScreen = () => {
     const getContent = () => {
         if (isLoading) {
             return <div className={styles.loading}>Searching posts...</div>
-        } else if (error) {
-            return <div className={styles.error}>{error}</div>
-        } else if (posts.length === 0 && query) {
-            return <div className={styles.noResults}>No posts found for "{query}"</div>
-        } else {
-            return posts.map((post) => (
-                <PostCard
-                    key={post._id}
-                    post={post}
-                    onEdit={handleEditPost}
-                    onDelete={() => handleDeletePost(post._id)}
-                    onLike={() => handleLikePost(post)}
-                />
-            ))
         }
+
+        if (error) {
+            return <div className={styles.error}>{error}</div>
+        }
+
+        if (hasSearched && posts.length === 0) {
+            return <div className={styles.noResults}>No posts found</div>
+        }
+
+        return posts.map((post) => (
+            <PostCard
+                key={post._id}
+                post={post}
+                onEdit={handleEditPost}
+                onDelete={() => handleDeletePost(post._id)}
+                onLike={() => handleLikePost(post)}
+            />
+        ))
     }
 
     return (
@@ -77,16 +85,14 @@ const SearchScreen = () => {
                     className={styles.searchInput}
                 />
                 <Button onClick={handleSearch} disabled={isLoading}>
-                    <Search size={18} />
+                    <Search size={18}/>
                     <span>Search</span>
                 </Button>
             </div>
 
             <div className={styles.scrollContainer}>
                 <div className={styles.resultsContainer}>
-                    {
-                        getContent()
-                    }
+                    {getContent()}
                 </div>
             </div>
         </div>

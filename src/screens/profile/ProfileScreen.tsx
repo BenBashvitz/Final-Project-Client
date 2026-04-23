@@ -1,42 +1,38 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Grid3x3, Settings} from 'lucide-react';
-import type {ProfileUpdate, User} from "../../types";
+import type {ProfileUpdate} from "../../types";
 import {Button} from "../../components/button/Button.tsx";
 import {ProfileDialog} from "../../components/profileDialog/ProfileDialog.tsx";
 import useGetContext from "../../hooks/useGetContext.ts";
-import {CurrentUserContext} from "../../contexts/contexts.ts";
-import {useNavigate} from "react-router-dom";
+import {CurrentUserContext, LoadedPostsContext} from "../../contexts/contexts.ts";
 import {UserAvatar} from "../../components/userAvatar/UserAvatar.tsx";
 import styles from './profileScreen.module.css'
 import Feed from '../../components/feed/Feed.tsx';
 import {useInfiniteFeed} from "../../hooks/useInfiniteScroll.ts";
-import {getPosts} from "../../services/posts-api.ts";
+import {getPostCountForCurrentUser, getPosts} from "../../services/posts-api.ts";
 
 const ProfileScreen = () => {
-    const navigate = useNavigate();
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const {currentUser, setCurrentUser} = useGetContext(CurrentUserContext);
     const {cursor, loadMore, isLoading, initialFetchError, fetchMoreError} = useInfiniteFeed(
         (cursor) => getPosts(cursor, currentUser?._id),
         [currentUser?._id]
     );
-    const assertUser = (): Omit<User, 'password'> => {
-        if (currentUser) {
-            return currentUser;
-        }
-
-        console.error("Cannot show profile without a logged in user");
-        navigate("/sign-in");
-
-        return {
-            _id: '',
-            username: '',
-            email: '',
-            imgUrl: ''
-        }
+    const {currentUserPostsCount, setCurrentUserPostsCount} = useGetContext(LoadedPostsContext);
+    const [currentUserPostsError, setCurrentUserPostsError] = useState<string | null>(null)
+    const user = currentUser ?? {
+        _id: "",
+        username: "",
+        email: "",
     }
 
-    const user = assertUser();
+    useEffect(() => {
+        getPostCountForCurrentUser().then((count) => {
+            setCurrentUserPostsCount(count);
+        }).catch(() => {
+            setCurrentUserPostsError("Error fetching current user post count");
+        })
+    }, []);
 
     const handleUpdateUser = (profileUpdate: ProfileUpdate) => {
         setCurrentUser((prevCurrentUser) => prevCurrentUser ? {
@@ -68,8 +64,19 @@ const ProfileScreen = () => {
 
                             <div className={styles.statsRow}>
                                 <div className={styles.statItem}>
-                                    <p className={styles.statValue}>0</p>
-                                    <p className={styles.statLabel}>posts</p>
+                                    {
+                                        currentUserPostsError
+                                            ? <p className={styles.statValue}>{
+                                                currentUserPostsError
+                                            }</p>
+                                            : <>
+                                                <p className={styles.statValue}>{
+                                                    currentUserPostsCount
+                                                }</p>
+                                                <p className={styles.statLabel}>posts</p>
+                                            </>
+                                    }
+
                                 </div>
                             </div>
 
