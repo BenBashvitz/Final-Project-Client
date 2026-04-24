@@ -1,6 +1,6 @@
 import {lazy} from "react";
 import {Route, Routes} from "react-router";
-import {useLocation} from 'react-router-dom';
+import {Navigate, useLocation} from 'react-router-dom';
 import "./App.css";
 import {UserProvider} from "./contexts/UserContext.tsx";
 import {PostsProvider} from "./contexts/PostsContext.tsx";
@@ -36,6 +36,7 @@ const App = () => {
                             <Route path="/profile" element={<ProfileScreen/>}/>
                             <Route path="/search" element={<SearchScreen/>}/>
                             <Route path="/posts/:postId/comments" element={<CommentsScreen/>}/>
+                            <Route path="*" element={<Navigate to="/" replace />} />
                         </Routes>
                     </PostsProvider>
                 </UserProvider>
